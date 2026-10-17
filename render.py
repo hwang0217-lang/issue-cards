@@ -168,7 +168,7 @@ def body(item, num, page, total):
     d.text((W - 60 - d.textlength(f"{num:02d}", font=font(BLACK_FONTS, 300)), 40), f"{num:02d}",
            font=font(BLACK_FONTS, 300), fill="#1E2A40")
 
-    label = SLIDE_LABELS[num - 1] if num <= len(SLIDE_LABELS) else f"POINT {num}"
+    label = (item.get("label") or "").strip() or (SLIDE_LABELS[num - 1] if num <= len(SLIDE_LABELS) else f"POINT {num}")
     pill(d, MARGIN, 90, label, font(BLACK_FONTS, 32), YELLOW, INK)
     mw = W - MARGIN * 2
     tf, bf = font(BLACK_FONTS, 72), font(REGULAR_FONTS, 50)
