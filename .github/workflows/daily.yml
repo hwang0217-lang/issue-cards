@@ -4,6 +4,8 @@ on:
   schedule:
     # 한국시간 매일 오전 8시 = UTC 전날 23시
     - cron: "0 23 * * *"
+    # 한국시간 매일 저녁 6시 = UTC 오전 9시
+    - cron: "0 9 * * *"
   workflow_dispatch:
     inputs:
       dry_run:
