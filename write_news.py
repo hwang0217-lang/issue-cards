@@ -77,7 +77,9 @@ COMMON_FORMAT = """- cover_title: 표지 제목 (최대 24자, 궁금증을 자�
       물가 → "a shopping basket full of groceries on a kitchen counter"
       교육 → "rows of empty wooden desks in a bright classroom"
       의료·복지 → "a stethoscope and clipboard on a clean desk" (환자·사고 장면 금지)
-- caption: 설명글 (첫 줄은 핵심 한 문장, 3~5줄, 중립적, 마지막은 독자에게 의견을 묻는 가벼운 질문)
+- caption: 설명글 (첫 줄은 핵심 한 문장, 3~5줄, 중립적, 마지막은 독자에게 의견을 묻는 가벼운 질문).
+  이모지는 첫 줄 맨 앞에 주제에 어울리는 것 1개만 붙인다 (예: 날씨 ☔, 정책·제도 📰, 경제 💰).
+  사고·재난·사망·피해·범죄·갈등·논란이 있는 소식이거나 조금이라도 무거운 주제면 이모지를 아예 쓰지 않는다.
 - hashtags: 8개, # 로 시작, 띄어쓰기 없이
 한국어로 작성해줘."""
 
