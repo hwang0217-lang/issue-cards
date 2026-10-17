@@ -2,7 +2,9 @@
 import os
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
+
+from images import generate_image
 
 W, H = 1080, 1350
 NAVY = (14, 20, 32)
@@ -131,15 +133,60 @@ def footer(d, page, total):
     d.text((W - MARGIN - d.textlength(label, font=f), H - 90), label, font=f, fill=SOFT)
 
 
+_photo_cache: dict = {}
+PHOTO_USED = {"any": False}
+
+
+def cover_crop(img: Image.Image, w: int, h: int) -> Image.Image:
+    scale = max(w / img.width, h / img.height)
+    img = img.resize((int(img.width * scale) + 1, int(img.height * scale) + 1), Image.LANCZOS)
+    left, top = (img.width - w) // 2, (img.height - h) // 2
+    return img.crop((left, top, left + w, top + h))
+
+
+def photo_background(prompt: str, style: str = ""):
+    """AI가 만든 배경 이미지(1080x1350). 없으면 None. 같은 요청은 한 번만 만든다."""
+    if not prompt:
+        return None
+    key = (prompt, style)
+    if key not in _photo_cache:
+        ph = generate_image(prompt, style)
+        _photo_cache[key] = cover_crop(ph, W, H) if ph is not None else None
+    cached = _photo_cache[key]
+    if cached is None:
+        return None
+    PHOTO_USED["any"] = True
+    return cached.copy()
+
+
+def shade(img: Image.Image, stops) -> Image.Image:
+    """stops=[(위치0~1, 어둡기0~255), ...]를 이어서 세로로 어둡게 눌러 글자가 잘 보이게 한다."""
+    mask = Image.new("L", (1, img.height))
+    for y in range(img.height):
+        t = y / (img.height - 1)
+        a = stops[-1][1]
+        for (p0, a0), (p1, a1) in zip(stops, stops[1:]):
+            if p0 <= t <= p1:
+                a = a0 + (a1 - a0) * (t - p0) / (p1 - p0 or 1)
+                break
+        mask.putpixel((0, y), int(a))
+    return Image.composite(Image.new("RGB", img.size, (10, 14, 24)), img, mask.resize(img.size))
+
+
 # ---------- 슬라이드 ----------
 
 def cover(c, total, date_text):
-    img = background((12, 17, 28), (30, 40, 62))
-    d = ImageDraw.Draw(img)
-    # 장식: 큰 원과 대각 띠
-    d.ellipse((560, -260, 1340, 520), outline="#2A364F", width=3)
-    d.ellipse((700, -120, 1200, 380), outline="#2A364F", width=3)
-    d.polygon([(0, 700), (W, 520), (W, 560), (0, 740)], fill="#1B2538")
+    photo = photo_background(c.get("cover_image_prompt", ""), c.get("visual_style", ""))
+    if photo is not None:
+        img = shade(photo, [(0, 165), (0.3, 120), (0.55, 150), (1, 245)])
+        d = ImageDraw.Draw(img)
+    else:
+        img = background((12, 17, 28), (30, 40, 62))
+        d = ImageDraw.Draw(img)
+        # 장식: 큰 원과 대각 띠
+        d.ellipse((560, -260, 1340, 520), outline="#2A364F", width=3)
+        d.ellipse((700, -120, 1200, 380), outline="#2A364F", width=3)
+        d.polygon([(0, 700), (W, 520), (W, 560), (0, 740)], fill="#1B2538")
     d.rectangle((0, 0, 18, H), fill=YELLOW)
 
     pill(d, MARGIN, 80, "TODAY 사회 이슈", font(BLACK_FONTS, 34), YELLOW, INK)
@@ -160,13 +207,18 @@ def cover(c, total, date_text):
     return img
 
 
-def body(item, num, page, total):
-    img = background()
+def body(item, num, page, total, style=""):
+    photo = photo_background(item.get("image_prompt", ""), style)
+    if photo is not None:
+        # 글자가 잘 보이도록 전체를 충분히 어둡게 눌러준다
+        img = shade(photo, [(0, 185), (0.3, 170), (0.65, 195), (1, 245)])
+    else:
+        img = background()
     d = ImageDraw.Draw(img)
     d.rectangle((0, 0, 18, H), fill=YELLOW)
     # 큰 번호 워터마크
     d.text((W - 60 - d.textlength(f"{num:02d}", font=font(BLACK_FONTS, 300)), 40), f"{num:02d}",
-           font=font(BLACK_FONTS, 300), fill="#1E2A40")
+           font=font(BLACK_FONTS, 300), fill="#2A3650" if photo is not None else "#1E2A40")
 
     label = (item.get("label") or "").strip() or (SLIDE_LABELS[num - 1] if num <= len(SLIDE_LABELS) else f"POINT {num}")
     pill(d, MARGIN, 90, label, font(BLACK_FONTS, 32), YELLOW, INK)
@@ -181,11 +233,19 @@ def body(item, num, page, total):
     return img
 
 
-def closing(outlets, page, total):
-    img = background((12, 17, 28), (30, 40, 62))
+def closing(outlets, page, total, c=None):
+    c = c or {}
+    photo = photo_background(c.get("cover_image_prompt", ""), c.get("visual_style", ""))  # 표지 사진 재사용(비용 절약)
+    if photo is not None:
+        img = shade(photo.filter(ImageFilter.GaussianBlur(8)), [(0, 215), (1, 245)])
+    else:
+        img = background((12, 17, 28), (30, 40, 62))
     d = ImageDraw.Draw(img)
     d.rectangle((0, 0, 18, H), fill=YELLOW)
     mw = W - MARGIN * 2
+    if photo is not None:
+        d.text((MARGIN, H - 150), "배경 이미지는 AI가 만든 참고 이미지이며, 실제 현장 사진이 아니에요.",
+               font=font(REGULAR_FONTS, 26), fill=SOFT)
 
     names = ", ".join(outlets[:5]) if outlets else "주요 언론사"
     src_f, note_f = font(BOLD_FONTS, 54), font(REGULAR_FONTS, 40)
@@ -206,9 +266,10 @@ def render_all(content: dict, outlets: list, date_text: str, out_dir: Path) -> l
     out_dir.mkdir(parents=True, exist_ok=True)
     total = len(content["slides"]) + 2
     images = [cover(content, total, date_text)]
+    style = content.get("visual_style", "")
     for i, s in enumerate(content["slides"], 1):
-        images.append(body(s, i, i + 1, total))
-    images.append(closing(outlets, total, total))
+        images.append(body(s, i, i + 1, total, style))
+    images.append(closing(outlets, total, total, content))
     paths = []
     for i, im in enumerate(images, 1):
         p = out_dir / f"{i:02d}.jpg"

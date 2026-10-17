@@ -35,6 +35,8 @@ TOOL = {
             "skip_reason": {"type": "string"},
             "cover_title": {"type": "string"},
             "cover_sub": {"type": "string"},
+            "visual_style": {"type": "string"},
+            "cover_image_prompt": {"type": "string"},
             "slides": {
                 "type": "array",
                 "items": {
@@ -44,8 +46,9 @@ TOOL = {
                         "title": {"type": "string"},
                         "body": {"type": "string"},
                         "highlight": {"type": "string"},
+                        "image_prompt": {"type": "string"},
                     },
-                    "required": ["label", "title", "body", "highlight"],
+                    "required": ["label", "title", "body", "highlight", "image_prompt"],
                 },
             },
             "caption": {"type": "string"},
@@ -57,9 +60,18 @@ TOOL = {
 
 COMMON_FORMAT = """- cover_title: 표지 제목 (최대 24자, 궁금증을 자극하되 과장·낚시 금지)
 - cover_sub: 표지 부제 (최대 22자)
+- visual_style: 모든 배경 이미지가 공유할 분위기 한 줄 (영어, 예: "cool blue-gray tones, soft overcast light")
+- cover_image_prompt: 표지 배경 이미지에 담을 '일반적인 장면이나 사물' 묘사 (영어 한두 문장)
 - slides: {slide_rule}
   각각 label(최대 8자), title(최대 16자), body(최대 70자, 근거에 있는 내용만),
-  highlight(body에 글자 그대로 들어 있는 핵심 구절, 최대 14자)
+  highlight(body에 글자 그대로 들어 있는 핵심 구절, 최대 14자),
+  image_prompt(그 장의 주제를 상징하는 일반적인 장면·사물 묘사, 영어 한두 문장)
+- image_prompt 규칙: 실제 사건 현장, 특정 장소·건물·인물·얼굴·로고·글자·간판은 절대 묘사하지 않고,
+  재난·사고·부상·시위·군중 장면도 쓰지 않는다. 대신 주제를 상징하는 평범한 사물이나 분위기를 쓴다.
+  예) 비 소식 → "rain streaking down a window with softly blurred city lights"
+      물가·경제 → "a calculator, coins and a notebook on a wooden desk"
+      교육 → "empty wooden classroom desks in soft daylight"
+      교통 → "a quiet road at dusk with blurred lights" (사고 장면 금지)
 - caption: 설명글 (첫 줄은 핵심 한 문장, 3~5줄, 중립적, 마지막은 독자에게 의견을 묻는 가벼운 질문)
 - hashtags: 8개, # 로 시작, 띄어쓰기 없이
 한국어로 작성해줘."""

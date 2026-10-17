@@ -9,7 +9,7 @@ from pathlib import Path
 
 from collect import collect
 from publish import publish_carousel
-from render import render_all
+from render import PHOTO_USED, render_all
 from select_issue import propose_issues, rank_issues
 from write_news import write_digest, write_news
 
@@ -127,15 +127,14 @@ def main() -> None:
     date_text = f"{now:%Y.%m.%d} ({WEEKDAYS[now.weekday()]})"
     outlets = sorted({o for c in used for o in c["stats"]["outlets"]})
 
-    caption = "\n\n".join([
-        content["caption"].strip(),
-        f"출처: {', '.join(outlets[:5])} 등 보도 종합\n※ 뉴스를 요약·정리한 게시물이에요. 정확한 내용은 각 언론사 원문 기사를 확인해 주세요.",
-        " ".join(content["hashtags"]),
-    ])
-
     slug = now.strftime("%Y%m%d-%H%M")
     paths = render_all(content, outlets, date_text, ROOT / "images" / slug)
-    print(f"이미지 {len(paths)}장 생성")
+    print(f"이미지 {len(paths)}장 생성 (AI 배경 이미지 사용: {'예' if PHOTO_USED['any'] else '아니오'})")
+
+    notes = f"출처: {', '.join(outlets[:5])} 등 보도 종합\n※ 뉴스를 요약·정리한 게시물이에요. 정확한 내용은 각 언론사 원문 기사를 확인해 주세요."
+    if PHOTO_USED["any"]:
+        notes += "\n※ 배경 이미지는 AI가 만든 참고 이미지이며 실제 현장 사진이 아니에요."
+    caption = "\n\n".join([content["caption"].strip(), notes, " ".join(content["hashtags"])])
 
     if DRY_RUN:
         print("DRY_RUN: 업로드하지 않고 종료\n")

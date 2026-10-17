@@ -1,3 +1,4 @@
 pillow
 requests
 anthropic
+google-genai
