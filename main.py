@@ -35,11 +35,18 @@ def recently_posted(keyword: str, state: dict, days: int = 5) -> bool:
     return False
 
 
+def repo_prefix() -> str:
+    """저장소 맨 위에서 이 파일이 있는 폴더까지의 경로 (맨 위에 있으면 빈 문자열)."""
+    rel = ROOT.resolve().relative_to(Path.cwd().resolve()).as_posix()
+    return "" if rel == "." else rel + "/"
+
+
 def public_urls(paths: list) -> list:
     repo = os.environ["GITHUB_REPOSITORY"]
     branch = os.environ.get("GITHUB_REF_NAME", "main")
+    prefix = repo_prefix()
     return [
-        f"https://raw.githubusercontent.com/{repo}/{branch}/cardnews/{p.relative_to(ROOT).as_posix()}"
+        f"https://raw.githubusercontent.com/{repo}/{branch}/{prefix}{p.resolve().relative_to(ROOT.resolve()).as_posix()}"
         for p in paths
     ]
 
@@ -59,7 +66,7 @@ def wait_for_urls(urls: list, tries: int = 20) -> None:
 def commit_images() -> None:
     os.system("git config user.name 'cardnews-bot'")
     os.system("git config user.email 'cardnews-bot@users.noreply.github.com'")
-    os.system("git add cardnews/images")
+    os.system(f"git add {repo_prefix()}images")
     os.system("git diff --cached --quiet || git commit -m 'add card images'")
     if os.system("git push") != 0:
         raise RuntimeError("이미지 push 실패")
