@@ -1,5 +1,5 @@
 """매일 한 번 실행: 후보 수집 → 이슈 선정·점수 → 사실 기반 글 → 이미지 → 인스타 업로드.
-불확실하거나 위험하면 그날은 발행하지 않는다."""
+단일 이슈가 어려우면 '오늘의 이슈 브리핑'으로 대신하고, 안전하게 다룰 이슈가 아예 없으면 그날은 발행하지 않는다."""
 import json
 import os
 import sys
@@ -11,7 +11,7 @@ from collect import collect
 from publish import publish_carousel
 from render import render_all
 from select_issue import propose_issues, rank_issues
-from write_news import write_news
+from write_news import write_digest, write_news
 
 ROOT = Path(__file__).parent
 STATE_FILE = ROOT / "state.json"
@@ -72,11 +72,13 @@ def commit_images() -> None:
         raise RuntimeError("이미지 push 실패")
 
 
-def save_state(state: dict, issue: dict, title: str, media_id: str) -> None:
-    state["posted"].append({
-        "keyword": issue["keyword"], "title": title, "media_id": media_id,
-        "score": issue["score"], "at": datetime.now(KST).strftime("%Y-%m-%d %H:%M:%S"),
-    })
+def save_state(state: dict, used: list, title: str, media_id: str) -> None:
+    at = datetime.now(KST).strftime("%Y-%m-%d %H:%M:%S")
+    for issue in used:  # 브리핑이면 다룬 이슈마다 기록해서 며칠간 다시 안 다뤄요
+        state["posted"].append({
+            "keyword": issue["keyword"], "title": title, "media_id": media_id,
+            "score": issue["score"], "at": at,
+        })
     state["posted"] = state["posted"][-200:]
     STATE_FILE.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
 
@@ -90,30 +92,40 @@ def main() -> None:
     data = collect()
     issues = propose_issues(data["headlines"], data["trends"])
     print(f"AI가 고른 후보 이슈 {len(issues)}개")
-    ranked = rank_issues(issues, data["headlines"], data["trends"])
+    ranked = rank_issues(issues, data["headlines"], data["trends"], limit=8)
+    fresh = [c for c in ranked if not recently_posted(c["keyword"], state)]
 
-    chosen, content = None, None
-    for cand in ranked:
-        if recently_posted(cand["keyword"], state):
-            print(f"건너뜀(최근에 올린 이슈): {cand['keyword']}")
-            continue
+    # 1순위: 한 이슈를 깊게 (3~5장)
+    content, used = None, []
+    for cand in fresh:
         if cand["stats"]["outlet_count"] < 3:
             print(f"건너뜀(보도 언론사 3곳 미만): {cand['keyword']}")
             continue
         content, reason = write_news(cand)
         if content:
-            chosen = cand
+            used = [cand]
+            print(f"선정: {cand['keyword']} (점수 {cand['score']}, 언론사 {cand['stats']['outlet_count']}곳)")
             break
         print(f"건너뜀({reason}): {cand['keyword']}")
 
-    if not chosen:
+    # 2순위: 단일 이슈가 어려우면 '오늘의 이슈 브리핑'으로 (이슈마다 한 장)
+    if not content:
+        pool = [c for c in fresh if c["stats"]["outlet_count"] >= 2][:5]
+        if len(pool) >= 3:
+            print(f"단일 이슈 대신 브리핑으로 전환: {', '.join(c['keyword'] for c in pool)}")
+            content, reason = write_digest(pool)
+            if content:
+                used = pool
+            else:
+                print(f"브리핑도 건너뜀({reason})")
+
+    if not content:
         print("오늘은 안전하게 다룰 수 있는 이슈가 없어서 발행하지 않아요.")
         return
 
-    print(f"선정: {chosen['keyword']} (점수 {chosen['score']}, 언론사 {chosen['stats']['outlet_count']}곳)")
     now = datetime.now(KST)
     date_text = f"{now:%Y.%m.%d} ({WEEKDAYS[now.weekday()]})"
-    outlets = chosen["stats"]["outlets"]
+    outlets = sorted({o for c in used for o in c["stats"]["outlets"]})
 
     caption = "\n\n".join([
         content["caption"].strip(),
@@ -135,7 +147,7 @@ def main() -> None:
     wait_for_urls(urls)
     media_id = publish_carousel(urls, caption)
     print(f"업로드 완료: {media_id}")
-    save_state(state, chosen, content["cover_title"], media_id)
+    save_state(state, used, content["cover_title"], media_id)
 
 
 if __name__ == "__main__":
