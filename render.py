@@ -178,7 +178,8 @@ def shade(img: Image.Image, stops) -> Image.Image:
 def cover(c, total, date_text):
     photo = photo_background(c.get("cover_image_prompt", ""), c.get("visual_style", ""))
     if photo is not None:
-        img = shade(photo, [(0, 165), (0.3, 120), (0.55, 150), (1, 245)])
+        # 사진이 잘 보이도록 위·아래만 어둡게 하고 가운데는 살린다
+        img = shade(photo, [(0, 120), (0.2, 25), (0.55, 10), (0.72, 120), (1, 238)])
         d = ImageDraw.Draw(img)
     else:
         img = background((12, 17, 28), (30, 40, 62))
@@ -209,21 +210,30 @@ def cover(c, total, date_text):
 
 def body(item, num, page, total, style=""):
     photo = photo_background(item.get("image_prompt", ""), style)
-    if photo is not None:
-        # 글자가 잘 보이도록 전체를 충분히 어둡게 눌러준다
-        img = shade(photo, [(0, 185), (0.3, 170), (0.65, 195), (1, 245)])
-    else:
-        img = background()
-    d = ImageDraw.Draw(img)
-    d.rectangle((0, 0, 18, H), fill=YELLOW)
-    # 큰 번호 워터마크
-    d.text((W - 60 - d.textlength(f"{num:02d}", font=font(BLACK_FONTS, 300)), 40), f"{num:02d}",
-           font=font(BLACK_FONTS, 300), fill="#2A3650" if photo is not None else "#1E2A40")
-
     label = (item.get("label") or "").strip() or (SLIDE_LABELS[num - 1] if num <= len(SLIDE_LABELS) else f"POINT {num}")
-    pill(d, MARGIN, 90, label, font(BLACK_FONTS, 32), YELLOW, INK)
     mw = W - MARGIN * 2
     tf, bf = font(BLACK_FONTS, 72), font(REGULAR_FONTS, 50)
+
+    if photo is not None:
+        # 사진이 주인공: 제목은 위, 본문은 아래에 두고 가운데 사진은 그대로 보이게 한다
+        img = shade(photo, [(0, 185), (0.22, 110), (0.42, 8), (0.58, 8), (0.7, 150), (1, 240)])
+        d = ImageDraw.Draw(img)
+        d.rectangle((0, 0, 18, H), fill=YELLOW)
+        pill(d, MARGIN, 80, label, font(BLACK_FONTS, 32), YELLOW, INK)
+        draw_text(d, item["title"], font(BLACK_FONTS, 66), MARGIN, 160, mw, WHITE, 14)
+        bf = font(REGULAR_FONTS, 46)
+        bh = text_height(d, item["body"], bf, mw, 24)
+        draw_highlighted(d, item["body"], item.get("highlight"), bf, MARGIN, H - 150 - bh, mw, 24)
+        footer(d, page, total)
+        return img
+
+    # 사진이 없을 때: 글자 중심의 기본 디자인
+    img = background()
+    d = ImageDraw.Draw(img)
+    d.rectangle((0, 0, 18, H), fill=YELLOW)
+    d.text((W - 60 - d.textlength(f"{num:02d}", font=font(BLACK_FONTS, 300)), 40), f"{num:02d}",
+           font=font(BLACK_FONTS, 300), fill="#1E2A40")
+    pill(d, MARGIN, 90, label, font(BLACK_FONTS, 32), YELLOW, INK)
     block = text_height(d, item["title"], tf, mw, 16) + 90 + text_height(d, item["body"], bf, mw, 26)
     top = 320 + max(0, (H - 112 - 320 - block) // 2 - 40)      # 글 덩어리를 가운데로
     y = draw_text(d, item["title"], tf, MARGIN, top, mw, WHITE, 16)
@@ -237,7 +247,7 @@ def closing(outlets, page, total, c=None):
     c = c or {}
     photo = photo_background(c.get("cover_image_prompt", ""), c.get("visual_style", ""))  # 표지 사진 재사용(비용 절약)
     if photo is not None:
-        img = shade(photo.filter(ImageFilter.GaussianBlur(8)), [(0, 215), (1, 245)])
+        img = shade(photo.filter(ImageFilter.GaussianBlur(5)), [(0, 190), (1, 235)])
     else:
         img = background((12, 17, 28), (30, 40, 62))
     d = ImageDraw.Draw(img)

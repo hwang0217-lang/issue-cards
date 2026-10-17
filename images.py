@@ -1,6 +1,6 @@
-"""Gemini 이미지 모델로 기사 분위기에 맞는 '일반적인 배경 이미지'를 만든다. 키가 없거나 실패하면 None.
+"""Gemini 이미지 모델로 기사의 핵심 대상(동물·사물·날씨 등)이 보이는 배경 이미지를 만든다. 키가 없거나 실패하면 None.
 
-뉴스 계정이라 실제 사건 현장처럼 보이는 사진은 만들지 않는다 (오해 방지).
+뉴스 계정이라 사람, 실제 사건·사고 현장, 글자·로고가 나오는 이미지는 만들지 않는다 (오해 방지).
 """
 import base64
 import io
@@ -14,12 +14,12 @@ SIZE = os.environ.get("GEMINI_IMAGE_SIZE", "1K")  # 대문자 K만 허용돼요
 ASPECT = "4:5"  # 카드뉴스 1080x1350과 같은 비율
 
 RULES = (
-    "Generic editorial stock-style photograph that symbolizes the topic, atmospheric and calm, "
-    "muted dark color grading with soft contrast and plenty of empty space for text overlay. "
-    "Strictly no people, no faces, no hands, no text, no letters, no numbers, no signs, no logos, no flags, "
-    "no real landmarks or identifiable buildings, no license plates, "
-    "and do not depict disasters, accidents, injuries, violence, protests or crowds. "
-    "It must look like a generic mood image, not a photo of a real news event."
+    "High-quality editorial photograph, natural vivid colors, crisp detail, the main subject clearly visible "
+    "and prominent in the frame, dramatic but natural lighting. "
+    "Keep the top 25 percent and the bottom 30 percent of the frame fairly calm so text can be placed there. "
+    "Strictly no people, no faces, no hands, no crowds, no text, no letters, no numbers, no signs, no logos, "
+    "no flags, no brand names, no license plates, no identifiable real landmarks, "
+    "and do not depict disasters, accidents, injuries, blood, violence or protests."
 )
 
 

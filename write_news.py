@@ -66,12 +66,17 @@ COMMON_FORMAT = """- cover_title: 표지 제목 (최대 24자, 궁금증을 자�
   각각 label(최대 8자), title(최대 16자), body(최대 70자, 근거에 있는 내용만),
   highlight(body에 글자 그대로 들어 있는 핵심 구절, 최대 14자),
   image_prompt(그 장의 주제를 상징하는 일반적인 장면·사물 묘사, 영어 한두 문장)
-- image_prompt 규칙: 실제 사건 현장, 특정 장소·건물·인물·얼굴·로고·글자·간판은 절대 묘사하지 않고,
-  재난·사고·부상·시위·군중 장면도 쓰지 않는다. 대신 주제를 상징하는 평범한 사물이나 분위기를 쓴다.
-  예) 비 소식 → "rain streaking down a window with softly blurred city lights"
-      물가·경제 → "a calculator, coins and a notebook on a wooden desk"
-      교육 → "empty wooden classroom desks in soft daylight"
-      교통 → "a quiet road at dusk with blurred lights" (사고 장면 금지)
+- image_prompt 규칙: 그 장이 말하는 '핵심 대상'이 눈에 확 보이게 구체적으로 묘사한다. 분위기만 있는 풍경이나 추상 이미지는 쓰지 않는다.
+  동물·식물·음식·물건·날씨·자연·제품처럼 사람이 아닌 대상은 이야기의 주인공 그대로 그린다.
+  (예: 상어 이야기면 상어가 화면의 주인공이어야 한다.)
+  장마다 구도를 다르게 한다: 가까이 찍은 모습, 멀리 보이는 장면, 주변 환경, 관련 사물 등.
+  절대 묘사하지 않는 것: 사람과 얼굴, 군중, 글자·로고·간판, 실제 사건·재난·사고·부상·시위 장면, 실제 특정 건물·랜드마크.
+  사람이 핵심인 이슈(정책, 노동 등)는 관련된 사물이나 상징으로 대신한다.
+  예) 상어 → "a blacktip shark swimming close to the camera in clear shallow harbor water, dramatic side light"
+      비 소식 → "heavy rain pouring onto a wet city street at dusk with glowing reflections"
+      물가 → "a shopping basket full of groceries on a kitchen counter"
+      교육 → "rows of empty wooden desks in a bright classroom"
+      의료·복지 → "a stethoscope and clipboard on a clean desk" (환자·사고 장면 금지)
 - caption: 설명글 (첫 줄은 핵심 한 문장, 3~5줄, 중립적, 마지막은 독자에게 의견을 묻는 가벼운 질문)
 - hashtags: 8개, # 로 시작, 띄어쓰기 없이
 한국어로 작성해줘."""
