@@ -2,8 +2,8 @@ name: refresh-instagram-token
 
 on:
   schedule:
-    # 매주 일요일 새벽 3시(한국시간) = UTC 토요일 18시
-    - cron: "0 18 * * 6"
+    # 매주 일요일 새벽 3시 37분(한국시간) = UTC 토요일 18시 37분
+    - cron: "37 18 * * 6"
   workflow_dispatch:
 
 permissions:
