@@ -64,7 +64,7 @@ def propose_issues(headlines: list, trends: list) -> list:
     client = anthropic.Anthropic()
     for _ in range(3):
         msg = client.messages.create(
-            model=MODEL, max_tokens=3000, system=SYSTEM, tools=[TOOL],
+            model=MODEL, max_tokens=4500, system=SYSTEM, tools=[TOOL],
             messages=[{"role": "user", "content": prompt}],
         )
         for b in msg.content:

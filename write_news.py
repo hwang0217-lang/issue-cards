@@ -117,7 +117,7 @@ def _call(prompt: str, tries: int = 2):
     client = anthropic.Anthropic()
     for _ in range(tries):
         msg = client.messages.create(
-            model=MODEL, max_tokens=2500, system=SYSTEM, tools=[TOOL],
+            model=MODEL, max_tokens=4500, system=SYSTEM, tools=[TOOL],
             messages=[{"role": "user", "content": prompt}],
         )
         for b in msg.content:
