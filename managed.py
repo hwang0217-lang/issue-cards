@@ -57,11 +57,10 @@ def main():
         raise RuntimeError('Publishing paused pending account review')
     c = p['content']
     out = ROOT / 'images' / p['id']
-    if kind == 'nordic':
-        from layouts import CANVA_STYLES
-        paths = render_all(c, out, next(s for s in CANVA_STYLES if s['id'] == 'utensil-border-checklist'), p['id'])
-    else:
-        paths = render_all(c, sorted({s['outlet'] for s in p['sources']}), now.strftime('%Y.%m.%d'), out)
+    from design_system import choose_design, render_design
+    design_id = choose_design(kind, p['id'], journal, p.get('design_id'))
+    paths = render_design(c, out, kind, design_id, p.get('sources', []), now.strftime('%Y.%m.%d'))
+    print('Design:', design_id)
     caption = c['caption'] + '\n\n' + ' '.join(c['hashtags'])
     if kind == 'issue':
         caption += '\n\n확인 기준: ' + now.strftime('%Y-%m-%d %H:%M KST')
@@ -82,7 +81,7 @@ def main():
     urls = ['https://raw.githubusercontent.com/' + os.environ['GITHUB_REPOSITORY'] + '/main/' + f.relative_to(repo_root).as_posix() for f in paths]
     for url in urls:
         requests.get(url, timeout=30).raise_for_status()
-    journal[p['id']] = {'status': 'pending', 'at': now.isoformat(), 'title': c['cover_title']}
+    journal[p['id']] = {'status': 'pending', 'at': now.isoformat(), 'title': c['cover_title'], 'design_id': design_id}
     journal_path.write_text(json.dumps(journal, ensure_ascii=False, indent=2), encoding='utf-8')
     git_save([journal_path], 'Reserve publication slot ' + p['id'])
     # A timeout or API error leaves a durable pending record. Never auto-repost it.
