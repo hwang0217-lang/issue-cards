@@ -1,0 +1,39 @@
+name: codex-reviewed-cardnews
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: '1 previews; 0 publishes reviewed content'
+        default: '1'
+        type: choice
+        options: ['1', '0']
+permissions:
+  contents: write
+concurrency:
+  group: codex-reviewed-publishing
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: sudo apt-get update && sudo apt-get install -y fonts-noto-cjk fonts-nanum fonts-nanum-extra
+      - run: pip install pillow requests
+      - run: python managed.py
+        env:
+          CARD_KIND: issue
+          DRY_RUN: ${{ inputs.dry_run }}
+          PUBLISH_PAUSED: ${{ vars.CODEX_PUBLISH_PAUSED || '1' }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IG_HANDLE: ${{ vars.IG_HANDLE }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reviewed-cards
+          path: images/
+          retention-days: 3

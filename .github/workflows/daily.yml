@@ -1,11 +1,7 @@
 name: daily-news-cardnews
 
 on:
-  schedule:
-    # 정각(0분)은 GitHub가 몰려서 몇 시간씩 밀리기 쉬워서, 일부러 어긋난 분에 걸어요.
-    # 인스타가 자동 발행 계정을 '활동 제한'(스팸 방지)으로 막은 적이 있어서 하루 1번으로 줄였어요.
-    # 한국시간 매일 오후 5시 23분 = UTC 오전 8시 23분. (하루 2번으로 되돌리려면 아래 줄을 추가: - cron: "23 22 * * *")
-    - cron: "23 8 * * *"
+  # Legacy schedule retired on 2026-10-29; Codex owns publishing.
   workflow_dispatch:
     inputs:
       dry_run:

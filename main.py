@@ -184,6 +184,7 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+    raise SystemExit("Legacy Claude API pipeline disabled; use managed.py")
     try:
         main()
     except Exception as e:
