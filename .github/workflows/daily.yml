@@ -3,9 +3,8 @@ name: daily-news-cardnews
 on:
   schedule:
     # 정각(0분)은 GitHub가 몰려서 몇 시간씩 밀리기 쉬워서, 일부러 어긋난 분에 걸어요.
-    # 한국시간 매일 오전 7시 23분 = UTC 전날 22시 23분 (지연을 감안해 조금 일찍)
-    - cron: "23 22 * * *"
-    # 한국시간 매일 오후 5시 23분 = UTC 오전 8시 23분
+    # 인스타가 자동 발행 계정을 '활동 제한'(스팸 방지)으로 막은 적이 있어서 하루 1번으로 줄였어요.
+    # 한국시간 매일 오후 5시 23분 = UTC 오전 8시 23분. (하루 2번으로 되돌리려면 아래 줄을 추가: - cron: "23 22 * * *")
     - cron: "23 8 * * *"
   workflow_dispatch:
     inputs:
@@ -42,6 +41,12 @@ jobs:
           NEWS_PAUSED: ${{ vars.NEWS_PAUSED }}
           DRY_RUN: ${{ github.event.inputs.dry_run }}
         run: python main.py
+      - name: 게시물 반응 모으기 (조회 부진 원인 분석용)
+        if: ${{ github.event.inputs.dry_run != '1' }}
+        continue-on-error: true
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+        run: python insights.py
       - name: 연습 실행 이미지 보관 (내려받아 확인용)
         if: ${{ github.event.inputs.dry_run == '1' }}
         uses: actions/upload-artifact@v4
@@ -51,10 +56,12 @@ jobs:
           retention-days: 3
           if-no-files-found: ignore
       - name: 발행 기록 저장
+        if: ${{ always() }}
         run: |
           git config user.name 'cardnews-bot'
           git config user.email 'cardnews-bot@users.noreply.github.com'
           if [ -f state.json ]; then
             git add state.json
+            [ -f insights.json ] && git add insights.json
             git diff --cached --quiet || (git commit -m 'update state' && git push)
           fi

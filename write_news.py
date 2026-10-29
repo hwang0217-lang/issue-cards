@@ -58,7 +58,8 @@ TOOL = {
     },
 }
 
-COMMON_FORMAT = """- cover_title: 표지 제목 (최대 24자, 궁금증을 자극하되 과장·낚시 금지)
+COMMON_FORMAT = """- cover_title: 표지 제목 (최대 24자). 스크롤하다 멈추게 하는 한 줄: 독자에게 직접 영향을 주는 점(내 지갑·내 일정·내 권리)이나
+  "왜?" "어떻게 바뀌나?" 같은 궁금증을 앞에 둔다. 과장·낚시·단정은 금지, 근거에 있는 사실만 쓴다.
 - cover_sub: 표지 부제 (최대 22자)
 - visual_style: 모든 배경 이미지가 공유할 분위기 한 줄 (영어, 예: "cool blue-gray tones, soft overcast light")
 - cover_image_prompt: 표지 배경 이미지에 담을 '일반적인 장면이나 사물' 묘사 (영어 한두 문장)
@@ -77,10 +78,11 @@ COMMON_FORMAT = """- cover_title: 표지 제목 (최대 24자, 궁금증을 자�
       물가 → "a shopping basket full of groceries on a kitchen counter"
       교육 → "rows of empty wooden desks in a bright classroom"
       의료·복지 → "a stethoscope and clipboard on a clean desk" (환자·사고 장면 금지)
-- caption: 설명글 (첫 줄은 핵심 한 문장, 3~5줄, 중립적, 마지막은 독자에게 의견을 묻는 가벼운 질문).
+- caption: 설명글 (첫 줄은 사람들이 검색할 핵심 단어가 들어간 사실 한 문장, 3~5줄, 중립적,
+  "저장해 두면 나중에 다시 볼 수 있어요" 같은 저장 안내 한 줄, 마지막은 독자에게 의견을 묻는 가벼운 질문).
   이모지는 첫 줄 맨 앞에 주제에 어울리는 것 1개만 붙인다 (예: 날씨 ☔, 정책·제도 📰, 경제 💰).
   사고·재난·사망·피해·범죄·갈등·논란이 있는 소식이거나 조금이라도 무거운 주제면 이모지를 아예 쓰지 않는다.
-- hashtags: 8개, # 로 시작, 띄어쓰기 없이
+- hashtags: 정확히 5개, # 로 시작, 띄어쓰기 없이 (이슈의 구체 키워드 3개 + #뉴스 #이슈카드)
 한국어로 작성해줘."""
 
 SINGLE_PROMPT = """이슈: {label} (검색 키워드: {keyword})
@@ -167,5 +169,5 @@ def validate(d: dict):
     word = blocked_word(" ".join(texts))
     if word:
         return f"민감어 '{word}' 포함"
-    d["hashtags"] = [h if h.startswith("#") else f"#{h}" for h in d["hashtags"]]
+    d["hashtags"] = [h if h.startswith("#") else f"#{h}" for h in d["hashtags"]][:5]
     return None

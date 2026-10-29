@@ -7,9 +7,16 @@ import requests
 API = "https://graph.instagram.com/v21.0"
 
 
+class BlockedError(RuntimeError):
+    """인스타가 이 계정의 활동을 일시 제한했을 때 (Application request limit / action is blocked)."""
+
+
 def _check(resp: requests.Response) -> dict:
     data = resp.json()
     if resp.status_code != 200 or "error" in data:
+        err = data.get("error", {}) if isinstance(data, dict) else {}
+        if err.get("code") == 4 or err.get("error_subcode") in (2207051, 2207050):
+            raise BlockedError(f"인스타 API 제한: {data}")
         raise RuntimeError(f"인스타 API 오류: {data}")
     return data
 

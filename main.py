@@ -8,7 +8,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from collect import collect
-from publish import publish_carousel
+from publish import BlockedError, publish_carousel
 from render import PHOTO_USED, render_all
 from select_issue import propose_issues, rank_issues
 from write_news import write_digest, write_news
@@ -26,13 +26,32 @@ def load_state() -> dict:
     return {"posted": []}
 
 
+GENERIC = {"논란", "발언", "발표", "시작", "확정", "이번", "오늘", "추진", "예고", "사과", "출범", "관련", "개최", "공개", "이슈", "결정"}
+
+
+def _tokens(text: str) -> set:
+    return {t for t in text.replace("'", " ").replace('"', " ").split() if len(t) >= 2 and t not in GENERIC}
+
+
 def recently_posted(keyword: str, state: dict, days: int = 5) -> bool:
-    """최근 며칠 안에 같은 이슈를 올렸는지 (키워드가 서로 포함되면 같은 이슈로 본다)."""
-    cutoff = (datetime.now(KST) - timedelta(days=days)).strftime("%Y-%m-%d")
+    """최근에 같은 이슈를 올렸는지. 키워드가 서로 포함되면 5일, 핵심 단어가 하나라도 겹치면 3일 동안 같은 이슈로 봐요
+    (예: '부캉이 부산 열풍'과 '부캉이 바다로'가 번갈아 나오는 것을 막아요)."""
+    now = datetime.now(KST)
+    cut_same = (now - timedelta(days=days)).strftime("%Y-%m-%d")
+    cut_topic = (now - timedelta(days=3)).strftime("%Y-%m-%d")
+    mine = _tokens(keyword)
     for p in state["posted"]:
-        if p["at"][:10] >= cutoff and (keyword in p["keyword"] or p["keyword"] in keyword):
+        day = p["at"][:10]
+        if day >= cut_same and (keyword in p["keyword"] or p["keyword"] in keyword):
+            return True
+        if day >= cut_topic and mine & _tokens(p["keyword"]):
             return True
     return False
+
+
+def blocked_now(state: dict) -> bool:
+    until = state.get("blocked_until")
+    return bool(until) and datetime.now(KST).strftime("%Y-%m-%d %H:%M:%S") < until
 
 
 def repo_prefix() -> str:
@@ -89,6 +108,9 @@ def main() -> None:
         return
 
     state = load_state()
+    if blocked_now(state) and not DRY_RUN:
+        print(f"인스타가 활동을 제한한 상태라서 {state['blocked_until']} 까지 쉬어요. (재시도하면 제한이 길어질 수 있어요)")
+        return
     data = collect()
     issues = propose_issues(data["headlines"], data["trends"])
     print(f"AI가 고른 후보 이슈 {len(issues)}개")
@@ -141,10 +163,22 @@ def main() -> None:
         print(caption)
         return
 
+    if os.environ.get("GEMINI_API_KEY") and not PHOTO_USED["any"]:
+        # 배경 사진이 하나도 없는 카드는 눈에 안 띄어서 조회가 떨어져요. 올리지 않고 다음 실행에서 다시 시도해요.
+        raise RuntimeError("AI 배경 이미지를 하나도 못 만들어서 발행을 건너뛰어요 (Gemini 결제 잔액·한도를 확인하세요)")
+
     commit_images()
     urls = public_urls(paths)
     wait_for_urls(urls)
-    media_id = publish_carousel(urls, caption)
+    try:
+        media_id = publish_carousel(urls, caption)
+    except BlockedError as e:
+        until = (datetime.now(KST) + timedelta(hours=48)).strftime("%Y-%m-%d %H:%M:%S")
+        state["blocked_until"] = until
+        STATE_FILE.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
+        print(f"::warning::인스타가 이 계정의 활동을 제한했어요. 48시간({until}까지) 쉬어요.\n{e}")
+        return
+    state.pop("blocked_until", None)
     print(f"업로드 완료: {media_id}")
     save_state(state, used, content["cover_title"], media_id)
 
