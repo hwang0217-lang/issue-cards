@@ -1,5 +1,6 @@
 """Codex-reviewed JSON -> cards -> Instagram. No text-generation API calls."""
 import json
+import hashlib
 import os
 import re
 import subprocess
@@ -15,7 +16,11 @@ def validate(p, now, kind):
         raise ValueError('Reviewed content for today is required')
     if not re.fullmatch(r'\d{4}-\d{2}-\d{2}-(am|pm)', p.get('id', '')):
         raise ValueError('Invalid publication id')
-    if p['id'] != p['date'] + '-' + ('am' if now.hour < 12 else 'pm'):
+    expected_slot = p['date'] + '-' + ('am' if now.hour < 12 else 'pm')
+    late_until = p.get('late_publish_until')
+    late_allowed = (p['id'] == p['date'] + '-am' and late_until
+                    and now < datetime.fromisoformat(late_until))
+    if p['id'] != expected_slot and not late_allowed:
         raise ValueError('Wrong publication slot')
     c = p['content']
     for key in ('cover_title', 'cover_sub', 'caption'):
@@ -36,8 +41,38 @@ def validate(p, now, kind):
 def git_save(paths, message):
     for args in (['config', 'user.name', 'cardnews-bot'],
                  ['config', 'user.email', 'cardnews-bot@users.noreply.github.com'],
-                 ['add', *map(str, paths)], ['commit', '-m', message], ['push']):
+                 ['add', *map(str, paths)]):
         subprocess.run(['git', *args], check=True)
+    result = subprocess.run(['git', 'diff', '--cached', '--quiet'])
+    if result.returncode == 0:
+        return
+    if result.returncode != 1:
+        raise RuntimeError('Unable to inspect staged changes')
+    subprocess.run(['git', 'commit', '-m', message], check=True)
+    subprocess.run(['git', 'push'], check=True)
+
+
+def reviewed_exports(p):
+    from PIL import Image
+    assets = p['exported_assets']
+    if not 5 <= len(assets) <= 7:
+        raise ValueError('Expected 5-7 reviewed exported pages')
+    paths = []
+    for asset in assets:
+        path = (ROOT / asset['path']).resolve()
+        path.relative_to((ROOT / 'images').resolve())
+        if path.suffix.lower() not in ('.png', '.jpg', '.jpeg'):
+            raise ValueError('Unsupported image format')
+        if hashlib.sha256(path.read_bytes()).hexdigest() != asset['sha256']:
+            raise ValueError('Export changed since review')
+        with Image.open(path) as im:
+            if im.size != (1080, 1350):
+                raise ValueError('Expected 1080x1350 exported page')
+            im.verify()
+        paths.append(path)
+    if len(set(paths)) != len(paths):
+        raise ValueError('Duplicate export page')
+    return paths
 
 
 def main():
@@ -57,9 +92,13 @@ def main():
         raise RuntimeError('Publishing paused pending account review')
     c = p['content']
     out = ROOT / 'images' / p['id']
-    from design_system import choose_design, render_design
-    design_id = choose_design(kind, p['id'], journal, p.get('design_id'))
-    paths = render_design(c, out, kind, design_id, p.get('sources', []), now.strftime('%Y.%m.%d'))
+    if p.get('exported_assets'):
+        paths = reviewed_exports(p)
+        design_id = 'canva-custom-export'
+    else:
+        from design_system import choose_design, render_design
+        design_id = choose_design(kind, p['id'], journal, p.get('design_id'))
+        paths = render_design(c, out, kind, design_id, p.get('sources', []), now.strftime('%Y.%m.%d'))
     print('Design:', design_id)
     caption = c['caption'] + '\n\n' + ' '.join(c['hashtags'])
     if kind == 'issue':
@@ -76,7 +115,17 @@ def main():
     owner = requests.get(api + '/me', params={'fields': 'username', 'access_token': token}, timeout=30).json()
     if owner.get('username') != expected:
         raise RuntimeError('Account identity could not be verified')
-    git_save([out], 'Add reviewed card images ' + p['id'])
+    recent = requests.get(api + '/me/media', params={
+        'fields': 'id,caption,permalink,timestamp', 'limit': 10,
+        'access_token': token}, timeout=30).json()
+    if 'data' not in recent:
+        raise RuntimeError('Cannot reconcile recent Instagram posts')
+    normalized = lambda text: ''.join(text.split())
+    for post in recent['data']:
+        if normalized(post.get('caption', '')) == normalized(caption):
+            raise RuntimeError('This caption is already published: ' + post.get('permalink', post['id']))
+    print('Recent live posts reconciled:', len(recent['data']))
+    git_save(paths, 'Add reviewed card images ' + p['id'])
     repo_root = Path(subprocess.check_output(['git', 'rev-parse', '--show-toplevel'], text=True).strip())
     urls = ['https://raw.githubusercontent.com/' + os.environ['GITHUB_REPOSITORY'] + '/main/' + f.relative_to(repo_root).as_posix() for f in paths]
     for url in urls:
@@ -90,6 +139,16 @@ def main():
     journal_path.write_text(json.dumps(journal, ensure_ascii=False, indent=2), encoding='utf-8')
     git_save([journal_path], 'Record publication ' + p['id'])
     print('Published media ID:', media_id)
+    try:
+        result = requests.get(api + '/' + media_id, params={
+            'fields': 'permalink,timestamp', 'access_token': token}, timeout=30).json()
+        if result.get('permalink'):
+            journal[p['id']].update(permalink=result['permalink'])
+            journal_path.write_text(json.dumps(journal, ensure_ascii=False, indent=2), encoding='utf-8')
+            git_save([journal_path], 'Record public post URL ' + p['id'])
+            print('Verified post URL:', result['permalink'])
+    except requests.RequestException:
+        print('Post ID recorded; public URL lookup pending')
 
 
 if __name__ == '__main__':
