@@ -1,0 +1,68 @@
+{
+  "id": "2026-10-30-pm",
+  "date": "2026-10-30",
+  "reviewed": true,
+  "design_status": "canva_export_reviewed",
+  "content": {
+    "cover_title": "등본의 가족관계 표기, 달라졌어요",
+    "cover_sub": "일반·상세 발급 차이를 확인하세요.",
+    "slides": [
+      {
+        "title": "무엇이 바뀌었나요?",
+        "body": "일반 발급에서는 세대주 본인·배우자가 아닌 가족을 세대원으로, 가족이 아닌 사람을 동거인으로 표시해요."
+      },
+      {
+        "title": "가족관계를 자세히 표시하려면?",
+        "body": "상세 발급을 선택하면 구체적인 가족관계를 표시할 수 있어요. 제출기관에 필요한 형태를 먼저 확인하세요."
+      },
+      {
+        "title": "왜 바꾸었나요?",
+        "body": "재혼가정 여부가 불필요하게 드러나는 일을 줄이려는 취지예요. 행정안전부는 10월29일부터 시행한다고 밝혔어요."
+      }
+    ],
+    "caption": "주민등록 등·초본의 가족관계 표기 방식이 10월29일부터 달라졌습니다.\n\n일반 발급에서는 세대주 본인·배우자가 아닌 가족을 세대원으로, 가족이 아닌 사람을 동거인으로 표시합니다. 구체적인 가족관계가 필요한 경우에는 상세 발급을 선택할 수 있습니다.\n\n발급 전 제출기관이 요구하는 형태를 확인해 주세요. 재혼가정의 사생활 노출을 줄이려는 제도 개선입니다.",
+    "hashtags": [
+      "#사회이슈",
+      "#주민등록등본",
+      "#세대원",
+      "#행정안전부",
+      "#생활정책"
+    ]
+  },
+  "sources": [
+    {
+      "outlet": "행정안전부·정책브리핑",
+      "url": "https://www.korea.kr/news/policyNewsView.do?newsId=148974451"
+    },
+    {
+      "outlet": "FAM타임스",
+      "url": "https://www.famtimes.co.kr/news/articleView.html?idxno=703671"
+    },
+    {
+      "outlet": "파이낸셜뉴스",
+      "url": "https://v.daum.net/v/20260909160208351"
+    }
+  ],
+  "exported_assets": [
+    {
+      "path": "images/2026-10-30-pm-canva/01.png",
+      "sha256": "58e23d72f81bd8ab3d4a356bccdf527788148ae462c9a1b669bff2a48164d4e0"
+    },
+    {
+      "path": "images/2026-10-30-pm-canva/02.png",
+      "sha256": "6843f5dc7dee46d7c1d259371d4284ac3718b58d457b8eb97aefd90d82148f33"
+    },
+    {
+      "path": "images/2026-10-30-pm-canva/03.png",
+      "sha256": "6d03fb21f9876aa41dd92164e7eb452aa7ab1f527d78db8eb1e25656b2d7319a"
+    },
+    {
+      "path": "images/2026-10-30-pm-canva/04.png",
+      "sha256": "4841d709e7cf8a92422285e77a5ffad7ecfa00606e16ee7309eff4b73df2e621"
+    },
+    {
+      "path": "images/2026-10-30-pm-canva/05.png",
+      "sha256": "31ebe65cdf619341a9ba6ad6abc476f63220d76ac2b081f6ca3681d133d1fe11"
+    }
+  ]
+}
