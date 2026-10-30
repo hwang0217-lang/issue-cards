@@ -1,8 +1,16 @@
 {
   "2026-10-30-pm": {
-    "status": "pending",
+    "status": "published",
     "at": "2026-10-30T23:31:28.483686+09:00",
     "title": "등본의 가족관계 표기, 달라졌어요",
-    "design_id": "canva-custom-export"
+    "design_id": "canva-custom-export",
+    "permalink": "https://www.instagram.com/issue.cards/p/DfHza_cmyxU/",
+    "verification": "browser_caption_and_cover_matched",
+    "verified_at": "2026-10-30T23:34:28.265999+09:00",
+    "api_response_error": {
+      "code": 4,
+      "error_subcode": 2207051,
+      "title": "action is blocked"
+    }
   }
 }
