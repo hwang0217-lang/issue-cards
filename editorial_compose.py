@@ -13,7 +13,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 ROOT = Path(__file__).resolve().parent
 W, H = 1080, 1350
-CHECKS = ('text', 'no_obstruction', 'readable_390', 'facts', 'variety')
+CHECKS = ('text', 'no_obstruction', 'readable_390', 'facts', 'variety', 'canva_quality')
 
 
 def digest(path):
@@ -167,7 +167,8 @@ def build(payload_path, plan_path, out):
         assets.append({'path':path.relative_to(ROOT).as_posix(),'sha256':digest(path)})
     review={'renderer':'editorial-scene-v1','publication_id':p['id'],'plan_sha256':digest(plan_path),
             'payload_sha256':digest(payload_path),'assets':assets,
-            'pages':[dict(asset,**{k:False for k in CHECKS}) for asset in assets]}
+            'quality_benchmark':'',
+            'pages':[dict(asset,quality_notes='',**{k:False for k in CHECKS}) for asset in assets]}
     write(out/'review.json',review)
     print('Rendered',len(assets),'pages. Inspect every full-size and 390px image, then record review checks.')
 
@@ -179,14 +180,17 @@ def accept(payload_path, plan_path, review_path, output):
         raise ValueError('Stale review; render/review again')
     if not 5 <= len(r['assets']) <= 7 or len({a['path'] for a in r['assets']}) != len(r['assets']):
         raise ValueError('Expected 5-7 distinct reviewed pages')
+    if not str(r.get('quality_benchmark','')).strip():
+        raise ValueError('Name a verified Canva quality benchmark before accepting')
     for asset,checks in zip(r['assets'],r['pages']):
         path=(ROOT/asset['path']).resolve();path.relative_to((ROOT/'images').resolve())
         if (asset['path'] != checks['path'] or asset['sha256'] != checks['sha256']
-                or digest(path) != asset['sha256'] or any(checks.get(k) is not True for k in CHECKS)):
+                or digest(path) != asset['sha256'] or any(checks.get(k) is not True for k in CHECKS)
+                or len(str(checks.get('quality_notes','')).strip()) < 20):
             raise ValueError('Incomplete visual review or changed export')
     p.update(reviewed=True,design_status='editorial_all_pages_reviewed',exported_assets=r['assets'],
              design_review={'renderer':r['renderer'],'plan_sha256':r['plan_sha256'],
-                            'pages':r['pages']})
+                            'quality_benchmark':r['quality_benchmark'],'pages':r['pages']})
     p.pop('canva_design_id',None)
     write(output,p);print('Prepared reviewed file:',output,'(no publication performed)')
 

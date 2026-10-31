@@ -55,6 +55,14 @@ def git_save(paths, message):
 def reviewed_exports(p):
     from PIL import Image
     assets = p['exported_assets']
+    review = p.get('design_review', {})
+    if review.get('renderer') == 'editorial-scene-v1':
+        pages = review.get('pages', [])
+        if (not review.get('quality_benchmark') or len(pages) != len(assets)
+                or any(page.get('canva_quality') is not True or len(str(page.get('quality_notes','')).strip()) < 20
+                       or page.get('path') != asset.get('path') or page.get('sha256') != asset.get('sha256')
+                       for page, asset in zip(pages, assets))):
+            raise ValueError('Canva-level visual quality review required for every editorial page')
     if not 5 <= len(assets) <= 7:
         raise ValueError('Expected 5-7 reviewed exported pages')
     paths = []
