@@ -78,7 +78,6 @@ def reviewed_exports(p):
 def main():
     import requests
     from publish import publish_carousel
-    from render import render_all
     kind = os.environ.get('CARD_KIND', 'nordic')
     dry = os.environ.get('DRY_RUN', '1') == '1'
     now = datetime.now(KST)
@@ -94,11 +93,10 @@ def main():
     out = ROOT / 'images' / p['id']
     if p.get('exported_assets'):
         paths = reviewed_exports(p)
-        design_id = 'canva-custom-export'
+        design_id = ('editorial-scene-v1' if p.get('design_review', {}).get('renderer') == 'editorial-scene-v1'
+                     else 'canva-custom-export')
     else:
-        from design_system import choose_design, render_design
-        design_id = choose_design(kind, p['id'], journal, p.get('design_id'))
-        paths = render_design(c, out, kind, design_id, p.get('sources', []), now.strftime('%Y.%m.%d'))
+        raise ValueError('Final reviewed exported_assets required; use editorial_compose.py, not the legacy six-template renderer')
     print('Design:', design_id)
     caption = c['caption'] + '\n\n' + ' '.join(c['hashtags'])
     if kind == 'issue':
