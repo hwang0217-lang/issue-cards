@@ -95,8 +95,34 @@ def text_layout(draw, e):
     raise ValueError('Text overflow; rewrite or recompose: '+e['id'])
 
 
+def photo_background(spec):
+    """A deliberate background layer; foreground image collision rules still apply."""
+    if not spec.get('rights'):
+        raise ValueError('Background image rights/source note required')
+    path=(ROOT/spec['path']).resolve();path.relative_to(ROOT)
+    center=spec.get('centering',[0.5,0.5])
+    if len(center)!=2 or any(not isinstance(v,(int,float)) or not 0<=v<=1 for v in center):
+        raise ValueError('Invalid background crop centering')
+    with Image.open(path) as source:
+        im=ImageOps.fit(source.convert('RGB'),(W,H),centering=tuple(center))
+    stops=spec.get('shade',[[0,0],[1,0]])
+    if (len(stops)<2 or any(len(s)!=2 or not 0<=s[0]<=1 or not 0<=s[1]<=255 for s in stops)
+            or any(a[0]>=b[0] for a,b in zip(stops,stops[1:]))):
+        raise ValueError('Invalid background shade stops')
+    mask=Image.new('L',(1,H))
+    for y in range(H):
+        t=y/(H-1);alpha=stops[0][1] if t<stops[0][0] else stops[-1][1]
+        for (p0,a0),(p1,a1) in zip(stops,stops[1:]):
+            if p0<=t<=p1:
+                alpha=a0+(a1-a0)*(t-p0)/(p1-p0);break
+        mask.putpixel((0,y),round(alpha))
+    return Image.composite(Image.new('RGB',(W,H),spec.get('shade_color','#101820')),im,mask.resize((W,H)))
+
+
 def render_page(page, handle):
-    im=Image.new('RGB',(W,H),page.get('background','#FFFFFF'));draw=ImageDraw.Draw(im)
+    im=(photo_background(page['background_image']) if page.get('background_image')
+        else Image.new('RGB',(W,H),page.get('background','#FFFFFF')))
+    draw=ImageDraw.Draw(im)
     elements=list(page['elements'])
     elements.append({'id':'account-footer','type':'text','role':'meta','text':handle,
                      'box':[64,1275,950,55],'size':28,'color':page.get('footer_color','#536171')})
