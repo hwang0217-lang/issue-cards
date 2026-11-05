@@ -1,0 +1,51 @@
+name: Issue PC-off production
+run-name: Issue autonomous ${{ inputs.mode || 'operate' }}
+on:
+  schedule:
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+    inputs:
+      mode:
+        type: choice
+        options: [preflight, preview, operate]
+        default: preflight
+permissions:
+  contents: write
+concurrency:
+  group: codex-reviewed-publishing
+  cancel-in-progress: false
+jobs:
+  produce:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests Pillow imageio-ffmpeg beautifulsoup4
+      - run: python cloud/issue_preflight.py
+        if: inputs.mode == 'preflight'
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          CANVA_GATEWAY_GH_TOKEN: ${{ secrets.GH_PAT }}
+          PUBLISH_PAUSED: ${{ vars.CODEX_PUBLISH_PAUSED || '1' }}
+      - run: python cloud/issue_autonomous.py
+        if: github.event_name == 'schedule' || inputs.mode == 'preview' || inputs.mode == 'operate'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          CANVA_GATEWAY_GH_TOKEN: ${{ secrets.GH_PAT }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          PUBLISH_PAUSED: ${{ vars.CODEX_PUBLISH_PAUSED || '1' }}
+          ISSUE_AUTONOMOUS_ACTIVE: ${{ vars.ISSUE_AUTONOMOUS_ACTIVE || '0' }}
+          ISSUE_MODE: ${{ inputs.mode || 'operate' }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue-autonomous-report
+          path: |
+            cloud-reports/*.json
+            cloud-reports/page-*.png
+            cloud-reports/scene-*.png
+          retention-days: 7
