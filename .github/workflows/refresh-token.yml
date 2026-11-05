@@ -8,6 +8,9 @@ on:
 
 permissions:
   contents: read
+concurrency:
+  group: codex-reviewed-publishing
+  cancel-in-progress: false
 
 jobs:
   refresh:
@@ -18,17 +21,10 @@ jobs:
         with:
           python-version: "3.12"
       - name: 라이브러리 설치
-        run: pip install requests
+        run: pip install requests pynacl
       - name: 토큰 갱신하고 비밀 저장칸에 저장
         env:
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
-          GH_TOKEN: ${{ secrets.GH_PAT }}
+          IG_SECRET_WRITER_TOKEN: ${{ secrets.IG_SECRET_WRITER_TOKEN }}
         run: |
-          if [ -z "$GH_TOKEN" ]; then
-            echo "GH_PAT 비밀 값이 없어요. 토큰 저장 권한용 키를 먼저 넣어 주세요." >&2
-            exit 1
-          fi
-          NEW_TOKEN="$(python refresh_token.py)"
-          echo "::add-mask::$NEW_TOKEN"
-          gh secret set IG_ACCESS_TOKEN --body "$NEW_TOKEN" --repo "$GITHUB_REPOSITORY"
-          echo "IG_ACCESS_TOKEN을 새 값으로 저장했어요."
+          python cloud/refresh_instagram.py
