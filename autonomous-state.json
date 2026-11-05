@@ -50,7 +50,7 @@
     "format": "carousel",
     "published": false,
     "gemini_calls": 3,
-    "canva_generations": 0,
+    "canva_generations": 1,
     "pc_media_downloads": 0,
     "source_evidence": {
       "basis_date": "2026-11-05",
@@ -252,6 +252,223 @@
       ],
       "serviceTier": "standard",
       "production_model_calls": 3
+    },
+    "editorial_draft": {
+      "basis_date": "2026-11-05",
+      "topic": "국민창업시대와 성장 방식 대전환",
+      "canva_brief": "국민창업시대로의 전환과 고용 구조 개편에 관한 5장의 캐러셀 기획서입니다. 첫 번째 장에서는 대한민국이 거대한 창업 인큐베이터가 되어야 한다는 화두를 던지고, 두 번째 장에서는 AI와 로봇 기술 발전으로 인한 고용 구조 재편의 배경을 설명합니다. 세 번째 장에서는 교육 과정 개선, 재정 지원 확대, 규제 혁신 등 국가 역량을 모아야 하는 구체적 방향을 다루며, 네 번째 장에서는 유망 스타트업의 글로벌 성장을 위한 금융, 기술, 판로 개척의 다층적 지원 체계를 짚어봅니다. 마지막 다섯 번째 장에서는 실패하더라도 언제든 다시 도전할 수 있는 시스템과 국민 경제 선순환 구조의 중요성을 정리하며 마무리합니다.",
+      "visual_differences": "기존 뉴스 스크랩이나 일반적인 텍스트 나열 방식에서 벗어나, 구조화된 인포그래픽 요소를 활용해 정책의 핵심 전환 방향과 지원 체계를 직관적으로 비교할 수 있도록 시각적 리듬을 구성했습니다.",
+      "caption": "발표일: 2026-11-05\n상태 및 일정: 2026년 11월 5일 제51차 수석보좌관회의 발표\n출처: 정책브리핑(https://www.korea.kr/news/policyNewsView.do?newsId=148975118), 연합뉴스(https://www.yna.co.kr/view/AKR20261105114600001), SBS(https://news.sbs.co.kr/news/endPage.do?news_id=N1008832428)\nAI 일러스트레이션 및 디자인 시안 생성 안내: 본 콘텐츠의 시각 자료는 인공지능 그래픽 도구를 활용하여 연출되었습니다.\n\n확인 기준: 2026-11-05 KST\n설명용 AI 삽화 사용\n정책브리핑: https://www.korea.kr/news/policyNewsView.do?newsId=148975118\n연합뉴스: https://www.yna.co.kr/view/AKR20261105114600001\nSBS: https://news.sbs.co.kr/news/endPage.do?news_id=N1008832428&plink=RSSLINK&cooper=RSSREADER",
+      "claims": [
+        {
+          "text": "대한민국이 거대한 창업 인큐베이터가 되어 국민 모두가 성장의 주체가 되는 국민 창업 시대로 나아가야 한다고 밝혔다.",
+          "status": "발표",
+          "evidence_span_ids": [
+            "0:0",
+            "253:3",
+            "57:3",
+            "57:4"
+          ],
+          "evidence": [
+            {
+              "source_id": "0",
+              "quote_sha256": "c9af3c7781d2af09ebd730068d5ef75eb9f172d5fb825bad42109987ff92122c",
+              "quote_characters": 100
+            },
+            {
+              "source_id": "253",
+              "quote_sha256": "228c51122aed1614cf6a946f6d99944d814270889fe80834d97958e90fcc47f8",
+              "quote_characters": 100
+            },
+            {
+              "source_id": "57",
+              "quote_sha256": "d5c409d7fad3765f6deb7daa012e32386ef9032ca3d263652bb791a877c4d1f8",
+              "quote_characters": 100
+            },
+            {
+              "source_id": "57",
+              "quote_sha256": "c03e798a27c5b641ebde79512800917e29a54506a214208dc26e06560da5d063",
+              "quote_characters": 100
+            }
+          ]
+        },
+        {
+          "text": "인공지능과 로봇 기술의 발전으로 고용 구조가 빠르게 재편되고 있으며 기존 경제·사회 시스템이 한계에 직면했다고 진단했다.",
+          "status": "발표",
+          "evidence_span_ids": [
+            "0:2",
+            "0:12",
+            "253:5",
+            "253:6",
+            "57:5"
+          ],
+          "evidence": [
+            {
+              "source_id": "0",
+              "quote_sha256": "340fd62b95cd520bea0f8d7c810c027cbee4405bad311549bbc1fd8145ad2d7e",
+              "quote_characters": 100
+            },
+            {
+              "source_id": "0",
+              "quote_sha256": "5d455400c4dda638f12e3bd514d0946e8db961bfa04e6706dfbb8ec2877e3cb1",
+              "quote_characters": 100
+            },
+            {
+              "source_id": "253",
+              "quote_sha256": "f8c389ee10d7ae2120e57be5af5172ce30d518c1e028826f8ff071374389dadc",
+              "quote_characters": 100
+            },
+            {
+              "source_id": "253",
+              "quote_sha256": "a3acc935f54eb754116e49f7131394a96b411323096e7e263e814d8bc8f76a04",
+              "quote_characters": 100
+            },
+            {
+              "source_id": "57",
+              "quote_sha256": "9e9f22f1df3d91bdb0052330b3f1cd4a2570eb664d16b7db8bd194f57f3276c6",
+              "quote_characters": 100
+            }
+          ]
+        },
+        {
+          "text": "교육과정 개선, 재정지원 확대, 규제혁신을 통해 다양한 경제 주체들이 직접 새로운 시장을 만들어내는 창업 사회로 전환해야 한다고 강조했다.",
+          "status": "발표",
+          "evidence_span_ids": [
+            "0:3",
+            "253:8",
+            "57:7"
+          ],
+          "evidence": [
+            {
+              "source_id": "0",
+              "quote_sha256": "75f8cde1ffbba38a456d18a1acf62d4c33748744d3a1992169902e84f43b65a7",
+              "quote_characters": 100
+            },
+            {
+              "source_id": "253",
+              "quote_sha256": "811f4bc7bb8529b5298c11fe50af690b24c0d03865dbedf70166e32b8c36268a",
+              "quote_characters": 100
+            },
+            {
+              "source_id": "57",
+              "quote_sha256": "0bffd97f4edf2cd72570c36c00aa0f526872ddabc751493fecdd29921868ca54",
+              "quote_characters": 100
+            }
+          ]
+        },
+        {
+          "text": "유망 스타트업이 글로벌 기업으로 성장할 수 있도록 금융과 기술, 판로 개척에 다층적 지원 체계를 구축해야 한다고 밝혔다.",
+          "status": "발표",
+          "evidence_span_ids": [
+            "0:10",
+            "0:11",
+            "253:10",
+            "57:9",
+            "57:10"
+          ],
+          "evidence": [
+            {
+              "source_id": "0",
+              "quote_sha256": "c66ae52851a071c48a44f467af4e999569405855f8b8e287f0da08a7f5e80545",
+              "quote_characters": 100
+            },
+            {
+              "source_id": "0",
+              "quote_sha256": "af20e44d596a07781afb222c917e1e3734d70813b06d0cc97b9852195e652480",
+              "quote_characters": 100
+            },
+            {
+              "source_id": "253",
+              "quote_sha256": "4964dca711a563b0e34da15ec8926d8e9ef74293a1d6b19fd21eaf4b923b1093",
+              "quote_characters": 100
+            },
+            {
+              "source_id": "57",
+              "quote_sha256": "8590a384c2ba70d80dc73f5ea7e5e7ae8024ddaf9aca32076b6904df196b0d79",
+              "quote_characters": 100
+            },
+            {
+              "source_id": "57",
+              "quote_sha256": "1815bd72f1a2f806af74b9ab0fb1f074b99c3b5a184434e16498fd5ad9c3af51",
+              "quote_characters": 100
+            }
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "title": "국민창업시대",
+          "body": "대한민국이 거대한 창업 인큐베이터가 되어 국민 모두가 성장의 주체가 되는 국민 창업 시대로 나아가야 합니다.",
+          "claim_ids": [
+            0
+          ],
+          "visual_role": "표지 타이틀 및 인큐베이터 상징 그래픽",
+          "image_prompt_en": "A minimalist corporate document background representing economic growth and startup incubation, professional presentation style with neutral colors",
+          "required_visual_objects": [
+            "document",
+            "incubator symbol"
+          ],
+          "source_label": "자료: 정책브리핑·연합뉴스·SBS | 2026-11-05"
+        },
+        {
+          "title": "고용구조 재편",
+          "body": "인공지능과 로봇 기술 발전으로 고용구조가 빠르게 재편되며 기존 양적 성장 중심의 시스템은 한계에 직면했습니다.",
+          "claim_ids": [
+            1
+          ],
+          "visual_role": "기술 발전과 고용 환경 변화 비교 다이어그램",
+          "image_prompt_en": "A structured infographic layout comparing technological changes and employment structure transitions, clean vector style",
+          "required_visual_objects": [
+            "diagram",
+            "technology chart"
+          ],
+          "source_label": "자료: 정책브리핑·연합뉴스·SBS | 2026-11-05"
+        },
+        {
+          "title": "시스템 전환",
+          "body": "성장이 일자리로 이어지지 않는 상황에서 교육과정 개선과 재정지원 확대, 규제혁신에 국가 역량을 모아야 합니다.",
+          "claim_ids": [
+            2
+          ],
+          "visual_role": "핵심 혁신 과제 3가지 구조도",
+          "image_prompt_en": "A professional three-column diagram highlighting educational improvement, financial support, and regulatory innovation",
+          "required_visual_objects": [
+            "three-column block",
+            "policy document"
+          ],
+          "source_label": "자료: 정책브리핑·연합뉴스·SBS | 2026-11-05"
+        },
+        {
+          "title": "다층적 지원",
+          "body": "유망 스타트업이 글로벌 기업으로 성장할 수 있도록 금융과 기술, 판로 개척에 다층적 지원 체계를 구축합니다.",
+          "claim_ids": [
+            3
+          ],
+          "visual_role": "스타트업 성장 단계별 지원 체계 흐름도",
+          "image_prompt_en": "A clean flowchart showing startup growth stages, financial support, and global expansion pathways",
+          "required_visual_objects": [
+            "flowchart",
+            "growth arrow"
+          ],
+          "source_label": "자료: 정책브리핑·연합뉴스·SBS | 2026-11-05"
+        },
+        {
+          "title": "재도전 시스템",
+          "body": "좋은 아이디어가 있다면 누구나 자유롭게 도전하고 실패해도 다시 일어설 수 있는 국민 경제 선순환을 만듭니다.",
+          "claim_ids": [
+            0,
+            3
+          ],
+          "visual_role": "순환 구조 및 요약 인포그래픽 마무리",
+          "image_prompt_en": "A balanced circular economy diagram showing challenge, support, and sustainable growth cycles",
+          "required_visual_objects": [
+            "circular chart",
+            "summary card"
+          ],
+          "source_label": "자료: 정책브리핑·연합뉴스·SBS | 2026-11-05"
+        }
+      ],
+      "music_mood": "clean"
     }
   }
 }
