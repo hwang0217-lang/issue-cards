@@ -34,6 +34,12 @@ def fetch(url):
     if not r.ok or len(r.content)>3_000_000:raise RuntimeError('Source unavailable')
     r.encoding=r.apparent_encoding;return r.text,url
 def norm(s):return re.sub(r'\s+','',unicodedata.normalize('NFC',s))
+def publisher_timestamp(value):
+    stamp=datetime.fromisoformat(value.replace('Z','+00:00'))
+    # Korean publisher timestamps without an offset are Korean local time,
+    # not the GitHub runner's UTC timezone.
+    if stamp.tzinfo is None:stamp=stamp.replace(tzinfo=KST)
+    return stamp.astimezone(KST)
 def source_candidates(day):
     candidates=[];now=datetime.now(KST)
     html,_=fetch('https://www.korea.kr/news/policyNewsList.do');soup=BeautifulSoup(html,'html.parser');seen=set()
@@ -79,7 +85,7 @@ def article(candidate,day):
             date=soup.select_one('.view_info,.article_info,.info,.date')
             hit=re.search(r'20\d{2}[.-]\d{2}[.-]\d{2}',date.get_text(' ',strip=True) if date else '')
             if hit:published=hit.group().replace('.','-')+'T00:00:00+09:00'
-    try:stamp=datetime.fromisoformat(published.replace('Z','+00:00')).astimezone(KST)
+    try:stamp=publisher_timestamp(published)
     except Exception:raise RuntimeError('Original article publication date unverified')
     today=datetime.fromisoformat(day).replace(tzinfo=KST)
     if not today-timedelta(days=2)<=stamp<=datetime.now(KST)+timedelta(minutes=5):raise RuntimeError('Original article stale or future-dated')
