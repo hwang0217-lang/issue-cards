@@ -50,7 +50,11 @@ def verified_fact_checkpoint(state,draft,run,flags):
     if len(history)!=1:raise RuntimeError('Original preview request was modified or missing')
     revision=history[0]['sha']
     item=client.get('repos/hwang0217-lang/issue-cards/contents/cloud/editorial-plans/'+draft['basis_date']+'.json?ref='+revision)
-    if json.loads(base64.b64decode(item['content']))!=draft:raise RuntimeError('Copy changed since source verification')
+    def factual_copy(value):
+        value=copy.deepcopy(value)
+        for section in value.get('sections',[]):section.pop('layout',None)
+        return value
+    if factual_copy(json.loads(base64.b64decode(item['content'])))!=factual_copy(draft):raise RuntimeError('Copy changed since source verification')
     return review,evidence,revision
 
 
@@ -72,7 +76,7 @@ def main():
         if checkpoint:
             fact_review,evidence,source_revision=verified_fact_checkpoint(state,draft,checkpoint,flags)
             row.update(fact_review=fact_review,source_evidence=evidence,fact_checkpoint_run=checkpoint,source_snapshot_revision=source_revision,
-                       fact_check_scope='Same complete draft at immutable source snapshot; all3 original sources were verified less than one hour ago. No new source re-verification claimed.');persist()
+                       fact_check_scope='Same complete editorial wording,claims,caption,photography at immutable source snapshot; geometry-only corrections allowed. All3 original sources verified less than one hour ago. No new source re-verification claimed.');persist()
         else:
             originals=[article(s,day) for s in provenance['sources']]
             hydrated=hydrate_claims(draft,originals)

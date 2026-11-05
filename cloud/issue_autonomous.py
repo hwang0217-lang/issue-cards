@@ -116,7 +116,10 @@ def review_images(draft, new_images, references, kind):
             'Judge information roles as specified in each section. Return detail_crop:{x,y,w,h} on at least two '
             'actual photo areas without text on1080x1920 for one-second object-detail inserts. Do not invent crops.')
     prompt+=' These pages must use genuine licensed photographs. Also return photo_matches_topic,photo_intact,mobile_text_not_clipped,safe_areas booleans and specific mobile_observations for every page. Require original frame integrity, photo-context match, and actual390px legibility. Reject AI photographs and decorative unrelated images.'
-    review, usage = generate_json(prompt, new_images + mobile + references)
+    required=('text_correct','no_overlap','readable_mobile','facts_safe','canva_quality','varied','photo_matches_topic','photo_intact','mobile_text_not_clipped','safe_areas')
+    page_schema={'type':'object','required':[*required,'observations','mobile_observations'],'properties':{**{k:{'type':'boolean'} for k in required},'observations':{'type':'string'},'mobile_observations':{'type':'string'}}}
+    schema={'type':'object','required':['verdict','quality_score','comparison_notes','corrections','pages'],'properties':{'verdict':{'type':'string','enum':['pass','revise','reject']},'quality_score':{'type':'number','minimum':0,'maximum':10},'comparison_notes':{'type':'string'},'corrections':{'type':'array','items':{'type':'string'}},'pages':{'type':'array','minItems':len(new_images),'maxItems':len(new_images),'items':page_schema}}}
+    review, usage = generate_json(prompt, new_images + mobile + references,schema=schema)
     validate_visual_review(review, len(new_images))
     if review.get('verdict')=='pass' and any(any(p.get(k) is not True for k in ('photo_matches_topic','photo_intact','mobile_text_not_clipped','safe_areas')) or not p.get('mobile_observations') for p in review['pages']): raise RuntimeError('Actual photo/mobile review incomplete')
     if review.get('quality_score', 0) < 8.5: review['verdict'] = 'revise'
@@ -136,13 +139,15 @@ def read_literal_images(images, sections):
         ImageDraw.Draw(im).rectangle((x,y,x+w,y+h),fill='white')
         b=io.BytesIO();im.save(b,'JPEG',quality=95);masked.append(b.getvalue())
     count=len(images)
+    page_schema={'type':'object','required':['literal_subject','main_objects','visible_text','gibberish_text'],'properties':{'literal_subject':{'type':'string'},'main_objects':{'type':'array','items':{'type':'string'}},'visible_text':{'type':'string'},'gibberish_text':{'type':'boolean'},'photo_text':{'type':'string'}}}
+    schema={'type':'object','required':['pages'],'properties':{'pages':{'type':'array','minItems':count,'maxItems':count,'items':page_schema}}}
     return generate_json('Inspect ONLY the supplied images, without guessing any intended topic or wording. '
         f'The first{count} are the ORIGINAL full pages: describe literal subjects and main physical objects from those. '
         f'The next{count} are copies with only the photograph masked white, in the same order. '
         'Copy ALL visible authored text EXACTLY from the MASKED versions only. Do not correct or invent Korean. '
         'Set gibberish_text=true only if that authored text is malformed/unreadable. Natural photographed package labels '
         'may be partially hidden; report them separately as photo_text, never classify them as malformed authored text. '
-        'Return JSON pages:[{literal_subject,main_objects,visible_text,gibberish_text,photo_text}].',images+masked)
+        'Return JSON pages:[{literal_subject,main_objects,visible_text,gibberish_text,photo_text}].',images+masked,schema=schema)
 
 
 def main():
