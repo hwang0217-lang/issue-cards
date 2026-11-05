@@ -637,6 +637,8 @@
         "no_funding_amounts_invented": true,
         "photo_context_clear": true
       }
-    }
+    },
+    "recent_posts_compared": 9,
+    "reference_images_compared": 55
   }
 }
