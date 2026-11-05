@@ -13,6 +13,28 @@ POLICY = 'impeccable-real-photo-v1'
 FONT_URL = 'https://raw.githubusercontent.com/google/fonts/main/ofl/notosanskr/NotoSansKR%5Bwght%5D.ttf'
 
 
+def pixel_identity(image):
+    return {'size':list(image.size),'pixel_sha256':hashlib.sha256(image.convert('RGB').tobytes()).hexdigest(),
+            'icc_sha256':hashlib.sha256(image.info.get('icc_profile',b'')).hexdigest(),
+            'orientation':image.getexif().get(274,1)}
+
+
+def verified_source_image(data,photo):
+    digest=hashlib.sha256(data).hexdigest();image=Image.open(io.BytesIO(data))
+    reviewed={photo['sha256'],*photo.get('reviewed_sha256',[])}
+    basis='reviewed-byte-sha256'
+    if digest not in reviewed:
+        expected=photo.get('reviewed_pixel_identity')
+        # JPEG containers can carry a different non-rendering UUID. Exact decoded
+        # pixels PLUS dimensions/color profile/orientation must ALL remain identical.
+        # No perceptual tolerance, approximate similarity or unreviewed photo fallback.
+        if not expected or list(image.size)!=expected.get('size') or pixel_identity(image)!=expected:
+            raise RuntimeError('Real-photo content changed; review before use')
+        basis='exact-reviewed-pixels-color-orientation'
+    image.load()
+    return image,digest,basis
+
+
 def validate_photo_plan(draft, catalog, height):
     if draft.get('design_policy') != POLICY:
         raise RuntimeError('Impeccable real-photo plan required; synthetic fallback prohibited')
@@ -161,11 +183,7 @@ def make_pdf(draft, catalog, height, destination, cache):
                 raise RuntimeError('Photo exceeds bounded asset size')
             local.write_bytes(response.content)
         data = local.read_bytes()
-        actual_sha256=hashlib.sha256(data).hexdigest()
-        reviewed={photo['sha256'],*photo.get('reviewed_sha256',[])}
-        if actual_sha256 not in reviewed:
-            raise RuntimeError('Real-photo source changed for '+str(section['photo_id'])+'; review before use')
-        im = Image.open(io.BytesIO(data)); im.load()
+        im,actual_sha256,hash_basis=verified_source_image(data,photo)
         if min(im.size) < 900:
             raise RuntimeError('Actual photo resolution insufficient')
         c.setFillColorRGB(1, 1, 1); c.rect(0, 0, 1080, height, fill=1, stroke=0)
@@ -219,6 +237,7 @@ def make_pdf(draft, catalog, height, destination, cache):
         evidence.append({'photo_id':section['photo_id'],'source_page':photo['source_page'],'author':photo['author'],
                          'license_url':photo['license_url'],'source_sha256':actual_sha256,
                          'reviewed_source_sha256':photo['sha256'],
+                         'source_identity_check':hash_basis,
                          'crop':'contain: entire original photograph','photo_frame':[px,py,dw,dh],
                          'typography':'Exact700/450 glyph outlines; not editable text layers',
                          'photo_relation':section['photo_relation']})

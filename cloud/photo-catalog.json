@@ -36,6 +36,15 @@
       "different_metadata_bytes": 38,
       "jpeg_scan_start": 1224,
       "all_differences_before_scan": true
+    },
+    "reviewed_pixel_identity": {
+      "size": [
+        1600,
+        2400
+      ],
+      "pixel_sha256": "fab16eba3fc7c60fc5a5d59f75bcd6ca0f476c364818dc8d89d12beca1daab58",
+      "icc_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "orientation": 1
     }
   },
   "6550408": {
