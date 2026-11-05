@@ -1,0 +1,293 @@
+{
+  "request": {
+    "design_policy": "impeccable-real-photo-v1",
+    "photo_catalog": {
+      "36123565": {
+        "kind": "real_photograph",
+        "source_page": "https://www.pexels.com/photo/modern-workspace-with-laptop-and-books-on-desk-36123565/",
+        "url": "https://images.pexels.com/photos/36123565/pexels-photo-36123565.jpeg?w=1600",
+        "author": "Letícia Alvares",
+        "license_url": "https://www.pexels.com/license/",
+        "verified_on": "2026-11-05",
+        "sha256": "8229243755ebac4c1a135d9c6307eaaac510bcf7c7b79096a2db339f5899768d",
+        "description": "Actual small workspace with laptop, books and white table; startup context, not an actual policy venue.",
+        "usage": "context_stock"
+      },
+      "9300721": {
+        "kind": "real_photograph",
+        "source_page": "https://www.pexels.com/photo/laptop-in-an-empty-office-9300721/",
+        "url": "https://images.pexels.com/photos/9300721/pexels-photo-9300721.jpeg?w=1600",
+        "author": "Mikhail Nilov",
+        "license_url": "https://www.pexels.com/license/",
+        "verified_on": "2026-11-05",
+        "sha256": "1278432d22b3abc959a0e9e1c1f8e344d02cdf21e2c59a77b67cffc8037acffd",
+        "description": "Actual office chairs and laptop in shared work area; entrepreneurship context, not a presidential meeting.",
+        "usage": "context_stock"
+      },
+      "6550408": {
+        "kind": "real_photograph",
+        "source_page": "https://www.pexels.com/photo/notebook-and-books-on-wooden-desk-6550408/",
+        "url": "https://images.pexels.com/photos/6550408/pexels-photo-6550408.jpeg?w=1600",
+        "author": "Tima Miroshnichenko",
+        "license_url": "https://www.pexels.com/license/",
+        "verified_on": "2026-11-05",
+        "sha256": "c3f1fde471380505f765a5e1832aa4d2b91ed990eddda2d6212d0abf80d10e32",
+        "description": "Actual open books, notebook and laptop on desk; learning and education context.",
+        "usage": "context_stock"
+      },
+      "8970674": {
+        "kind": "real_photograph",
+        "source_page": "https://www.pexels.com/photo/folder-with-budget-planning-on-a-table-by-a-laptop-and-a-pen-8970674/",
+        "url": "https://images.pexels.com/photos/8970674/pexels-photo-8970674.jpeg?w=1600",
+        "author": "Leeloo The First",
+        "license_url": "https://www.pexels.com/license/",
+        "verified_on": "2026-11-05",
+        "sha256": "0678329f1c6b7b8112593eb42937f6a118d6e6c2d6ec9b57e0b3c23874a8d966",
+        "description": "Actual business planning document, clipboard, pen and laptop; paper values are not government funding figures.",
+        "usage": "context_stock"
+      },
+      "8472371": {
+        "kind": "real_photograph",
+        "source_page": "https://www.pexels.com/photo/laptop-placed-on-top-of-stack-of-books-8472371/",
+        "url": "https://images.pexels.com/photos/8472371/pexels-photo-8472371.jpeg?w=1600",
+        "author": "Cup of Couple",
+        "license_url": "https://www.pexels.com/license/",
+        "verified_on": "2026-11-05",
+        "sha256": "1bef285ab32ad3f4dc8918b26b3a9c6d66938af13a093f4e88a9b86a24920c8a",
+        "description": "Actual blank-screen laptop on books; information lookup context, not a government application page.",
+        "usage": "context_stock"
+      }
+    },
+    "account": "issue.cards",
+    "request_id": "issue-editorial-42035498237",
+    "purpose": "preview",
+    "height": 1350,
+    "brief": "Impeccable Read mode: source-grounded social news carousel1080x1350. White/charcoal/cool-gray with restrained navy text. Distinct content-led compositions: wide workspace cover, side office scene with attributed speech paraphrase, learning photo over three policy directions, financial paperwork alongside support priorities, laptop with reminder to consult separate notices. Genuine contextual stock photography on every page, prominent 자료사진 notice below photo, not portraits or fabricated events. Preserve photo frames with contain, separate text by24px, Noto700/450 actual glyph shapes and main body44px+. No ornamental lines/fake data or implied enacted funding. Exact Korean copy and factual basis as supplied.",
+    "sections": [
+      {
+        "title": "국민창업시대,\n어디까지 왔나",
+        "body": "11월 5일 대통령 발언\n정책 방향과 신청 공고를 구분해요",
+        "photo_note": "자료사진",
+        "photo_id": "36123565",
+        "layout": {
+          "photo": [
+            72,
+            390,
+            936,
+            560
+          ],
+          "photo_note": [
+            72,
+            974,
+            936,
+            50
+          ],
+          "title": [
+            72,
+            72,
+            936,
+            260
+          ],
+          "body": [
+            72,
+            1060,
+            936,
+            150
+          ],
+          "title_size": 88,
+          "body_size": 44
+        },
+        "photo_relation": "Actual small workspace with laptop, books and white table; startup context, not an actual policy venue.",
+        "image_prompt_en": "Actual small workspace with laptop, books and white table; startup context, not an actual policy venue.",
+        "visual_role": "Actual small workspace with laptop, books and white table; startup context, not an actual policy venue.",
+        "required_visual_objects": [
+          "laptop",
+          "desk"
+        ],
+        "claim_ids": [
+          0
+        ]
+      },
+      {
+        "title": "오늘 나온 건\n‘전환’ 주문",
+        "body": "대통령은\n창업 사회로의\n전환이 필요하다고\n밝혔어요",
+        "photo_note": "자료사진",
+        "photo_id": "9300721",
+        "layout": {
+          "photo": [
+            72,
+            300,
+            440,
+            760
+          ],
+          "photo_note": [
+            72,
+            1084,
+            936,
+            50
+          ],
+          "title": [
+            560,
+            82,
+            456,
+            210
+          ],
+          "body": [
+            560,
+            440,
+            456,
+            340
+          ],
+          "title_size": 70,
+          "body_size": 44
+        },
+        "photo_relation": "Actual office chairs and laptop in shared work area; entrepreneurship context, not a presidential meeting.",
+        "image_prompt_en": "Actual office chairs and laptop in shared work area; entrepreneurship context, not a presidential meeting.",
+        "visual_role": "Actual office chairs and laptop in shared work area; entrepreneurship context, not a presidential meeting.",
+        "required_visual_objects": [
+          "chair",
+          "laptop"
+        ],
+        "claim_ids": [
+          0
+        ]
+      },
+      {
+        "title": "교육·재정·규제\n세 가지 주문",
+        "body": "교육 개선·재정지원 확대·규제 혁신\n세 방향을 강조한 발언이에요",
+        "photo_note": "자료사진",
+        "photo_id": "6550408",
+        "layout": {
+          "photo": [
+            72,
+            74,
+            936,
+            540
+          ],
+          "photo_note": [
+            72,
+            638,
+            936,
+            50
+          ],
+          "title": [
+            72,
+            732,
+            936,
+            210
+          ],
+          "body": [
+            72,
+            1010,
+            936,
+            200
+          ],
+          "title_size": 76,
+          "body_size": 46
+        },
+        "photo_relation": "Actual open books, notebook and laptop on desk; learning and education context.",
+        "image_prompt_en": "Actual open books, notebook and laptop on desk; learning and education context.",
+        "visual_role": "Actual open books, notebook and laptop on desk; learning and education context.",
+        "required_visual_objects": [
+          "book",
+          "notebook"
+        ],
+        "claim_ids": [
+          1
+        ]
+      },
+      {
+        "title": "금융·기술,\n판로까지",
+        "body": "금융·기술·판로 지원의\n필요성도 강조한 발언이에요",
+        "photo_note": "자료사진",
+        "photo_id": "8970674",
+        "layout": {
+          "photo": [
+            520,
+            120,
+            496,
+            860
+          ],
+          "photo_note": [
+            520,
+            1004,
+            496,
+            50
+          ],
+          "title": [
+            72,
+            130,
+            400,
+            260
+          ],
+          "body": [
+            72,
+            1080,
+            936,
+            150
+          ],
+          "title_size": 72,
+          "body_size": 46
+        },
+        "photo_relation": "Actual business planning document, clipboard, pen and laptop; paper values are not government funding figures.",
+        "image_prompt_en": "Actual business planning document, clipboard, pen and laptop; paper values are not government funding figures.",
+        "visual_role": "Actual business planning document, clipboard, pen and laptop; paper values are not government funding figures.",
+        "required_visual_objects": [
+          "paper",
+          "document",
+          "clipboard"
+        ],
+        "claim_ids": [
+          2
+        ]
+      },
+      {
+        "title": "지원 신청은\n별도 공고 확인",
+        "body": "이 자료는\n발언 요지예요\n대상·금액·일정은\n별도 공고 확인",
+        "photo_note": "자료사진",
+        "photo_id": "8472371",
+        "layout": {
+          "photo": [
+            72,
+            450,
+            480,
+            690
+          ],
+          "photo_note": [
+            72,
+            1164,
+            480,
+            50
+          ],
+          "title": [
+            72,
+            75,
+            936,
+            230
+          ],
+          "body": [
+            600,
+            500,
+            416,
+            340
+          ],
+          "title_size": 84,
+          "body_size": 44
+        },
+        "photo_relation": "Actual blank-screen laptop on books; information lookup context, not a government application page.",
+        "image_prompt_en": "Actual blank-screen laptop on books; information lookup context, not a government application page.",
+        "visual_role": "Actual blank-screen laptop on books; information lookup context, not a government application page.",
+        "required_visual_objects": [
+          "laptop",
+          "book"
+        ],
+        "claim_ids": [
+          0,
+          1,
+          2
+        ]
+      }
+    ],
+    "reuse_design_ids": []
+  }
+}
