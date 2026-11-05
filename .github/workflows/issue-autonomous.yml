@@ -7,7 +7,7 @@ on:
     inputs:
       mode:
         type: choice
-        options: [preflight, research-check, transport-check, editorial-preview, preview, operate]
+        options: [preflight, research-check, transport-check, photo-source-check, editorial-preview, preview, operate]
         default: preflight
       format:
         type: choice
@@ -38,6 +38,8 @@ jobs:
         if: inputs.mode == 'research-check'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      - run: python cloud/photo_source_check.py
+        if: inputs.mode == 'photo-source-check'
       - run: python cloud/issue_autonomous.py
         if: github.event_name == 'schedule' || inputs.mode == 'preview' || inputs.mode == 'operate'
         env:
@@ -75,4 +77,5 @@ jobs:
             cloud-reports/*.json
             cloud-reports/page-*.png
             cloud-reports/scene-*.png
+            cloud-reports/source-photo-*.jpg
           retention-days: 7
