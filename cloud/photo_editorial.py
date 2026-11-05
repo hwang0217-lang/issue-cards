@@ -93,13 +93,34 @@ def make_pdf(draft, catalog, height, destination, cache):
         response.raise_for_status(); font.write_bytes(response.content)
     from fontTools.ttLib import TTFont as VariableFont
     from fontTools.varLib.instancer import instantiateVariableFont
+    from fontTools.pens.basePen import BasePen
+    faces={}
     for weight, name in ((700, 'NordicHeading'), (450, 'NordicBody')):
         static = cache / f'NotoSansKR-{weight}.ttf'
         if not static.exists():
             variable = VariableFont(str(font))
             instantiateVariableFont(variable, {'wght': weight}, inplace=True).save(str(static))
         pdfmetrics.registerFont(TTFont(name, str(static)))
+        faces[name]=VariableFont(str(static))
     c = canvas.Canvas(str(destination), pagesize=(1080, height), pageCompression=1)
+    class CanvasPen(BasePen):
+        def __init__(self, glyphs, path): super().__init__(glyphs); self.path=path
+        def _moveTo(self,p): self.path.moveTo(*p)
+        def _lineTo(self,p): self.path.lineTo(*p)
+        def _curveToOne(self,a,b,d): self.path.curveTo(*a,*b,*d)
+        def _closePath(self): self.path.close()
+    def lettering(text,x,y,size,face,align='left'):
+        # Canva remaps embedded variable-font metadata to Thin. Exact glyph outlines
+        # preserve the reviewed weight, spacing and line breaks without a raster overlay.
+        font=faces[face];glyphs=font.getGlyphSet();cmap=font.getBestCmap();upem=font['head'].unitsPerEm
+        if align=='right':x-=pdfmetrics.stringWidth(text,face,size)
+        c.saveState();c.translate(x,y);c.scale(size/upem,size/upem)
+        for char in text:
+            glyph=cmap.get(ord(char))
+            if glyph is None:raise RuntimeError('Unsupported actual glyph')
+            path=c.beginPath();glyphs[glyph].draw(CanvasPen(glyphs,path));c.drawPath(path,fill=1,stroke=0,fillMode=1)
+            c.translate(font['hmtx'][glyph][0],0)
+        c.restoreState()
     evidence = []
     for section in draft['sections']:
         photo = catalog[str(section['photo_id'])]
@@ -133,16 +154,17 @@ def make_pdf(draft, catalog, height, destination, cache):
             c.setFillColorRGB(*((.11,.14,.16) if key=='title' else (.27,.33,.38)))
             c.setFont(face, size)
             for n, line in enumerate(lines):
-                c.drawString(tx, height-ty-size-n*leading, line)
+                lettering(line,tx,height-ty-size-n*leading,size,face)
         c.setFont('NordicBody', 28); c.setFillColorRGB(.28,.37,.44)
         footer_y = 290 if height == 1920 else 64
-        c.drawString(72, footer_y, '@nordic_log' if draft.get('account','nordic_log')=='nordic_log' else '@issue.cards')
+        lettering('@nordic_log' if draft.get('account','nordic_log')=='nordic_log' else '@issue.cards',72,footer_y,28,'NordicBody')
         c.setFont('NordicBody', 23)
-        c.drawRightString(1008, footer_y, '사진 '+photo['author']+' / Pexels')
+        lettering('사진 '+photo['author']+' / Pexels',1008,footer_y,23,'NordicBody','right')
         c.showPage()
         evidence.append({'photo_id':section['photo_id'],'source_page':photo['source_page'],'author':photo['author'],
                          'license_url':photo['license_url'],'source_sha256':photo['sha256'],
                          'crop':'contain: entire original photograph','photo_frame':[px,py,dw,dh],
+                         'typography':'Exact700/450 glyph outlines; not editable text layers',
                          'photo_relation':section['photo_relation']})
     c.save()
     return evidence

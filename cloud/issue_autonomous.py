@@ -122,6 +122,29 @@ def review_images(draft, new_images, references, kind):
     if review.get('quality_score', 0) < 8.5: review['verdict'] = 'revise'
     return review, usage
 
+def read_literal_images(images, sections):
+    """Blind object reading on originals; authored-text OCR on photo-masked copies.
+
+    Physical package labels may be occluded. They are not generated editorial lettering.
+    No expected words or intended subjects are disclosed to this independent observation.
+    """
+    from PIL import ImageDraw
+    masked=[]
+    for content,section in zip(images,sections):
+        im=Image.open(io.BytesIO(content)).convert('RGB')
+        x,y,w,h=section['layout']['photo']
+        ImageDraw.Draw(im).rectangle((x,y,x+w,y+h),fill='white')
+        b=io.BytesIO();im.save(b,'JPEG',quality=95);masked.append(b.getvalue())
+    count=len(images)
+    return generate_json('Inspect ONLY the supplied images, without guessing any intended topic or wording. '
+        f'The first{count} are the ORIGINAL full pages: describe literal subjects and main physical objects from those. '
+        f'The next{count} are copies with only the photograph masked white, in the same order. '
+        'Copy ALL visible authored text EXACTLY from the MASKED versions only. Do not correct or invent Korean. '
+        'Set gibberish_text=true only if that authored text is malformed/unreadable. Natural photographed package labels '
+        'may be partially hidden; report them separately as photo_text, never classify them as malformed authored text. '
+        'Return JSON pages:[{literal_subject,main_objects,visible_text,gibberish_text,photo_text}].',images+masked)
+
+
 def main():
     mode = os.environ.get('ISSUE_MODE', 'preview')
     if mode not in ('preview', 'delivery-check', 'operate'): raise RuntimeError('Invalid autonomous mode')
@@ -188,10 +211,7 @@ def main():
                 path = OUT / f'canva-{n:02d}.jpg'; path.write_bytes(data); pages.append(path)
                 hashes.append(hashlib.sha256(data).hexdigest()); images.append(jpeg)
                 image.thumbnail((390, 693)); image.save(OUT / f'page-{n:02d}.png')
-            inventory,_=generate_json('Look ONLY at these actual new images in order. No topic or desired result is provided. '
-                'Return JSON pages:[{literal_subject,main_objects,visible_text,gibberish_text}]. Describe the objects '
-                'in English and copy ALL visible text exactly, without correcting or inventing Korean letters. '
-                'Set gibberish_text=true for nonsensical or unreadable lettering. Never infer an intended subject.',images)
+            inventory,_=read_literal_images(images,draft['sections'])
             row['gemini_calls']+=1;row['literal_inventory']=inventory;persist()
             literal_errors=({i:'missing literal observation' for i in range(len(draft['sections']))} if len(inventory.get('pages',[]))!=len(draft['sections']) else {})
             for index,(observed,section) in enumerate(zip(inventory.get('pages',[]),draft['sections'])):
