@@ -475,13 +475,14 @@
     "error": "Official remarks lost attribution in image copy; body too long. Both workflows cancelled before acceptance. Do not publish this version."
   },
   "preview-41988864999": {
-    "stage": "starting",
+    "stage": "blocked",
     "mode": "preview",
     "day": "2026-11-05",
     "format": "carousel",
     "published": false,
     "gemini_calls": 0,
     "canva_generations": 0,
-    "pc_media_downloads": 0
+    "pc_media_downloads": 0,
+    "error": "Every claim requires two independent publishers"
   }
 }
