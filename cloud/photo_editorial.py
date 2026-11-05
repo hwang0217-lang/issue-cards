@@ -34,7 +34,8 @@ def validate_photo_plan(draft, catalog, height):
             raise RuntimeError('Photo must explain the page, not decorate it')
         layout = section.get('layout', {})
         occupied = []
-        for name in ('photo', 'title', 'body'):
+        for name in ('photo', 'title', 'body', 'diagram'):
+            if name == 'diagram' and not layout.get('diagram'): continue
             if name == 'body' and not section.get('body'):
                 continue
             box = layout.get(name)
@@ -50,6 +51,27 @@ def validate_photo_plan(draft, catalog, height):
                 if not (x + w + 24 <= ox or ox + ow + 24 <= x or y + h + 24 <= oy or oy + oh + 24 <= y):
                     raise RuntimeError('Text/photo collision or separation below24px')
             occupied.append(box)
+        if layout.get('diagram'):
+            dx,dy,dw,dh=layout['diagram'];nodes=section.get('diagram_nodes',[])
+            if not 2<=len(nodes)<=4 or not section.get('diagram_edges'):
+                raise RuntimeError('Information diagrams need actual labeled relationships')
+            seen=[]
+            for node in nodes:
+                box=node.get('box',[])
+                if len(box)!=4 or any(type(v) not in (int,float) for v in box) or not node.get('text'):
+                    raise RuntimeError('Explicit diagram content/geometry required')
+                x,y,w,h=box
+                if not(dx<=x<x+w<=dx+dw and dy<=y<y+h<=dy+dh):raise RuntimeError('Diagram node outside safe frame')
+                for ox,oy,ow,oh in seen:
+                    if not(x+w+32<=ox or ox+ow+32<=x or y+h+32<=oy or oy+oh+32<=y):raise RuntimeError('Diagram nodes overlap or lack connector space')
+                seen.append(box)
+            for edge in section['diagram_edges']:
+                a,b=edge.get('from'),edge.get('to')
+                if type(a)!=int or type(b)!=int or not(0<=a<len(nodes) and 0<=b<len(nodes)) or a==b:
+                    raise RuntimeError('Diagram edge must connect actual distinct nodes')
+                ax,ay,aw,ah=nodes[a]['box'];bx,by,bw,bh=nodes[b]['box']
+                if abs(ax+aw/2-bx-bw/2)>3 and abs(ay+ah/2-by-bh/2)>3:
+                    raise RuntimeError('Connectors must align with a real row or column')
         if not 64 <= layout.get('title_size', 0) <= 100 or not 44 <= layout.get('body_size', 0) <= 56:
             raise RuntimeError('Mobile text too small or unbounded')
         if layout['photo'][2] * layout['photo'][3] < 1080 * height * .18:
@@ -76,6 +98,12 @@ def photo_draft_prompt(catalog, kind):
         'Keep video title under12 Korean characters and body under18, hook body empty; no reading overload. '
         'White/cool-gray/charcoal, tiny restrained blue accent, no ornamental rules, no emoji, no generic boxes. '
         'Caption credits real photographers; no false AI-photo disclosure. AI-assisted layout/copy may be disclosed. '
+        + (' For INFORMATION MOTION, at least2 middle pages must also include layout.diagram:[x,y,w,h], '
+         'a separate reserved frame not overlapping photo/title/body, diagram_nodes:[{text,box:[x,y,w,h]}] '
+         'and diagram_edges:[{from:0,to:1}]. Use2-4 real steps/comparison labels, not decoration or fake charts. '
+         'Nodes aligned in a row/column,32px between nodes, label font44px, keep all content within the diagram frame. '
+         'Each label at most8 Korean characters, explicit newlines allowed. Edges explain actual sequence or relationship. '
+         if kind=='motion_reel' else '')+
         'Photo catalog JSON='+json.dumps(catalog, ensure_ascii=False))
 
 
@@ -155,6 +183,30 @@ def make_pdf(draft, catalog, height, destination, cache):
             c.setFont(face, size)
             for n, line in enumerate(lines):
                 lettering(line,tx,height-ty-size-n*leading,size,face)
+        nodes=section.get('diagram_nodes',[])
+        if layout.get('diagram'):
+            for node in nodes:
+                nx,ny,nw,nh=node['box'];size=44;lines=node['text'].split('\n');leading=size*1.3
+                if len(lines)*leading+32>nh or any(pdfmetrics.stringWidth(line,'NordicBody',size)>nw-32 for line in lines):
+                    raise RuntimeError('Diagram label exceeds its readable node')
+                c.setStrokeColorRGB(.62,.67,.71);c.setLineWidth(1);c.setFillColorRGB(.96,.97,.98)
+                c.rect(nx,height-ny-nh,nw,nh,fill=1,stroke=1);c.setFillColorRGB(.11,.14,.16)
+                ty=ny+(nh-len(lines)*leading)/2
+                for index,line in enumerate(lines):lettering(line,nx+16,height-ty-size-index*leading,size,'NordicBody')
+            for edge in section['diagram_edges']:
+                ax,ay,aw,ah=nodes[edge['from']]['box'];bx,by,bw,bh=nodes[edge['to']]['box']
+                if abs(ax+aw/2-bx-bw/2)<=3:
+                    sign=1 if by>ay else -1;sx=ex=ax+aw/2;sy=ay+ah+6 if sign==1 else ay-6;ey=by-6 if sign==1 else by+bh+6
+                    head=[(ex-10,ey-sign*14),(ex,ey),(ex+10,ey-sign*14)]
+                else:
+                    sign=1 if bx>ax else -1;sy=ey=ay+ah/2;sx=ax+aw+6 if sign==1 else ax-6;ex=bx-6 if sign==1 else bx+bw+6
+                    head=[(ex-sign*14,ey-10),(ex,ey),(ex-sign*14,ey+10)]
+                for i,node in enumerate(nodes):
+                    if i in (edge['from'],edge['to']):continue
+                    x,y,w,h=node['box']
+                    if not(max(sx,ex)<x or min(sx,ex)>x+w or max(sy,ey)<y or min(sy,ey)>y+h):raise RuntimeError('Diagram connector crosses another label')
+                c.setStrokeColorRGB(.28,.37,.44);c.setLineWidth(3);c.line(sx,height-sy,ex,height-ey)
+                path=c.beginPath();path.moveTo(head[0][0],height-head[0][1]);path.lineTo(head[1][0],height-head[1][1]);path.lineTo(head[2][0],height-head[2][1]);c.drawPath(path,fill=0,stroke=1)
         c.setFont('NordicBody', 28); c.setFillColorRGB(.28,.37,.44)
         footer_y = 290 if height == 1920 else 64
         lettering('@nordic_log' if draft.get('account','nordic_log')=='nordic_log' else '@issue.cards',72,footer_y,28,'NordicBody')

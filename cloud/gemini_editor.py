@@ -95,6 +95,8 @@ def validate_literal_inventory(inventory, sections):
             expected=normalized_text(section.get(field,''))
             if expected and expected not in observed:
                 raise RuntimeError('Actual image OCR does not match the exact approved '+field)
+        for node in section.get('diagram_nodes',[]):
+            if normalized_text(node['text']) not in observed:raise RuntimeError('Actual diagram label does not match the approved relationship')
         objects=json.dumps(page.get('main_objects',[]),ensure_ascii=False).casefold()
         required=section.get('required_visual_objects',[])
         if not required or not any(str(word).casefold() in objects for word in required):
