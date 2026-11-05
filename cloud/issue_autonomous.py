@@ -160,7 +160,7 @@ def main():
             else 'Use 5 portrait1080x1350 editorial pages.')
         if kind=='motion_reel':prompt+=' The THREE middle pages must be intentional premium white-background information diagrams with identifiable component relationships/arrows, not photo-only pages. Hook and CTA may be simpler. No fake charts or numeric claims.'
         from news_research import create_news_draft
-        draft, usage, evidence = create_news_draft(prompt, kind, day, captions); row['gemini_calls'] += 3; row['source_evidence']=evidence
+        draft, usage, evidence = create_news_draft(prompt, kind, day, captions); row['gemini_calls'] += usage.get('production_model_calls',3); row['source_evidence']=evidence
         row.update(stage='drafted', topic=draft.get('topic'), model=MODEL, recent_posts_compared=len(posts),reference_images_compared=len(references), draft_usage=usage); persist()
         result = None; review = None; pages = []; hashes = []
         for version in (1, 2):
