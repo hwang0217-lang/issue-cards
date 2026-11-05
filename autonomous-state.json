@@ -508,13 +508,14 @@
     "error": "Insufficient original source text"
   },
   "preview-41994945163": {
-    "stage": "starting",
+    "stage": "blocked",
     "mode": "preview",
     "day": "2026-11-05",
     "format": "carousel",
     "published": false,
     "gemini_calls": 0,
     "canva_generations": 0,
-    "pc_media_downloads": 0
+    "pc_media_downloads": 0,
+    "error": "Original story body unavailable: 동아일보 / 524 (0 chars); no headline fallback"
   }
 }
