@@ -18,8 +18,9 @@ FEEDS=[('SBS','https://news.sbs.co.kr/news/SectionRssFeed.do?sectionId=02&plink=
        ('연합뉴스','https://www.yna.co.kr/rss/politics.xml'),
        ('연합뉴스','https://www.yna.co.kr/rss/economy.xml'),
        ('동아일보','https://rss.donga.com/economy.xml'),
+       ('파이낸셜뉴스','https://www.fnnews.com/rss/r20/fn_realnews_all.xml'),
        ('경향신문','https://www.khan.co.kr/rss/rssdata/society_news.xml')]
-HOSTS=('korea.kr','sbs.co.kr','donga.com','yna.co.kr','khan.co.kr')
+HOSTS=('korea.kr','sbs.co.kr','donga.com','yna.co.kr','khan.co.kr','fnnews.com')
 def allowed(url):
     u=urlparse(url)
     return u.scheme=='https' and not u.username and not u.password and not u.port and any(u.hostname==h or (u.hostname or '').endswith('.'+h) for h in HOSTS)
@@ -60,13 +61,13 @@ def source_candidates(day):
             except Exception:continue
             if not (now-timedelta(hours=48)<=published<=now+timedelta(minutes=5)) or not allowed(link):continue
             candidates.append({'id':str(len(candidates)),'title':title[:220],'url':link,'outlet':outlet,'official':False,'published':published.isoformat()});count+=1
-            if count>=36:break
+            if count>=120:break
     fresh=[]
     for c in candidates:
         if c['official']:
             try:
                 observed=article(c,day)
-                c={**c,'published':observed['published'],'verified_original':observed}
+                c={**c,'title':observed['title'],'published':observed['published'],'verified_original':observed}
             except (RuntimeError,requests.RequestException):continue
         fresh.append(c)
     candidates=fresh
@@ -77,23 +78,35 @@ def article(candidate,day):
     html,url=fetch(candidate['url']);soup=BeautifulSoup(html,'html.parser')
     for el in soup.select('script,style,nav,header,footer,aside'):el.decompose()
     published=candidate.get('published')
+    meta=soup.select_one('meta[property="article:published_time"],meta[name="pubdate"],meta[name="date"]')
+    if meta:published=meta.get('content','')
+    raw_metadata=meta.get('content','') if meta else None
+    precision='timestamp'
+    # Policy Briefing currently labels local clock values with Z in metadata
+    # (observed 15:41Z while the public page says 2026.11.05 at 16:xx KST).
+    # Do not reinterpret that clock. Use its actual visible publication DAY,
+    # retain raw metadata, and make no unsupported exact-time assertion.
+    if candidate.get('official'):
+        visible=soup.select_one('.view_info,.article_info,.info,.date')
+        match=re.search(r'\b20\d{2}\.\d{2}\.\d{2}\b',visible.get_text(' ',strip=True) if visible else '')
+        if match:published=match.group().replace('.','-');precision='day'
     if not published:
-        meta=soup.select_one('meta[property="article:published_time"],meta[name="pubdate"],meta[name="date"]')
-        if meta:published=meta.get('content','')
-        else:
             # Official article date, never a navigation/current-time date.
-            date=soup.select_one('.view_info,.article_info,.info,.date')
-            hit=re.search(r'20\d{2}[.-]\d{2}[.-]\d{2}',date.get_text(' ',strip=True) if date else '')
-            if hit:published=hit.group().replace('.','-')+'T00:00:00+09:00'
+        date=soup.select_one('.view_info,.article_info,.info,.date')
+        hit=re.search(r'20\d{2}[.-]\d{2}[.-]\d{2}',date.get_text(' ',strip=True) if date else '')
+        if hit:published=hit.group().replace('.','-')+'T00:00:00+09:00'
     try:stamp=publisher_timestamp(published)
     except Exception:raise RuntimeError('Original article publication date unverified')
     today=datetime.fromisoformat(day).replace(tzinfo=KST)
     if not today-timedelta(days=2)<=stamp<=datetime.now(KST)+timedelta(minutes=5):raise RuntimeError('Original article stale or future-dated')
-    body=soup.select_one('#newsEndContents,.article_txt,.art_txt,.view_cont,.view_con,.article_view,article,#article_txt')
+    body=soup.select_one('#newsEndContents,.article_txt,.art_txt,.view_cont,.view_con,.article_view,article,#article_txt,#article_content,.article_content')
     if not body:raise RuntimeError('Original body not identified; headlines are insufficient')
     text=body.get_text(' ',strip=True)
     if len(text)<350:raise RuntimeError('Insufficient original source text')
-    return {**candidate,'url':url,'published':stamp.isoformat(),'text':text[:7000],
+    title=soup.select_one('meta[property="og:title"]')
+    return {**candidate,'title':title.get('content',candidate['title']).split('|')[0].strip() if title else candidate['title'],'url':url,
+            'published':stamp.date().isoformat() if precision=='day' else stamp.isoformat(),
+            'date_precision':precision,'published_metadata_raw':raw_metadata,'observed_at':datetime.now(KST).isoformat(),'text':text[:7000],
             'body_sha256':hashlib.sha256(text.encode()).hexdigest()}
 def validate_evidence(draft,articles,day):
     if draft.get('basis_date')!=day or len({a['outlet'] for a in articles})<3 or not any(a['official'] for a in articles):raise RuntimeError('Fresh three-publisher/official evidence required')
@@ -192,6 +205,6 @@ def create_news_draft(brief,kind,day,captions):
         'Return {verdict:pass/reject,all_text_supported:boolean,status_dates_correct:boolean,independent_publishers:boolean,notes:string}. Reject unsubstantiated quotes, fake data, predictions as facts, expired notices. Draft:'+json.dumps(draft,ensure_ascii=False)+' Sources:'+json.dumps(articles,ensure_ascii=False))
     if review.get('verdict')!='pass' or any(review.get(k) is not True for k in ('all_text_supported','status_dates_correct','independent_publishers')):raise RuntimeError('Independent original-source fact check rejected draft')
     # Store concise claims/quotes and provenance only, never the complete copyrighted bodies.
-    evidence={'basis_date':day,'sources':[{k:a[k] for k in ('id','url','title','outlet','official','published','body_sha256')} for a in articles],
+    evidence={'basis_date':day,'sources':[{k:a[k] for k in ('id','url','title','outlet','official','published','date_precision','published_metadata_raw','observed_at','body_sha256')} for a in articles],
               'claims':draft['claims'],'fact_review':review}
     return draft,usage,evidence
