@@ -161,8 +161,10 @@ def make_pdf(draft, catalog, height, destination, cache):
                 raise RuntimeError('Photo exceeds bounded asset size')
             local.write_bytes(response.content)
         data = local.read_bytes()
-        if hashlib.sha256(data).hexdigest() != photo['sha256']:
-            raise RuntimeError('Real-photo source changed; review before use')
+        actual_sha256=hashlib.sha256(data).hexdigest()
+        reviewed={photo['sha256'],*photo.get('reviewed_sha256',[])}
+        if actual_sha256 not in reviewed:
+            raise RuntimeError('Real-photo source changed for '+str(section['photo_id'])+'; review before use')
         im = Image.open(io.BytesIO(data)); im.load()
         if min(im.size) < 900:
             raise RuntimeError('Actual photo resolution insufficient')
@@ -215,7 +217,8 @@ def make_pdf(draft, catalog, height, destination, cache):
         lettering('사진 '+photo['author']+' / Pexels',1008,footer_y,23,'NordicBody','right')
         c.showPage()
         evidence.append({'photo_id':section['photo_id'],'source_page':photo['source_page'],'author':photo['author'],
-                         'license_url':photo['license_url'],'source_sha256':photo['sha256'],
+                         'license_url':photo['license_url'],'source_sha256':actual_sha256,
+                         'reviewed_source_sha256':photo['sha256'],
                          'crop':'contain: entire original photograph','photo_frame':[px,py,dw,dh],
                          'typography':'Exact700/450 glyph outlines; not editable text layers',
                          'photo_relation':section['photo_relation']})

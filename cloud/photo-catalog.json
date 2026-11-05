@@ -19,7 +19,24 @@
     "verified_on": "2026-11-05",
     "sha256": "1278432d22b3abc959a0e9e1c1f8e344d02cdf21e2c59a77b67cffc8037acffd",
     "description": "Actual office chairs and laptop in shared work area; entrepreneurship context, not a presidential meeting.",
-    "usage": "context_stock"
+    "usage": "context_stock",
+    "reviewed_sha256": [
+      "cc189f265e9c2e6ce3376ca68eb0e13249e087197fadeeed82a0ea272180d6cf"
+    ],
+    "source_variant_review": {
+      "reason": "Two JPEG byte variants have identical dimensions,RGB pixels and file length; container metadata differs. Both exact byte hashes explicitly reviewed.",
+      "pixel_sha256": "fab16eba3fc7c60fc5a5d59f75bcd6ca0f476c364818dc8d89d12beca1daab58",
+      "pixel_error_rgb": [
+        0,
+        0,
+        0
+      ],
+      "review_run": "42036220669",
+      "reviewed_on": "2026-11-05",
+      "different_metadata_bytes": 38,
+      "jpeg_scan_start": 1224,
+      "all_differences_before_scan": true
+    }
   },
   "6550408": {
     "kind": "real_photograph",
