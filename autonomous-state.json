@@ -506,5 +506,15 @@
     "canva_generations": 0,
     "pc_media_downloads": 0,
     "error": "Insufficient original source text"
+  },
+  "preview-41994945163": {
+    "stage": "starting",
+    "mode": "preview",
+    "day": "2026-11-05",
+    "format": "carousel",
+    "published": false,
+    "gemini_calls": 0,
+    "canva_generations": 0,
+    "pc_media_downloads": 0
   }
 }
