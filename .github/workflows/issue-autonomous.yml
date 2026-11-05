@@ -2,12 +2,12 @@ name: Issue PC-off production
 run-name: Issue autonomous ${{ inputs.mode || 'operate' }}
 on:
   schedule:
-    - cron: '0 9 * * *'
+    - cron: '55 8 * * *'
   workflow_dispatch:
     inputs:
       mode:
         type: choice
-        options: [preflight, preview, operate]
+        options: [preflight, research-check, preview, operate]
         default: preflight
 permissions:
   contents: write
@@ -28,13 +28,20 @@ jobs:
         if: inputs.mode == 'preflight'
         env:
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
-          CANVA_GATEWAY_GH_TOKEN: ${{ secrets.GH_PAT }}
+          CANVA_GATEWAY_GH_TOKEN: ${{ secrets.CANVA_GATEWAY_GH_TOKEN }}
           PUBLISH_PAUSED: ${{ vars.CODEX_PUBLISH_PAUSED || '1' }}
+      - run: python cloud/news_check.py
+        if: inputs.mode == 'research-check'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       - run: python cloud/issue_autonomous.py
         if: github.event_name == 'schedule' || inputs.mode == 'preview' || inputs.mode == 'operate'
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          CANVA_GATEWAY_GH_TOKEN: ${{ secrets.GH_PAT }}
+          CANVA_GATEWAY_GH_TOKEN: ${{ secrets.CANVA_GATEWAY_GH_TOKEN }}
+          ISSUE_APPROVED_MUSIC: ${{ secrets.ISSUE_APPROVED_MUSIC }}
+          ISSUE_MEDIA_UPLOAD_KEY: ${{ secrets.ISSUE_MEDIA_UPLOAD_KEY }}
+          ISSUE_MEDIA_BASE: ${{ vars.ISSUE_MEDIA_BASE }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           PUBLISH_PAUSED: ${{ vars.CODEX_PUBLISH_PAUSED || '1' }}
