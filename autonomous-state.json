@@ -892,7 +892,7 @@
     "published": false,
     "instagram_writes": 0,
     "pc_video_downloads": 0,
-    "stage": "source_check",
+    "stage": "canva_dispatching",
     "fact_review": {
       "verdict": "pass",
       "notes": "All claims are strictly grounded in the supplied presidential remarks from November 5, 2026. The distinction between remarks/policy direction and enacted grant applications is preserved. Dates, attributions, and context photos are correctly handled.",
@@ -1009,6 +1009,7 @@
     "source_snapshot_revision": "2573cc1767dae1002f04f48a9c4c49ae4b9d412c",
     "fact_check_scope": "Same complete editorial wording,claims,caption,photography at immutable source snapshot; geometry-only corrections allowed. All3 original sources verified less than one hour ago. No new source re-verification claimed.",
     "recent_posts_compared": 9,
-    "reference_images_compared": 55
+    "reference_images_compared": 55,
+    "request_id": "issue-editorial-42038864488"
   }
 }
