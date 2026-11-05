@@ -11,13 +11,14 @@
     "error": "Fresh three-publisher/official evidence required"
   },
   "preview-41983719811": {
-    "stage": "starting",
+    "stage": "blocked",
     "mode": "preview",
     "day": "2026-11-05",
     "format": "carousel",
     "published": false,
     "gemini_calls": 0,
     "canva_generations": 0,
-    "pc_media_downloads": 0
+    "pc_media_downloads": 0,
+    "error": "Three independent fresh publisher feeds and official original unavailable"
   }
 }
