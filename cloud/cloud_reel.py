@@ -45,6 +45,11 @@ def require_export_url(url):
 
 def enforce_publish(plan, digest, media, journals, now):
     day = now.astimezone(KST).date().isoformat()
+    facts=plan.get('source_evidence',{})
+    if (facts.get('basis_date')!=day or len({s.get('outlet') for s in facts.get('sources',[])})<3 or
+            not any(s.get('official') is True for s in facts.get('sources',[])) or
+            facts.get('fact_review',{}).get('verdict')!='pass'):
+        raise RuntimeError('Today three-publisher official-source fact evidence required')
     if (plan.get('purpose') != 'production' or plan.get('approved') is not True or plan.get('date') != day or
             plan.get('approved_assets_sha256' if plan.get('export_format') == 'jpg' else 'approved_video_sha256') != digest or
             plan.get('review', {}).get('all_scenes_readable') is not True):

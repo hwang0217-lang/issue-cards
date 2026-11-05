@@ -210,10 +210,12 @@ def main():
         qa.update(export_sha256=digest, quality_benchmark='Nine actual feed images supplied to Gemini; score >=8.5',
                   recent_nine_comparison=review.get('comparison_notes'), page_or_scene_notes=review['pages'])
         plan = {'account':'issue.cards','canva_design_id':result['designId'],'purpose':'production' if mode=='operate' and os.environ.get('PUBLISH_PAUSED')=='0' else 'diagnostic','approved':True,
-                'date':day,'format':kind,'export_format':'jpg' if kind=='carousel' else 'mp4',
+                'date':day,'format':kind,'source_evidence':evidence,'export_format':'jpg' if kind=='carousel' else 'mp4',
                 'page_count':len(pages),'caption':draft['caption'],'approved_assets_sha256':digest,'review':qa}
         registry, _ = state.read('cloud/design-registry.json')
         registry.update(version=1,project='issue',account='issue.cards')
+        for field in ('version','project','account'):
+            state.put('cloud/design-registry.json',field,registry[field])
         registry.setdefault('designs', {})[result['designId']] = {'active':True,'purpose':plan['purpose'],
             'format':plan['export_format'],**({'page_count':len(pages)} if kind=='carousel' else {})}
         # State-only registry mutation; no generated code. PublicationState preserves existing keys.
