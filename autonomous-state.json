@@ -473,5 +473,15 @@
     "request_id": "issue-auto-41987566292-v1",
     "canva_run_id": "41987888096",
     "error": "Official remarks lost attribution in image copy; body too long. Both workflows cancelled before acceptance. Do not publish this version."
+  },
+  "preview-41988864999": {
+    "stage": "starting",
+    "mode": "preview",
+    "day": "2026-11-05",
+    "format": "carousel",
+    "published": false,
+    "gemini_calls": 0,
+    "canva_generations": 0,
+    "pc_media_downloads": 0
   }
 }
