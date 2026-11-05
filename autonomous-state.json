@@ -651,6 +651,7 @@
     "published": false,
     "instagram_writes": 0,
     "pc_video_downloads": 0,
-    "stage": "source_check"
+    "stage": "blocked",
+    "error": "ConnectTimeout"
   }
 }
