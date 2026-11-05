@@ -251,6 +251,9 @@ def main():
         publish_mode='publish' if mode=='operate' else 'delivery-check'
         if os.environ.get('PUBLISH_PAUSED','1')!='0':
             row.update(stage='prepared_publish_paused',published=False,pause_reason='API action-block clearance unconfirmed');persist();return
+        if publish_mode=='publish':
+            from news_research import revalidate_sources
+            revalidate_sources(evidence,day)
         if kind=='carousel':
             run_carousel(publish_mode,plan,{**result,'registryRevision':result['registryRevision']},row['canva_run_id'])
             final=json.loads((OUT/'connection.json').read_text(encoding='utf-8'));row.update(final)

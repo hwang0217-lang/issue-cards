@@ -9,6 +9,10 @@ on:
         type: choice
         options: [preflight, research-check, transport-check, preview, operate]
         default: preflight
+      format:
+        type: choice
+        options: [carousel, motion_reel]
+        default: carousel
 permissions:
   contents: write
 concurrency:
@@ -47,6 +51,7 @@ jobs:
           PUBLISH_PAUSED: ${{ vars.CODEX_PUBLISH_PAUSED || '1' }}
           ISSUE_AUTONOMOUS_ACTIVE: ${{ vars.ISSUE_AUTONOMOUS_ACTIVE || '0' }}
           ISSUE_MODE: ${{ inputs.mode || 'operate' }}
+          ISSUE_PREVIEW_FORMAT: ${{ inputs.format || 'carousel' }}
       - run: python cloud/issue_transport_check.py
         if: inputs.mode == 'transport-check'
         env:
