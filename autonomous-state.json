@@ -484,5 +484,15 @@
     "canva_generations": 0,
     "pc_media_downloads": 0,
     "error": "Every claim requires two independent publishers"
+  },
+  "preview-41990080444": {
+    "stage": "starting",
+    "mode": "preview",
+    "day": "2026-11-05",
+    "format": "carousel",
+    "published": false,
+    "gemini_calls": 0,
+    "canva_generations": 0,
+    "pc_media_downloads": 0
   }
 }
