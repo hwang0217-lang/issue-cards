@@ -497,13 +497,14 @@
     "error": "Official remarks must remain attributed, not presented as an implemented measure"
   },
   "preview-41992413986": {
-    "stage": "starting",
+    "stage": "blocked",
     "mode": "preview",
     "day": "2026-11-05",
     "format": "carousel",
     "published": false,
     "gemini_calls": 0,
     "canva_generations": 0,
-    "pc_media_downloads": 0
+    "pc_media_downloads": 0,
+    "error": "Insufficient original source text"
   }
 }
