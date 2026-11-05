@@ -99,10 +99,19 @@ def article(candidate,day):
     except Exception:raise RuntimeError('Original article publication date unverified')
     today=datetime.fromisoformat(day).replace(tzinfo=KST)
     if not today-timedelta(days=2)<=stamp<=datetime.now(KST)+timedelta(minutes=5):raise RuntimeError('Original article stale or future-dated')
-    body=soup.select_one('#newsEndContents,.article_txt,.art_txt,.view_cont,.view_con,.article_view,article,#article_txt,#article_content,.article_content')
-    if not body:raise RuntimeError('Original body not identified; headlines are insufficient')
-    text=body.get_text(' ',strip=True)
-    if len(text)<350:raise RuntimeError('Insufficient original source text')
+    # Selector lists are matched in DOM order, not specificity order. A generic
+    # sidebar <article> can precede the real body; never mistake it for a story.
+    text=''
+    for selector in ('#newsEndContents','#article_content','#article_txt','.view_cont','.view_con','.article_view','.article_txt','.art_txt','.article_content','.story-news.article','.story-news'):
+        found=soup.select(selector)
+        if found:
+            text=max((el.get_text(' ',strip=True) for el in found),key=len)
+            if len(text)>=200:break
+    if len(text)<200:
+        found=soup.select('article')
+        generic=max((el.get_text(' ',strip=True) for el in found),key=len,default='')
+        if len(generic)>=350:text=generic
+    if len(text)<200:raise RuntimeError('Original story body unavailable: '+candidate['outlet']+' / '+candidate['id']+' ('+str(len(text))+' chars); no headline fallback')
     title=soup.select_one('meta[property="og:title"]')
     return {**candidate,'title':title.get('content',candidate['title']).split('|')[0].strip() if title else candidate['title'],'url':url,
             'published':stamp.date().isoformat() if precision=='day' else stamp.isoformat(),
