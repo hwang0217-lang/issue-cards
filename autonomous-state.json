@@ -1140,6 +1140,113 @@
     "recent_posts_compared": 9,
     "reference_images_compared": 55,
     "request_id": "issue-editorial-42040196798",
-    "canva_run_id": "42040267378"
+    "canva_run_id": "42040267378",
+    "canva_design_id": "DAHaDQgjnYk",
+    "canva_page_design_ids": [
+      "DAHaDQgjnYk",
+      "DAHaDQgjnYk",
+      "DAHaDQgjnYk",
+      "DAHaDQgjnYk",
+      "DAHaDQgjnYk"
+    ],
+    "page_sha256": [
+      "e2c11767aa8c220b2b59e025d05371ec461cdfadbecc7173f1f50dc8b9921a66",
+      "69cbb9d2a1611a132c465c5c1f348d08c5356b7e11ce51c3f10d7e0943f6294a",
+      "b63f8fb1b02901f2243536bb56e292bcfe5e8496b874ab8325083e09d972f653",
+      "ce3e9e7fe90fef50c321359e849a50e55d949e788342bce580ff47e509dc9b5a",
+      "83f67896ef417319a6056de7501f0a87a1a64f721219c7b1b3008baacb7b71f5"
+    ],
+    "photo_evidence": [
+      {
+        "photo_id": "36123565",
+        "source_page": "https://www.pexels.com/photo/modern-workspace-with-laptop-and-books-on-desk-36123565/",
+        "author": "Letícia Alvares",
+        "license_url": "https://www.pexels.com/license/",
+        "source_sha256": "8229243755ebac4c1a135d9c6307eaaac510bcf7c7b79096a2db339f5899768d",
+        "reviewed_source_sha256": "8229243755ebac4c1a135d9c6307eaaac510bcf7c7b79096a2db339f5899768d",
+        "source_identity_check": "reviewed-byte-sha256",
+        "crop": "contain: entire original photograph",
+        "photo_frame": [
+          164.765478424015,
+          450,
+          750.46904315197,
+          500
+        ],
+        "typography": "Exact700/450 glyph outlines; not editable text layers",
+        "photo_relation": "Actual small workspace with laptop, books and white table; startup context, not an actual policy venue."
+      },
+      {
+        "photo_id": "9300721",
+        "source_page": "https://www.pexels.com/photo/laptop-in-an-empty-office-9300721/",
+        "author": "Mikhail Nilov",
+        "license_url": "https://www.pexels.com/license/",
+        "source_sha256": "3d8ed7a9ab59b08ed2305a95e733ef645c61009250069d527d2649c45524bbc6",
+        "reviewed_source_sha256": "1278432d22b3abc959a0e9e1c1f8e344d02cdf21e2c59a77b67cffc8037acffd",
+        "source_identity_check": "exact-reviewed-pixels-color-orientation",
+        "crop": "contain: entire original photograph",
+        "photo_frame": [
+          71.99999999999997,
+          350,
+          440.00000000000006,
+          660
+        ],
+        "typography": "Exact700/450 glyph outlines; not editable text layers",
+        "photo_relation": "Actual office chairs and laptop in shared work area; entrepreneurship context, not a presidential meeting."
+      },
+      {
+        "photo_id": "6550408",
+        "source_page": "https://www.pexels.com/photo/notebook-and-books-on-wooden-desk-6550408/",
+        "author": "Tima Miroshnichenko",
+        "license_url": "https://www.pexels.com/license/",
+        "source_sha256": "c3f1fde471380505f765a5e1832aa4d2b91ed990eddda2d6212d0abf80d10e32",
+        "reviewed_source_sha256": "c3f1fde471380505f765a5e1832aa4d2b91ed990eddda2d6212d0abf80d10e32",
+        "source_identity_check": "reviewed-byte-sha256",
+        "crop": "contain: entire original photograph",
+        "photo_frame": [
+          135.12652296157455,
+          74,
+          809.7469540768509,
+          540
+        ],
+        "typography": "Exact700/450 glyph outlines; not editable text layers",
+        "photo_relation": "Actual open books, notebook and laptop on desk; learning and education context."
+      },
+      {
+        "photo_id": "8970674",
+        "source_page": "https://www.pexels.com/photo/folder-with-budget-planning-on-a-table-by-a-laptop-and-a-pen-8970674/",
+        "author": "Leeloo The First",
+        "license_url": "https://www.pexels.com/license/",
+        "source_sha256": "0678329f1c6b7b8112593eb42937f6a118d6e6c2d6ec9b57e0b3c23874a8d966",
+        "reviewed_source_sha256": "0678329f1c6b7b8112593eb42937f6a118d6e6c2d6ec9b57e0b3c23874a8d966",
+        "source_identity_check": "reviewed-byte-sha256",
+        "crop": "contain: entire original photograph",
+        "photo_frame": [
+          520,
+          178.46499999999997,
+          496,
+          743.07
+        ],
+        "typography": "Exact700/450 glyph outlines; not editable text layers",
+        "photo_relation": "Actual business planning document, clipboard, pen and laptop; paper values are not government funding figures."
+      },
+      {
+        "photo_id": "8472371",
+        "source_page": "https://www.pexels.com/photo/laptop-placed-on-top-of-stack-of-books-8472371/",
+        "author": "Cup of Couple",
+        "license_url": "https://www.pexels.com/license/",
+        "source_sha256": "1bef285ab32ad3f4dc8918b26b3a9c6d66938af13a093f4e88a9b86a24920c8a",
+        "reviewed_source_sha256": "1bef285ab32ad3f4dc8918b26b3a9c6d66938af13a093f4e88a9b86a24920c8a",
+        "source_identity_check": "reviewed-byte-sha256",
+        "crop": "contain: entire original photograph",
+        "photo_frame": [
+          81.90412671946643,
+          450,
+          460.19174656106713,
+          690
+        ],
+        "typography": "Exact700/450 glyph outlines; not editable text layers",
+        "photo_relation": "Actual blank-screen laptop on books; information lookup context, not a government application page."
+      }
+    ]
   }
 }
