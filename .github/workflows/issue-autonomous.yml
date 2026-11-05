@@ -7,7 +7,7 @@ on:
     inputs:
       mode:
         type: choice
-        options: [preflight, research-check, preview, operate]
+        options: [preflight, research-check, transport-check, preview, operate]
         default: preflight
 permissions:
   contents: write
@@ -47,6 +47,12 @@ jobs:
           PUBLISH_PAUSED: ${{ vars.CODEX_PUBLISH_PAUSED || '1' }}
           ISSUE_AUTONOMOUS_ACTIVE: ${{ vars.ISSUE_AUTONOMOUS_ACTIVE || '0' }}
           ISSUE_MODE: ${{ inputs.mode || 'operate' }}
+      - run: python cloud/issue_transport_check.py
+        if: inputs.mode == 'transport-check'
+        env:
+          ISSUE_APPROVED_MUSIC: ${{ secrets.ISSUE_APPROVED_MUSIC }}
+          ISSUE_MEDIA_UPLOAD_KEY: ${{ secrets.ISSUE_MEDIA_UPLOAD_KEY }}
+          ISSUE_MEDIA_BASE: ${{ vars.ISSUE_MEDIA_BASE }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:
