@@ -31,5 +31,15 @@
     "canva_generations": 0,
     "pc_media_downloads": 0,
     "error": "Claim support must be an exact observed source excerpt"
+  },
+  "preview-41985398090": {
+    "stage": "starting",
+    "mode": "preview",
+    "day": "2026-11-05",
+    "format": "carousel",
+    "published": false,
+    "gemini_calls": 0,
+    "canva_generations": 0,
+    "pc_media_downloads": 0
   }
 }
