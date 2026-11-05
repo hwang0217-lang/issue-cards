@@ -486,13 +486,14 @@
     "error": "Every claim requires two independent publishers"
   },
   "preview-41990080444": {
-    "stage": "starting",
+    "stage": "blocked",
     "mode": "preview",
     "day": "2026-11-05",
     "format": "carousel",
     "published": false,
     "gemini_calls": 0,
     "canva_generations": 0,
-    "pc_media_downloads": 0
+    "pc_media_downloads": 0,
+    "error": "Official remarks must remain attributed, not presented as an implemented measure"
   }
 }
