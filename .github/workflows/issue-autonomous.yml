@@ -13,6 +13,9 @@ on:
         type: choice
         options: [carousel, motion_reel]
         default: carousel
+      fact_source_run:
+        type: string
+        required: false
 permissions:
   contents: write
 concurrency:
@@ -63,6 +66,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           ISSUE_MODE: editorial-preview
+          ISSUE_FACT_SOURCE_RUN: ${{ inputs.fact_source_run }}
       - run: python cloud/issue_transport_check.py
         if: inputs.mode == 'transport-check'
         env:
