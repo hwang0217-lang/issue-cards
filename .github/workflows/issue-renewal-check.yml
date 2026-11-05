@@ -1,0 +1,32 @@
+name: Issue token renewal storage check
+on:
+  workflow_dispatch:
+permissions: {}
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests
+      - name: Read-only legacy refresh writer check
+        env:
+          LEGACY_SECRET_WRITER: ${{ secrets.GH_PAT }}
+        run: |
+          python - <<'PY'
+          import os,json,requests
+          from pathlib import Path
+          key=os.environ.get('LEGACY_SECRET_WRITER','')
+          result={'configured':bool(key),'mutation_attempted':False}
+          if key:
+              r=requests.get('https://api.github.com/repos/hwang0217-lang/issue-cards/actions/secrets/public-key',headers={'Authorization':'Bearer '+key,'Accept':'application/vnd.github+json'},timeout=30,allow_redirects=False)
+              result.update(http=r.status_code,oauth_scopes=r.headers.get('X-OAuth-Scopes','fine-grained-or-unavailable'))
+          Path('renewal-check.json').write_text(json.dumps(result))
+          print(json.dumps(result))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: issue-renewal-check
+          path: renewal-check.json
+          retention-days: 1
