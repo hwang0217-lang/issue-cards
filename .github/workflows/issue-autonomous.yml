@@ -7,7 +7,7 @@ on:
     inputs:
       mode:
         type: choice
-        options: [preflight, research-check, transport-check, preview, operate]
+        options: [preflight, research-check, transport-check, editorial-preview, preview, operate]
         default: preflight
       format:
         type: choice
@@ -52,6 +52,15 @@ jobs:
           ISSUE_AUTONOMOUS_ACTIVE: ${{ vars.ISSUE_AUTONOMOUS_ACTIVE || '0' }}
           ISSUE_MODE: ${{ inputs.mode || 'operate' }}
           ISSUE_PREVIEW_FORMAT: ${{ inputs.format || 'carousel' }}
+      - name: Verified real-photo editorial preview only
+        if: inputs.mode == 'editorial-preview'
+        run: python cloud/issue_editorial_preview.py
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          CANVA_GATEWAY_GH_TOKEN: ${{ secrets.CANVA_GATEWAY_GH_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          ISSUE_MODE: editorial-preview
       - run: python cloud/issue_transport_check.py
         if: inputs.mode == 'transport-check'
         env:

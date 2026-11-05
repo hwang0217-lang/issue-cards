@@ -1,0 +1,99 @@
+{
+  "basis_date": "2026-11-05",
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://www.korea.kr/news/policyNewsView.do?newsId=148975118",
+      "title": "이 대통령 \"창업 사회로의 전환 필수적…'국민 창업 시대' 나아가야\"",
+      "outlet": "정책브리핑",
+      "official": true,
+      "published": "2026-11-05",
+      "date_precision": "day",
+      "published_metadata_raw": "2026-11-05T15:41:00Z",
+      "observed_at": "2026-11-05T22:09:21.355658+09:00",
+      "body_sha256": "6f41fea867c22496ce9bb3b7ee21103e581550e1793cc94d69656ae1d7864121"
+    },
+    {
+      "id": "S2",
+      "url": "https://www.yna.co.kr/view/AKR20261105114600001",
+      "title": "李대통령 \"창업사회로 전환해야…대한민국을 창업 인큐베이터로\"",
+      "outlet": "연합뉴스",
+      "official": false,
+      "published": "2026-11-05T14:32:57+09:00",
+      "date_precision": "timestamp",
+      "published_metadata_raw": "2026-11-05T14:32:57+09:00",
+      "observed_at": "2026-11-05T22:09:21.555652+09:00",
+      "body_sha256": "5575790d01b9dfe0e9ef08b6859b0b9488800606c75ae7cc09b02d00f96cee85"
+    },
+    {
+      "id": "S3",
+      "url": "https://news.sbs.co.kr/news/endPage.do?news_id=N1008832428&plink=RSSLINK&cooper=RSSREADER",
+      "title": "이 대통령 \"대한민국을 '창업 인큐베이터'로…성장 방식 대전환\"",
+      "outlet": "SBS",
+      "official": false,
+      "published": "2026-11-05T15:08:02+09:00",
+      "date_precision": "timestamp",
+      "published_metadata_raw": "2026-11-05T15:08:02+09:00",
+      "observed_at": "2026-11-05T22:09:21.736083+09:00",
+      "body_sha256": "07158baf3ab893ce4afcf1e30bbb0f731842f3979899b28f8ca9529081feb04f"
+    }
+  ],
+  "claims": [
+    {
+      "text": "11월5일 대통령은 국민창업시대로 나아가야 한다고 발언했다.",
+      "status": "발표",
+      "source_meaning": "발언 공개, 제도 시행 아님",
+      "evidence": [
+        {
+          "source_id": "S1",
+          "start": 54,
+          "end": 71,
+          "quote_sha256": "49869853e92ba9582f6c37e06c255eb877dfccff511271d5efa77ff704ff70eb"
+        },
+        {
+          "source_id": "S2",
+          "start": 284,
+          "end": 310,
+          "quote_sha256": "4b57599746bdd39d6f49c1bd775e51a2eba24a86d7a9f41439640dfec1e3b5e4"
+        }
+      ]
+    },
+    {
+      "text": "대통령은 교육과정 개선, 재정지원 확대, 규제혁신에 국가 역량을 모을 것을 주문했다.",
+      "status": "추진",
+      "evidence": [
+        {
+          "source_id": "S1",
+          "start": 273,
+          "end": 295,
+          "quote_sha256": "dd7d11f95c3c2f08cde138de6f1fe3661896b6e50fcc95544c2166f77bb361d2"
+        },
+        {
+          "source_id": "S3",
+          "start": 588,
+          "end": 611,
+          "quote_sha256": "8097c8c0e9111f674e9bc3f8621ac98cb09c66866f0a623167a9f2af8417ed5a"
+        }
+      ]
+    },
+    {
+      "text": "대통령은 스타트업 성장을 돕는 금융·기술·판로의 다층적 지원체계 필요성을 강조했다.",
+      "status": "추진",
+      "evidence": [
+        {
+          "source_id": "S1",
+          "start": 835,
+          "end": 859,
+          "quote_sha256": "d5095aa681660aa6ccf3cf271f23a0c3d5940fa15d9651618aa4747492c22398"
+        },
+        {
+          "source_id": "S2",
+          "start": 807,
+          "end": 832,
+          "quote_sha256": "839523ce3b54e79a6194e294d41115bdf94449ee92d4346994eda029410d22b8"
+        }
+      ]
+    }
+  ],
+  "scope": "Human checked original full bodies. Independent server fact check required. Public quote references are offsets+hash only."
+}

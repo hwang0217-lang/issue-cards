@@ -1,0 +1,292 @@
+{
+  "account": "issue.cards",
+  "design_policy": "impeccable-real-photo-v1",
+  "basis_date": "2026-11-05",
+  "topic": "국민창업시대 발언, 정책 방향과 신청 공고를 구분해 읽기",
+  "claims_mode": "verified_news",
+  "canva_brief": "Impeccable Read mode: source-grounded social news carousel1080x1350. White/charcoal/cool-gray with restrained navy text. Distinct content-led compositions: wide workspace cover, side office scene with attributed speech paraphrase, learning photo over three policy directions, financial paperwork alongside support priorities, laptop with reminder to consult separate notices. Genuine contextual stock photography on every page, prominent 자료사진 notice below photo, not portraits or fabricated events. Preserve photo frames with contain, separate text by24px, Noto700/450 actual glyph shapes and main body44px+. No ornamental lines/fake data or implied enacted funding. Exact Korean copy and factual basis as supplied.",
+  "caption": "국민창업시대, 지금 신청하는 제도일까요?\n\n2026년 11월 5일 수석보좌관회의에서 나온 대통령 발언의 요지를 정리했습니다. 창업 사회로의 전환, 교육·재정·규제 혁신, 금융·기술·판로 지원의 필요성을 강조한 내용입니다. 구체적인 사업의 지원 대상·금액·접수 일정은 해당 사업의 공식 공고에서 따로 확인해 주세요.\n\n사진은 모두 실제 촬영된 맥락용 자료사진입니다. 대통령 회의 장면, 지원 대상 기업, 정책 신청 화면을 촬영한 사진이 아닙니다.\n사진: Letícia Alvares, Mikhail Nilov, Tima Miroshnichenko, Leeloo The First, Cup of Couple / Pexels. 기획·편집에 AI를 활용했습니다.\n\n기준일: 2026-11-05\n출처:\nhttps://www.korea.kr/news/policyNewsView.do?newsId=148975118\nhttps://www.yna.co.kr/view/AKR20261105114600001\nhttps://news.sbs.co.kr/news/endPage.do?news_id=N1008832428&plink=RSSLINK&cooper=RSSREADER\n\n#사회이슈 #정책읽기 #창업 #뉴스정리",
+  "visual_differences": "Wide cover/photo; left vertical work scene/right text; wide education scene over explanation; right close-up with left headline; left laptop/right editorial checklist. Five distinct content-based compositions, not text/color-box rotation.",
+  "claims": [
+    {
+      "text": "11월5일 대통령은 국민창업시대로 나아가야 한다고 발언했다.",
+      "status": "발표",
+      "source_meaning": "발언 공개, 제도 시행 아님",
+      "evidence": [
+        {
+          "source_id": "S1",
+          "start": 54,
+          "end": 71,
+          "quote_sha256": "49869853e92ba9582f6c37e06c255eb877dfccff511271d5efa77ff704ff70eb"
+        },
+        {
+          "source_id": "S2",
+          "start": 284,
+          "end": 310,
+          "quote_sha256": "4b57599746bdd39d6f49c1bd775e51a2eba24a86d7a9f41439640dfec1e3b5e4"
+        }
+      ]
+    },
+    {
+      "text": "대통령은 교육과정 개선, 재정지원 확대, 규제혁신에 국가 역량을 모을 것을 주문했다.",
+      "status": "추진",
+      "evidence": [
+        {
+          "source_id": "S1",
+          "start": 273,
+          "end": 295,
+          "quote_sha256": "dd7d11f95c3c2f08cde138de6f1fe3661896b6e50fcc95544c2166f77bb361d2"
+        },
+        {
+          "source_id": "S3",
+          "start": 588,
+          "end": 611,
+          "quote_sha256": "8097c8c0e9111f674e9bc3f8621ac98cb09c66866f0a623167a9f2af8417ed5a"
+        }
+      ]
+    },
+    {
+      "text": "대통령은 스타트업 성장을 돕는 금융·기술·판로의 다층적 지원체계 필요성을 강조했다.",
+      "status": "추진",
+      "evidence": [
+        {
+          "source_id": "S1",
+          "start": 835,
+          "end": 859,
+          "quote_sha256": "d5095aa681660aa6ccf3cf271f23a0c3d5940fa15d9651618aa4747492c22398"
+        },
+        {
+          "source_id": "S2",
+          "start": 807,
+          "end": 832,
+          "quote_sha256": "839523ce3b54e79a6194e294d41115bdf94449ee92d4346994eda029410d22b8"
+        }
+      ]
+    }
+  ],
+  "sections": [
+    {
+      "title": "국민창업시대,\n어디까지 왔나",
+      "body": "11월 5일 대통령 발언\n정책 방향과 신청 공고를 구분해요",
+      "photo_note": "자료사진",
+      "photo_id": "36123565",
+      "layout": {
+        "photo": [
+          72,
+          390,
+          936,
+          560
+        ],
+        "photo_note": [
+          72,
+          974,
+          936,
+          50
+        ],
+        "title": [
+          72,
+          72,
+          936,
+          260
+        ],
+        "body": [
+          72,
+          1060,
+          936,
+          150
+        ],
+        "title_size": 88,
+        "body_size": 44
+      },
+      "photo_relation": "Actual small workspace with laptop, books and white table; startup context, not an actual policy venue.",
+      "image_prompt_en": "Actual small workspace with laptop, books and white table; startup context, not an actual policy venue.",
+      "visual_role": "Actual small workspace with laptop, books and white table; startup context, not an actual policy venue.",
+      "required_visual_objects": [
+        "laptop",
+        "desk"
+      ],
+      "claim_ids": [
+        0
+      ]
+    },
+    {
+      "title": "오늘 나온 건\n‘전환’ 주문",
+      "body": "대통령은\n창업 사회로의\n전환이 필요하다고\n밝혔어요",
+      "photo_note": "자료사진",
+      "photo_id": "9300721",
+      "layout": {
+        "photo": [
+          72,
+          300,
+          440,
+          760
+        ],
+        "photo_note": [
+          72,
+          1084,
+          936,
+          50
+        ],
+        "title": [
+          560,
+          82,
+          456,
+          210
+        ],
+        "body": [
+          560,
+          440,
+          456,
+          340
+        ],
+        "title_size": 70,
+        "body_size": 44
+      },
+      "photo_relation": "Actual office chairs and laptop in shared work area; entrepreneurship context, not a presidential meeting.",
+      "image_prompt_en": "Actual office chairs and laptop in shared work area; entrepreneurship context, not a presidential meeting.",
+      "visual_role": "Actual office chairs and laptop in shared work area; entrepreneurship context, not a presidential meeting.",
+      "required_visual_objects": [
+        "chair",
+        "laptop"
+      ],
+      "claim_ids": [
+        0
+      ]
+    },
+    {
+      "title": "교육·재정·규제\n세 가지 주문",
+      "body": "교육 개선·재정지원 확대·규제 혁신\n세 방향을 강조한 발언이에요",
+      "photo_note": "자료사진",
+      "photo_id": "6550408",
+      "layout": {
+        "photo": [
+          72,
+          74,
+          936,
+          540
+        ],
+        "photo_note": [
+          72,
+          638,
+          936,
+          50
+        ],
+        "title": [
+          72,
+          732,
+          936,
+          210
+        ],
+        "body": [
+          72,
+          1010,
+          936,
+          200
+        ],
+        "title_size": 76,
+        "body_size": 46
+      },
+      "photo_relation": "Actual open books, notebook and laptop on desk; learning and education context.",
+      "image_prompt_en": "Actual open books, notebook and laptop on desk; learning and education context.",
+      "visual_role": "Actual open books, notebook and laptop on desk; learning and education context.",
+      "required_visual_objects": [
+        "book",
+        "notebook"
+      ],
+      "claim_ids": [
+        1
+      ]
+    },
+    {
+      "title": "금융·기술,\n판로까지",
+      "body": "금융·기술·판로 지원의\n필요성도 강조한 발언이에요",
+      "photo_note": "자료사진",
+      "photo_id": "8970674",
+      "layout": {
+        "photo": [
+          520,
+          120,
+          496,
+          860
+        ],
+        "photo_note": [
+          520,
+          1004,
+          496,
+          50
+        ],
+        "title": [
+          72,
+          130,
+          400,
+          260
+        ],
+        "body": [
+          72,
+          1080,
+          936,
+          150
+        ],
+        "title_size": 72,
+        "body_size": 46
+      },
+      "photo_relation": "Actual business planning document, clipboard, pen and laptop; paper values are not government funding figures.",
+      "image_prompt_en": "Actual business planning document, clipboard, pen and laptop; paper values are not government funding figures.",
+      "visual_role": "Actual business planning document, clipboard, pen and laptop; paper values are not government funding figures.",
+      "required_visual_objects": [
+        "paper",
+        "document",
+        "clipboard"
+      ],
+      "claim_ids": [
+        2
+      ]
+    },
+    {
+      "title": "지원 신청은\n별도 공고 확인",
+      "body": "이 자료는\n발언 요지예요\n대상·금액·일정은\n별도 공고 확인",
+      "photo_note": "자료사진",
+      "photo_id": "8472371",
+      "layout": {
+        "photo": [
+          72,
+          450,
+          480,
+          690
+        ],
+        "photo_note": [
+          72,
+          1164,
+          480,
+          50
+        ],
+        "title": [
+          72,
+          75,
+          936,
+          230
+        ],
+        "body": [
+          600,
+          500,
+          416,
+          340
+        ],
+        "title_size": 84,
+        "body_size": 44
+      },
+      "photo_relation": "Actual blank-screen laptop on books; information lookup context, not a government application page.",
+      "image_prompt_en": "Actual blank-screen laptop on books; information lookup context, not a government application page.",
+      "visual_role": "Actual blank-screen laptop on books; information lookup context, not a government application page.",
+      "required_visual_objects": [
+        "laptop",
+        "book"
+      ],
+      "claim_ids": [
+        0,
+        1,
+        2
+      ]
+    }
+  ]
+}

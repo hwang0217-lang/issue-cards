@@ -91,7 +91,7 @@ def validate_literal_inventory(inventory, sections):
         text=page.get('visible_text', '')
         if isinstance(text,list): text=' '.join(text)
         observed=normalized_text(text)
-        for field in ('title','body','context_label'):
+        for field in ('title','body','context_label','photo_note'):
             expected=normalized_text(section.get(field,''))
             if expected and expected not in observed:
                 raise RuntimeError('Actual image OCR does not match the exact approved '+field)

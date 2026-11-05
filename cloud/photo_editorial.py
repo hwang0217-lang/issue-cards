@@ -34,7 +34,8 @@ def validate_photo_plan(draft, catalog, height):
             raise RuntimeError('Photo must explain the page, not decorate it')
         layout = section.get('layout', {})
         occupied = []
-        for name in ('photo', 'title', 'body', 'diagram'):
+        for name in ('photo', 'title', 'body', 'diagram', 'photo_note'):
+            if name == 'photo_note' and not section.get('photo_note'): continue
             if name == 'diagram' and not layout.get('diagram'): continue
             if name == 'body' and not section.get('body'):
                 continue
@@ -171,10 +172,10 @@ def make_pdf(draft, catalog, height, destination, cache):
         dw, dh = im.width * scale, im.height * scale
         px, py = x + (w-dw)/2, y + (h-dh)/2
         c.drawImage(ImageReader(io.BytesIO(data)), px, height-py-dh, dw, dh)
-        for key in ('title', 'body'):
+        for key in ('title', 'body', 'photo_note'):
             text = section.get(key, '')
             if not text: continue
-            tx, ty, tw, th = layout[key]; size = layout[key+'_size']; leading = size*1.32
+            tx, ty, tw, th = layout[key]; size = layout.get(key+'_size',36); leading = size*1.32
             lines = text.split('\n')
             face = 'NordicHeading' if key == 'title' else 'NordicBody'
             if len(lines)*leading > th or any(pdfmetrics.stringWidth(line, face, size) > tw for line in lines):
