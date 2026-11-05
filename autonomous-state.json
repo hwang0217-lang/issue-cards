@@ -44,13 +44,214 @@
     "error": "No fresh independent three-source news cluster; no filler post. None of the provided groups have all three headlines covering the exact same concrete event. In group_6, the 정책브리핑 article is about the 100th anniversary of Hangeul Braille and the"
   },
   "preview-41987566292": {
-    "stage": "starting",
+    "stage": "drafted",
     "mode": "preview",
     "day": "2026-11-05",
     "format": "carousel",
     "published": false,
-    "gemini_calls": 0,
+    "gemini_calls": 3,
     "canva_generations": 0,
-    "pc_media_downloads": 0
+    "pc_media_downloads": 0,
+    "source_evidence": {
+      "basis_date": "2026-11-05",
+      "sources": [
+        {
+          "id": "0",
+          "url": "https://www.korea.kr/news/policyNewsView.do?newsId=148975118",
+          "title": "이 대통령 \"창업 사회로의 전환 필수적…'국민 창업 시대' 나아가야\"",
+          "outlet": "정책브리핑",
+          "official": true,
+          "published": "2026-11-05",
+          "date_precision": "day",
+          "published_metadata_raw": "2026-11-05T15:41:00Z",
+          "observed_at": "2026-11-05T16:29:59.851892+09:00",
+          "body_sha256": "6f41fea867c22496ce9bb3b7ee21103e581550e1793cc94d69656ae1d7864121"
+        },
+        {
+          "id": "253",
+          "url": "https://www.yna.co.kr/view/AKR20261105114600001",
+          "title": "李대통령 \"창업사회로 전환해야…대한민국을 창업 인큐베이터로\"",
+          "outlet": "연합뉴스",
+          "official": false,
+          "published": "2026-11-05T14:32:57+09:00",
+          "date_precision": "timestamp",
+          "published_metadata_raw": "2026-11-05T14:32:57+09:00",
+          "observed_at": "2026-11-05T16:31:46.012191+09:00",
+          "body_sha256": "cfa54ebd83e2d52427282f888d777859118da2f23537c63b922a1b3fef6307ca"
+        },
+        {
+          "id": "57",
+          "url": "https://news.sbs.co.kr/news/endPage.do?news_id=N1008832428&plink=RSSLINK&cooper=RSSREADER",
+          "title": "이 대통령 \"대한민국을 '창업 인큐베이터'로…성장 방식 대전환\"",
+          "outlet": "SBS",
+          "official": false,
+          "published": "2026-11-05T15:08:02+09:00",
+          "date_precision": "timestamp",
+          "published_metadata_raw": "2026-11-05T15:08:02+09:00",
+          "observed_at": "2026-11-05T16:31:46.670942+09:00",
+          "body_sha256": "e58b5bd3e3ce784c8b7b22a9261eee3eaf86d44eebf82ace62d9fcdfe91758ed"
+        }
+      ],
+      "claims": [
+        {
+          "text": "대한민국이 거대한 창업 인큐베이터가 되어 국민 모두가 성장의 주체가 되는 국민 창업 시대로 나아가야 한다고 밝혔다.",
+          "status": "발표",
+          "evidence_span_ids": [
+            "0:0",
+            "253:3",
+            "57:3",
+            "57:4"
+          ],
+          "evidence": [
+            {
+              "source_id": "0",
+              "quote_sha256": "c9af3c7781d2af09ebd730068d5ef75eb9f172d5fb825bad42109987ff92122c",
+              "quote_characters": 100
+            },
+            {
+              "source_id": "253",
+              "quote_sha256": "228c51122aed1614cf6a946f6d99944d814270889fe80834d97958e90fcc47f8",
+              "quote_characters": 100
+            },
+            {
+              "source_id": "57",
+              "quote_sha256": "d5c409d7fad3765f6deb7daa012e32386ef9032ca3d263652bb791a877c4d1f8",
+              "quote_characters": 100
+            },
+            {
+              "source_id": "57",
+              "quote_sha256": "c03e798a27c5b641ebde79512800917e29a54506a214208dc26e06560da5d063",
+              "quote_characters": 100
+            }
+          ]
+        },
+        {
+          "text": "인공지능과 로봇 기술의 발전으로 고용 구조가 빠르게 재편되고 있으며 기존 경제·사회 시스템이 한계에 직면했다고 진단했다.",
+          "status": "발표",
+          "evidence_span_ids": [
+            "0:2",
+            "0:12",
+            "253:5",
+            "253:6",
+            "57:5"
+          ],
+          "evidence": [
+            {
+              "source_id": "0",
+              "quote_sha256": "340fd62b95cd520bea0f8d7c810c027cbee4405bad311549bbc1fd8145ad2d7e",
+              "quote_characters": 100
+            },
+            {
+              "source_id": "0",
+              "quote_sha256": "5d455400c4dda638f12e3bd514d0946e8db961bfa04e6706dfbb8ec2877e3cb1",
+              "quote_characters": 100
+            },
+            {
+              "source_id": "253",
+              "quote_sha256": "f8c389ee10d7ae2120e57be5af5172ce30d518c1e028826f8ff071374389dadc",
+              "quote_characters": 100
+            },
+            {
+              "source_id": "253",
+              "quote_sha256": "a3acc935f54eb754116e49f7131394a96b411323096e7e263e814d8bc8f76a04",
+              "quote_characters": 100
+            },
+            {
+              "source_id": "57",
+              "quote_sha256": "9e9f22f1df3d91bdb0052330b3f1cd4a2570eb664d16b7db8bd194f57f3276c6",
+              "quote_characters": 100
+            }
+          ]
+        },
+        {
+          "text": "교육과정 개선, 재정지원 확대, 규제혁신을 통해 다양한 경제 주체들이 직접 새로운 시장을 만들어내는 창업 사회로 전환해야 한다고 강조했다.",
+          "status": "발표",
+          "evidence_span_ids": [
+            "0:3",
+            "253:8",
+            "57:7"
+          ],
+          "evidence": [
+            {
+              "source_id": "0",
+              "quote_sha256": "75f8cde1ffbba38a456d18a1acf62d4c33748744d3a1992169902e84f43b65a7",
+              "quote_characters": 100
+            },
+            {
+              "source_id": "253",
+              "quote_sha256": "811f4bc7bb8529b5298c11fe50af690b24c0d03865dbedf70166e32b8c36268a",
+              "quote_characters": 100
+            },
+            {
+              "source_id": "57",
+              "quote_sha256": "0bffd97f4edf2cd72570c36c00aa0f526872ddabc751493fecdd29921868ca54",
+              "quote_characters": 100
+            }
+          ]
+        },
+        {
+          "text": "유망 스타트업이 글로벌 기업으로 성장할 수 있도록 금융과 기술, 판로 개척에 다층적 지원 체계를 구축해야 한다고 밝혔다.",
+          "status": "발표",
+          "evidence_span_ids": [
+            "0:10",
+            "0:11",
+            "253:10",
+            "57:9",
+            "57:10"
+          ],
+          "evidence": [
+            {
+              "source_id": "0",
+              "quote_sha256": "c66ae52851a071c48a44f467af4e999569405855f8b8e287f0da08a7f5e80545",
+              "quote_characters": 100
+            },
+            {
+              "source_id": "0",
+              "quote_sha256": "af20e44d596a07781afb222c917e1e3734d70813b06d0cc97b9852195e652480",
+              "quote_characters": 100
+            },
+            {
+              "source_id": "253",
+              "quote_sha256": "4964dca711a563b0e34da15ec8926d8e9ef74293a1d6b19fd21eaf4b923b1093",
+              "quote_characters": 100
+            },
+            {
+              "source_id": "57",
+              "quote_sha256": "8590a384c2ba70d80dc73f5ea7e5e7ae8024ddaf9aca32076b6904df196b0d79",
+              "quote_characters": 100
+            },
+            {
+              "source_id": "57",
+              "quote_sha256": "1815bd72f1a2f806af74b9ab0fb1f074b99c3b5a184434e16498fd5ad9c3af51",
+              "quote_characters": 100
+            }
+          ]
+        }
+      ],
+      "fact_review": {
+        "verdict": "pass",
+        "all_text_supported": true,
+        "status_dates_correct": true,
+        "independent_publishers": true,
+        "notes": "All claims in the Canva slides and caption are fully verified against independent news sources (정책브리핑, 연합뉴스, SBS) covering the November 5, 2026 Presidential Senior Secretaries Meeting."
+      }
+    },
+    "topic": "국민창업시대와 성장 방식 대전환",
+    "model": "gemini-3.5-flash-lite",
+    "recent_posts_compared": 9,
+    "reference_images_compared": 55,
+    "draft_usage": {
+      "promptTokenCount": 10762,
+      "candidatesTokenCount": 1630,
+      "totalTokenCount": 12392,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 10762
+        }
+      ],
+      "serviceTier": "standard",
+      "production_model_calls": 3
+    }
   }
 }
