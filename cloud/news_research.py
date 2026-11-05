@@ -1,6 +1,8 @@
 """Fresh publisher originals, bounded quotation evidence, fail-closed news drafting."""
 import hashlib,json,re,unicodedata,math
 from collections import Counter
+from itertools import combinations
+from pathlib import Path
 from datetime import datetime,timedelta
 from email.utils import parsedate_to_datetime
 from urllib.parse import urlparse,urljoin
@@ -172,18 +174,34 @@ def create_news_draft(brief,kind,day,captions):
             score=similar(official['title'],c['title'])
             if score>publishers.get(c['outlet'],(-1,None))[0]:publishers[c['outlet']]=(score,c)
         ranked=sorted(publishers.values(),key=lambda x:x[0],reverse=True)
-        if len(ranked)>=2:
-            group=[official,ranked[0][1],ranked[1][1]]
-            choices.append({'choice':'group_'+official['id'],'sources':[{k:v for k,v in c.items() if k not in ('verified_original',)} for c in group]})
+        for a,b in combinations(ranked[:3],2):
+            group=[official,a[1],b[1]]
+            choices.append({'choice':'group_'+'_'.join(c['id'] for c in group),'sources':[{k:v for k,v in c.items() if k not in ('verified_original',)} for c in group]})
     if not choices:raise RuntimeError('No structurally independent source groups available')
-    schema={'type':'object','required':['choice','supported','reason'],'properties':{'choice':{'type':'string','enum':[c['choice'] for c in choices]},'supported':{'type':'boolean'},'reason':{'type':'string'}}}
+    names=[c['choice'] for c in choices]
+    schema={'type':'object','required':['choice','alternatives','supported','reason'],'properties':{'choice':{'type':'string','enum':names},'alternatives':{'type':'array','maxItems':2,'items':{'type':'string','enum':names}},'supported':{'type':'boolean'},'reason':{'type':'string'}}}
     selection,_=generate_json('Select ONE fresh concrete Korean public-life policy topic covered by at least THREE INDEPENDENT publishers, including ONE official 정책브리핑 original. '+
         'Each group already has three different publishers, but grouping by text similarity can be WRONG. Choose a group ONLY if ALL THREE headlines clearly cover the SAME concrete event/policy. '+
-        'Return choice,supported,reason. If none truly matches set supported=false. Never combine unrelated events. Recent posts, avoid repeats:'+json.dumps(captions,ensure_ascii=False)+'\nGroups:'+json.dumps(choices,ensure_ascii=False),schema=schema)
+        'Return choice,alternatives,supported,reason. Choose up to TWO backup groups only when ALL THREE headlines in each backup also cover the SAME concrete event. Backups may be empty. If none truly matches set supported=false. Never combine unrelated events. Prefer concrete citizen-facing changes over general political remarks when equally well supported. Recent posts, avoid repeats:'+json.dumps(captions,ensure_ascii=False)+'\nGroups:'+json.dumps(choices,ensure_ascii=False),schema=schema)
     group=next((c for c in choices if c['choice']==selection.get('choice')),None)
     if selection.get('supported') is not True or not group:raise RuntimeError('No fresh independent three-source news cluster; no filler post. '+str(selection.get('reason',''))[:180])
-    ids=[c['id'] for c in group['sources']]
-    articles=[article(next(c for c in candidates if c['id']==i),day) for i in ids]
+    out=Path('cloud-reports');out.mkdir(exist_ok=True)
+    (out/'source-selection.json').write_text(json.dumps({'selected':selection,'groups':[c for c in choices if c['choice'] in [selection['choice']]+selection.get('alternatives',[])]},ensure_ascii=False,indent=2),encoding='utf-8')
+    articles=None;cache={};failures=[]
+    order=list(dict.fromkeys([selection['choice']]+selection.get('alternatives',[])))[:3]
+    for choice in order:
+        current=next(c for c in choices if c['choice']==choice)
+        originals=[]
+        for item in current['sources']:
+            candidate=next(c for c in candidates if c['id']==item['id'])
+            if candidate['url'] not in cache:
+                try:cache[candidate['url']]=article(candidate,day)
+                except (RuntimeError,requests.RequestException) as error:cache[candidate['url']]=str(error)[:200]
+            value=cache[candidate['url']]
+            if isinstance(value,str):failures.append(candidate['outlet']+': '+value);break
+            originals.append(value)
+        if len(originals)==3:articles=originals;break
+    if articles is None:raise RuntimeError('No readable three-original group: '+'; '.join(dict.fromkeys(failures))[:280])
     if len({a['outlet'] for a in articles})<3 or not any(a['official'] for a in articles):raise RuntimeError('Independent original-source group invalid')
     print('Verified original publishers: '+', '.join(a['outlet'] for a in articles),flush=True)
     # Models choose observed span IDs; they cannot rewrite quotations or invent evidence.
