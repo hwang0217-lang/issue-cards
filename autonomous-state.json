@@ -44,7 +44,7 @@
     "error": "No fresh independent three-source news cluster; no filler post. None of the provided groups have all three headlines covering the exact same concrete event. In group_6, the 정책브리핑 article is about the 100th anniversary of Hangeul Braille and the"
   },
   "preview-41987566292": {
-    "stage": "canva_generating",
+    "stage": "human_rejected",
     "mode": "preview",
     "day": "2026-11-05",
     "format": "carousel",
@@ -471,6 +471,7 @@
       "music_mood": "clean"
     },
     "request_id": "issue-auto-41987566292-v1",
-    "canva_run_id": "41987888096"
+    "canva_run_id": "41987888096",
+    "error": "Official remarks lost attribution in image copy; body too long. Both workflows cancelled before acceptance. Do not publish this version."
   }
 }
