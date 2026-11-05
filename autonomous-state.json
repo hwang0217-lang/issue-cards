@@ -517,5 +517,14 @@
     "canva_generations": 0,
     "pc_media_downloads": 0,
     "error": "Original story body unavailable: 동아일보 / 524 (0 chars); no headline fallback"
+  },
+  "editorial-preview-42035498237": {
+    "mode": "editorial-preview",
+    "basis_date": "2026-11-05",
+    "topic": "국민창업시대 발언, 정책 방향과 신청 공고를 구분해 읽기",
+    "published": false,
+    "instagram_writes": 0,
+    "pc_video_downloads": 0,
+    "stage": "source_check"
   }
 }
