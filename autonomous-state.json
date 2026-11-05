@@ -1312,6 +1312,84 @@
           "photo_text": ""
         }
       ]
+    },
+    "visual_review": {
+      "verdict": "pass",
+      "quality_score": 9.2,
+      "comparison_notes": "The actual Canva export matches the required impeccable read mode policy. Photos are contextually accurate Pexels stock images with mandatory source attribution notices. Typography, spacing, and mobile rendering are clean and correctly structured without overlapping elements or broken Korean glyph shapes.",
+      "corrections": [],
+      "pages": [
+        {
+          "text_correct": true,
+          "no_overlap": true,
+          "readable_mobile": true,
+          "facts_safe": true,
+          "canva_quality": true,
+          "varied": true,
+          "photo_matches_topic": true,
+          "photo_intact": true,
+          "mobile_text_not_clipped": true,
+          "safe_areas": true,
+          "observations": "Workspace cover layout is clean with clear headline hierarchy and properly credited contextual stock photography.",
+          "mobile_observations": "The mobile view at 390px scales correctly, preserving readable typography and generous whitespace around the main title."
+        },
+        {
+          "text_correct": true,
+          "no_overlap": true,
+          "readable_mobile": true,
+          "facts_safe": true,
+          "canva_quality": true,
+          "varied": true,
+          "photo_matches_topic": true,
+          "photo_intact": true,
+          "mobile_text_not_clipped": true,
+          "safe_areas": true,
+          "observations": "Office scene layout maintains balanced asymmetry with distinct image placement and accurate captioning.",
+          "mobile_observations": "Mobile version renders the split structure cleanly with sufficient spacing between image and descriptive body copy."
+        },
+        {
+          "text_correct": true,
+          "no_overlap": true,
+          "readable_mobile": true,
+          "facts_safe": true,
+          "canva_quality": true,
+          "varied": true,
+          "photo_matches_topic": true,
+          "photo_intact": true,
+          "mobile_text_not_clipped": true,
+          "safe_areas": true,
+          "observations": "Open books and workspace composition effectively ground the educational policy directions theme without fake elements.",
+          "mobile_observations": "Text blocks remain well within margins, maintaining high legibility and proper line height on narrower screens."
+        },
+        {
+          "text_correct": true,
+          "no_overlap": true,
+          "readable_mobile": true,
+          "facts_safe": true,
+          "canva_quality": true,
+          "varied": true,
+          "photo_matches_topic": true,
+          "photo_intact": true,
+          "mobile_text_not_clipped": true,
+          "safe_areas": true,
+          "observations": "Financial paperwork photo correctly matches the support priorities context, adhering strictly to non-implying guidelines.",
+          "mobile_observations": "Mobile scaling retains the structured visual hierarchy and keeps all text elements fully visible."
+        },
+        {
+          "text_correct": true,
+          "no_overlap": true,
+          "readable_mobile": true,
+          "facts_safe": true,
+          "canva_quality": true,
+          "varied": true,
+          "photo_matches_topic": true,
+          "photo_intact": true,
+          "mobile_text_not_clipped": true,
+          "safe_areas": true,
+          "observations": "Closing reminder composition clearly distinguishes policy statements from application notices with balanced framing.",
+          "mobile_observations": "Final mobile slide displays crisp fonts and correct padding, completing a consistent reading experience."
+        }
+      ]
     }
   }
 }
