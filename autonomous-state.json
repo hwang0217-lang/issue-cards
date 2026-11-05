@@ -892,7 +892,7 @@
     "published": false,
     "instagram_writes": 0,
     "pc_video_downloads": 0,
-    "stage": "canva_generating",
+    "stage": "blocked",
     "fact_review": {
       "verdict": "pass",
       "notes": "All claims are strictly grounded in the supplied presidential remarks from November 5, 2026. The distinction between remarks/policy direction and enacted grant applications is preserved. Dates, attributions, and context photos are correctly handled.",
@@ -1011,6 +1011,7 @@
     "recent_posts_compared": 9,
     "reference_images_compared": 55,
     "request_id": "issue-editorial-42038864488",
-    "canva_run_id": "42038925004"
+    "canva_run_id": "42038925004",
+    "error": "Canva production failed; reconcile saved run"
   }
 }
