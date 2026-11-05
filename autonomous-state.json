@@ -1136,6 +1136,8 @@
     },
     "fact_checkpoint_run": "42035498237",
     "source_snapshot_revision": "2573cc1767dae1002f04f48a9c4c49ae4b9d412c",
-    "fact_check_scope": "Same complete editorial wording,claims,caption,photography at immutable source snapshot; geometry-only corrections allowed. All3 original sources verified less than one hour ago. No new source re-verification claimed."
+    "fact_check_scope": "Same complete editorial wording,claims,caption,photography at immutable source snapshot; geometry-only corrections allowed. All3 original sources verified less than one hour ago. No new source re-verification claimed.",
+    "recent_posts_compared": 9,
+    "reference_images_compared": 55
   }
 }
