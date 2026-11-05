@@ -42,8 +42,12 @@ def fetch_image(url, bound=8_000_000):
     return r.content, image, buf.getvalue()
 
 def create_request(state, request_id, draft, height, purpose):
+    from photo_editorial import validate_photo_plan
+    catalog=json.loads((ROOT/'cloud/photo-catalog.json').read_text(encoding='utf-8'))
+    validate_photo_plan(draft,catalog,height)
+
     # Content/state only, never generated executable code. Scan before persisting.
-    body = {'account': 'issue.cards', 'request_id': request_id, 'purpose': purpose,
+    body = {'design_policy':draft['design_policy'],'photo_catalog':catalog,'account': 'issue.cards', 'request_id': request_id, 'purpose': purpose,
             'height': height, 'brief': draft['canva_brief'], 'sections': draft['sections'],
             'reuse_design_ids': draft.get('reuse_design_ids', [])}
     serialized = json.dumps(body, ensure_ascii=False)
@@ -111,8 +115,10 @@ def review_images(draft, new_images, references, kind):
             'visual form; do NOT require diagrams on a photo page or reject it solely for lacking animation. '
             'Judge information roles as specified in each section. Return detail_crop:{x,y,w,h} on at least two '
             'actual photo areas without text on1080x1920 for one-second object-detail inserts. Do not invent crops.')
+    prompt+=' These pages must use genuine licensed photographs. Also return photo_matches_topic,photo_intact,mobile_text_not_clipped,safe_areas booleans and specific mobile_observations for every page. Require original frame integrity, photo-context match, and actual390px legibility. Reject AI photographs and decorative unrelated images.'
     review, usage = generate_json(prompt, new_images + mobile + references)
     validate_visual_review(review, len(new_images))
+    if review.get('verdict')=='pass' and any(any(p.get(k) is not True for k in ('photo_matches_topic','photo_intact','mobile_text_not_clipped','safe_areas')) or not p.get('mobile_observations') for p in review['pages']): raise RuntimeError('Actual photo/mobile review incomplete')
     if review.get('quality_score', 0) < 8.5: review['verdict'] = 'revise'
     return review, usage
 
@@ -173,6 +179,7 @@ def main():
                                       'production' if mode == 'operate' and os.environ.get('PUBLISH_PAUSED')=='0' else 'preview')
             row['canva_generations'] = version; row['editorial_draft']=draft; persist()
             result = produce_canva(request_id, revision, row, persist)
+            row['photo_evidence']=result.get('photoEvidence',[]); persist()
             if len(result.get('urls', [])) != len(draft['sections']): raise RuntimeError('All Canva pages required')
             pages = []; hashes = []; images = []
             for n, url in enumerate(result['urls'], 1):
@@ -213,6 +220,8 @@ def main():
         qa = {k: True for k in ('text','no_obstruction','readable','facts','rights','variety','canva_quality','all_scenes_readable')}
         qa.update(export_sha256=digest, quality_benchmark='Nine actual feed images supplied to Gemini; score >=8.5',
                   recent_nine_comparison=review.get('comparison_notes'), page_or_scene_notes=review['pages'])
+        if len(row.get('photo_evidence',[]))!=len(pages): raise RuntimeError('Final Canva source-photo provenance missing')
+        qa.update(design_policy='impeccable-real-photo-v1',photo_evidence=row['photo_evidence'],mobile_width=390,mobile_review_subject='Actual390px Canva exports; model review')
         plan = {'account':'issue.cards','canva_design_id':result['designId'],'purpose':'production' if mode=='operate' and os.environ.get('PUBLISH_PAUSED')=='0' else 'diagnostic','approved':True,
                 'date':day,'format':kind,'source_evidence':evidence,'export_format':'jpg' if kind=='carousel' else 'mp4',
                 'page_count':len(pages),'caption':draft['caption'],'approved_assets_sha256':digest,'review':qa}

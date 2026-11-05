@@ -7,6 +7,8 @@ BLOCKED_DRAFTS = {'DAHZ8Qpyi7o', 'DAHZ8Shb8Lw', 'DAHZ8iwBTag'}
 
 def require_quality_review(plan, digest):
     review = plan.get('review', {})
+    if plan.get('date','') >= '2026-11-06' and (review.get('design_policy')!='impeccable-real-photo-v1' or review.get('mobile_width')!=390 or len(review.get('photo_evidence',[]))!=plan.get('page_count')):
+        raise RuntimeError('New publications require real-photo provenance and actual390px review')
     checks = ('text', 'no_obstruction', 'readable', 'facts', 'rights', 'variety', 'canva_quality')
     if (review.get('export_sha256') != digest or any(review.get(k) is not True for k in checks) or
             not review.get('quality_benchmark') or not review.get('recent_nine_comparison') or
