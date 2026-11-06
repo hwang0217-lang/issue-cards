@@ -65,7 +65,7 @@
     "provider_evidence_sha256": null
   },
   "check-42184458952": {
-    "stage": "needs_review",
+    "stage": "cloud_support_login_required",
     "mode": "check",
     "published": false,
     "account": "issue.cards",
