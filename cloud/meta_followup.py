@@ -29,7 +29,8 @@ def validate_receipt(result,policy,revision,rid,mode,now):
     checked=datetime.fromisoformat(result.get('checked_at',''))
     if (result.get('request_id')!=rid or result.get('policy_revision')!=revision or result.get('mode')!=mode
         or result.get('account')!='issue.cards' or result.get('design_id')!=policy['design_id']
-        or result.get('published') is not False or result.get('gmail_readonly_verified') is not True
+        or result.get('published') is not False or (mode!='support-export' and result.get('gmail_readonly_verified') is not True)
+        or (mode=='support-export' and result.get('support_export_only') is not True)
         or not timedelta(0)<=now-checked<=timedelta(minutes=25)):
         raise RuntimeError('Wrong/stale private Gmail receipt')
     if mode=='check' and result.get('status')=='cleared_export_ready':
@@ -43,9 +44,9 @@ def validate_receipt(result,policy,revision,rid,mode,now):
             raise RuntimeError('Approved five native page hashes required')
         for u in result['urls']:require_export_url(u)
 
-def gateway(state,row,persist,policy,mode):
+def gateway(state,row,persist,policy,mode,suffix=''):
     gh=GitHub(os.environ['CANVA_GATEWAY_GH_TOKEN'])
-    rid='issue-meta-'+os.environ['GITHUB_RUN_ID'];revision=os.environ['GITHUB_SHA']
+    rid='issue-meta-'+os.environ['GITHUB_RUN_ID']+suffix;revision=os.environ['GITHUB_SHA']
     row.update(stage='gateway_dispatching',request_id=rid);persist()
     response=requests.post(f'https://api.github.com/repos/{REPO}/actions/workflows/{policy["gateway_workflow"]}/dispatches',
         headers=gh.headers,json={'ref':'issue-meta-gateway-v1','inputs':{'request_id':rid,'revision':revision,'mode':mode}},timeout=45)
@@ -162,9 +163,27 @@ def main():
         state.put(LEDGER,key,row);(OUT/'meta-followup.json').write_text(json.dumps(row,ensure_ascii=False,indent=2),encoding='utf-8')
     persist()
     try:
-        result,run=gateway(state,row,persist,policy,mode)
-        decision=result.get('decision',{});row.update(stage=result['status'],gmail_readonly_verified=True,reply_status=decision.get('status'),provider_evidence_sha256=decision.get('body_sha256'));persist()
-        if mode=='export-check' or result['status']!='cleared_export_ready':return
+        from support_browser import check_support
+        support=None
+        if mode=='check':
+            try:support=check_support(policy,datetime.now(KST))
+            except (RuntimeError,requests.RequestException) as exc:
+                row['support_read_error']=type(exc).__name__;persist()
+        if support:
+            row.update(support_status=support['status'],support_evidence_sha256=support.get('provider_text_sha256'));persist()
+            if support['status']=='needs_review':raise RuntimeError('Support reply requires review; no automatic restriction release')
+        if support and support['status']=='cleared':
+            result,run=gateway(state,row,persist,policy,'support-export','-support')
+            decision={'body_sha256':support['provider_text_sha256']};can_publish=True
+            row.update(stage='support_clearance_verified',provider_source='instagram_support_inbox',provider_evidence_sha256=decision['body_sha256']);persist()
+        else:
+            result,run=gateway(state,row,persist,policy,mode)
+            decision=result.get('decision',{});row.update(stage=result['status'],gmail_readonly_verified=True,reply_status=decision.get('status'),provider_evidence_sha256=decision.get('body_sha256'));persist()
+            if mode=='export-check':return
+            can_publish=result['status']=='cleared_export_ready'
+            if support and support['status']=='auth_required' and not can_publish:
+                row.update(stage='cloud_support_login_required');persist()
+        if not can_publish:return
         state.put(LEDGER,'clearance_processing',{'reserved':True,'gateway_run_id':run,'at':datetime.now(KST).isoformat()},absent=True)
         if graph('GET','me?fields=id,username').get('username')!='issue.cards':raise RuntimeError('Wrong Instagram account')
         plan=publication_plan(policy,draft,result,state,row,persist)

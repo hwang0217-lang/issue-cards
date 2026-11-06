@@ -11,6 +11,8 @@ TEMP_ROOT.mkdir(parents=True,exist_ok=True)
 class FollowupSafety(unittest.TestCase):
     def setUp(self):
         self.p,self.d=load_policy()
+        support_patch=patch('support_browser.check_support',return_value=None)
+        self.support_mock=support_patch.start();self.addCleanup(support_patch.stop)
         self.now=datetime.now(KST)
         self.r={'request_id':'issue-meta-123','policy_revision':'a'*40,'mode':'check','account':'issue.cards','design_id':self.p['design_id'],
           'published':False,'gmail_readonly_verified':True,'checked_at':self.now.isoformat(),'status':'waiting_reply'}
@@ -54,5 +56,11 @@ class FollowupSafety(unittest.TestCase):
             p=Path(d);(p/'connection.json').write_text(json.dumps({'publication_status':'publishing','container_id':'parent'}))
             with patch('meta_followup.OUT',p),patch('meta_followup.graph',return_value={'status_code':'ERROR'}) as g:
                 self.assertIsNone(reconcile_publish_error({},Mock(),set(),self.now));self.assertEqual(g.call_count,1)
+    def test_ui_clearance_export_is_independent_of_gmail(self):
+        self.support_mock.return_value={'status':'cleared','provider_text_sha256':'verified-provider-hash'}
+        state=Mock();state.read.return_value=({},None)
+        with tempfile.TemporaryDirectory(dir=TEMP_ROOT) as d,patch.dict(os.environ,{'META_FOLLOWUP_MODE':'check','GITHUB_RUN_ID':'123'}),patch('meta_followup.OUT',Path(d)),patch('meta_followup.PublicationState',return_value=state),patch('meta_followup.gateway',return_value=({'status':'support_export_ready'},'7')) as gateway,patch('meta_followup.graph',return_value={'username':'issue.cards'}) as get,patch('meta_followup.publication_plan',side_effect=RuntimeError('quality gate stop')),patch('meta_followup.run_carousel') as publish:
+            self.assertRaisesRegex(RuntimeError,'quality gate stop',main)
+            self.assertEqual(gateway.call_args.args[4:6],('support-export','-support'));self.assertTrue(all(c.args[0]=='GET' for c in get.call_args_list));publish.assert_not_called()
 
 if __name__=='__main__':unittest.main()

@@ -16,7 +16,7 @@
   "quality_review_path": "cloud/reviews/2026-11-05-real-photo-preview.json",
   "submitted_after": "2026-11-06T14:00:00+09:00",
   "gateway_workflow": "issue-meta-gateway.yml",
-  "gateway_code_revision": "14ee6657ca869298bcb6d5195cd2c1c61931b543",
+  "gateway_code_revision": "c5b1989b754c456fd1ce22f0d04e52cca140eea0",
   "enabled": true,
   "plan_hash_format": "canonical-json-utf8-v1",
   "page_pixel_identity": [
@@ -65,5 +65,11 @@
       "icc_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "orientation": 1
     }
-  ]
+  ],
+  "support_browser": {
+    "enabled": true,
+    "url": "https://issue-support-reader.apollo0217.workers.dev",
+    "build_id": "e117c78dc4513c85b74195ab6e6bfb0fd4ceb25355cb3eb1ce31dca0050c140b",
+    "authentication": "Owner-approved keys configured; one-time issue.cards cloud login pending"
+  }
 }
