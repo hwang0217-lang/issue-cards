@@ -1,10 +1,11 @@
 {
   "check-42171107576": {
-    "stage": "starting",
+    "stage": "gateway_dispatching",
     "mode": "export-check",
     "published": false,
     "account": "issue.cards",
     "design_id": "DAHaDQgjnYk",
-    "at": "2026-11-06T14:54:00.524499+09:00"
+    "at": "2026-11-06T14:54:00.524499+09:00",
+    "request_id": "issue-meta-42171107576"
   }
 }
