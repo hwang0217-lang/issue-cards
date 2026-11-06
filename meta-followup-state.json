@@ -65,7 +65,7 @@
     "provider_evidence_sha256": null
   },
   "check-42184458952": {
-    "stage": "gateway_running",
+    "stage": "needs_review",
     "mode": "check",
     "published": false,
     "account": "issue.cards",
@@ -74,6 +74,9 @@
     "support_status": "auth_required",
     "support_evidence_sha256": null,
     "request_id": "issue-meta-42184458952",
-    "gateway_run_id": "42184488300"
+    "gateway_run_id": "42184488300",
+    "gmail_readonly_verified": true,
+    "reply_status": "needs_review",
+    "provider_evidence_sha256": null
   }
 }
