@@ -1,0 +1,484 @@
+{
+  "account": "issue.cards",
+  "basis_date": "2026-11-05",
+  "canva_design_id": "DAHaDQgjnYk",
+  "canva_run_id": "42040267378",
+  "server_preview_run": "42040196798",
+  "purpose": "preview_only",
+  "published": false,
+  "approved_for_publication": false,
+  "native_dimensions": [
+    1080,
+    1350
+  ],
+  "phone_widths": [
+    320,
+    390
+  ],
+  "native_all_pages_directly_inspected": true,
+  "mobile_all_pages_directly_inspected": true,
+  "physical_phone_test": false,
+  "cover_crop_review": {
+    "formats": [
+      "1:1",
+      "3:4"
+    ],
+    "key_headline_body_and_photo_preserved": true,
+    "scope": "First page only, as carousel cover. Square thumbnail intentionally excludes supplementary bottom credits; full4:5 feed keeps all credit text."
+  },
+  "quality_benchmark": {
+    "source": "https://github.com/pbakaus/impeccable",
+    "mode": "Read",
+    "principles": [
+      "clear Korean type hierarchy",
+      "topic-matched genuine photography",
+      "24px source/photo/type separation",
+      "content-driven composition differences",
+      "phone-size and cover crop inspection"
+    ],
+    "scope": "Official guidance adapted to images; not a frontend-engine run. Existing50-channel research principles reused, not a new50-channel ranking or full peer-carousel audit.",
+    "direct_reference": "Existing local out_sample01-05 inspected without modification; dark repetitive numeric/text layouts compared to newly authored real-photo layouts.",
+    "model_recent_account_comparison": {
+      "posts": 9,
+      "images": 55,
+      "notes": "The actual Canva export matches the required impeccable read mode policy. Photos are contextually accurate Pexels stock images with mandatory source attribution notices. Typography, spacing, and mobile rendering are clean and correctly structured without overlapping elements or broken Korean glyph shapes."
+    }
+  },
+  "pages": [
+    {
+      "page": 1,
+      "sha256": "e2c11767aa8c220b2b59e025d05371ec461cdfadbecc7173f1f50dc8b9921a66",
+      "mobile_sha256": {
+        "320": "a4c0f06e8f7627d6c3030a80c38e7b176fe6aadca5446a7462c4a27da5edd7c5",
+        "390": "8bf3d39a1754bb63f456e50db4a86c38ecc820a79785ce727ca5a53320657f47"
+      },
+      "text": true,
+      "no_obstruction": true,
+      "readable_320": true,
+      "readable_390": true,
+      "photo_intact": true,
+      "source_context_clear": true,
+      "quality_notes": "표지는 실제 소규모 작업공간 사진 전체를 보존했다. 제목을y150으로 내려 1:1중앙크롭에도 제목 두줄과핵심설명이남는다. 320/390본문읽기·자모결합·사진분리확인."
+    },
+    {
+      "page": 2,
+      "sha256": "69cbb9d2a1611a132c465c5c1f348d08c5356b7e11ce51c3f10d7e0943f6294a",
+      "mobile_sha256": {
+        "320": "1a5b30e9d9dee11082af740ffd03d32cafebacecd09279959af2d06a95f37f6b",
+        "390": "210a036c7ba232bd3b1475c121f66274de610e43c0a8365af63d83245e599901"
+      },
+      "text": true,
+      "no_obstruction": true,
+      "readable_320": true,
+      "readable_390": true,
+      "photo_intact": true,
+      "source_context_clear": true,
+      "quality_notes": "업무공간과노트북의실제촬영본을왼쪽,발언귀속문장을오른쪽에배치했다. 제목/본문/사진/자료사진표시가겹치지않고4줄본문전체가작은화면에남는다."
+    },
+    {
+      "page": 3,
+      "sha256": "b63f8fb1b02901f2243536bb56e292bcfe5e8496b874ab8325083e09d972f653",
+      "mobile_sha256": {
+        "320": "1952b1a5af68363bd4da3e0caca2f5e561552fd9361357d1784795e02197cd4d",
+        "390": "5355d2c167528f36b7f0a67f3b169c6cb1baf0c55ce715b4288c9826e321a473"
+      },
+      "text": true,
+      "no_obstruction": true,
+      "readable_320": true,
+      "readable_390": true,
+      "photo_intact": true,
+      "source_context_clear": true,
+      "quality_notes": "교육관련실제책·학습공간사진,세정책방향의큰제목과설명으로전개했다. 교육개선·재정지원확대·규제혁신을발언으로귀속하며출처와불일치하는수치/차트없음. 320/390에서긴첫줄끝잘림없음."
+    },
+    {
+      "page": 4,
+      "sha256": "ce3e9e7fe90fef50c321359e849a50e55d949e788342bce580ff47e509dc9b5a",
+      "mobile_sha256": {
+        "320": "96bbe19591e363ccd782ee598187ab3206bcb285c02b6b49bce5daa200e230ca",
+        "390": "a4acdd53209098440a1964b20a993fcabbca69f52f2fb3f46167c4fd11fc641d"
+      },
+      "text": true,
+      "no_obstruction": true,
+      "readable_320": true,
+      "readable_390": true,
+      "photo_intact": true,
+      "source_context_clear": true,
+      "quality_notes": "실제가격계산문서·업무도구를맥락사진으로사용했다. 사진속서식은정부지원금액이나정책자료로제시하지않는다. 제목왼쪽/사진오른쪽/설명아래로리듬을바꿨으며자료사진표시명확함."
+    },
+    {
+      "page": 5,
+      "sha256": "83f67896ef417319a6056de7501f0a87a1a64f721219c7b1b3008baacb7b71f5",
+      "mobile_sha256": {
+        "320": "9c84f8b330381a98139fa4067c202ea9b059721b96b6d07d035a691ed503f101",
+        "390": "6efcca87991c8e7281674917ab8207c90c0dc3206b4f505597abd837295a3858"
+      },
+      "text": true,
+      "no_obstruction": true,
+      "readable_320": true,
+      "readable_390": true,
+      "photo_intact": true,
+      "source_context_clear": true,
+      "quality_notes": "빈화면노트북과책의실제사진을공고확인맥락으로사용했다. 실제신청화면을만들지않았고발언요지와대상·금액·일정공고확인을분리했다. 본문4줄과자료사진표시모두양쪽전화너비에서확인."
+    }
+  ],
+  "asset_set_sha256": "b903dd1b4f40b4282899a96d1d1799d4103ee24f2dace7004a3c5640b6bc4ba6",
+  "photography": [
+    {
+      "photo_id": "36123565",
+      "source_page": "https://www.pexels.com/photo/modern-workspace-with-laptop-and-books-on-desk-36123565/",
+      "author": "Letícia Alvares",
+      "license_url": "https://www.pexels.com/license/",
+      "source_sha256": "8229243755ebac4c1a135d9c6307eaaac510bcf7c7b79096a2db339f5899768d",
+      "reviewed_source_sha256": "8229243755ebac4c1a135d9c6307eaaac510bcf7c7b79096a2db339f5899768d",
+      "source_identity_check": "reviewed-byte-sha256",
+      "crop": "contain: entire original photograph",
+      "photo_frame": [
+        164.765478424015,
+        450,
+        750.46904315197,
+        500
+      ],
+      "typography": "Exact700/450 glyph outlines; not editable text layers",
+      "photo_relation": "Actual small workspace with laptop, books and white table; startup context, not an actual policy venue."
+    },
+    {
+      "photo_id": "9300721",
+      "source_page": "https://www.pexels.com/photo/laptop-in-an-empty-office-9300721/",
+      "author": "Mikhail Nilov",
+      "license_url": "https://www.pexels.com/license/",
+      "source_sha256": "3d8ed7a9ab59b08ed2305a95e733ef645c61009250069d527d2649c45524bbc6",
+      "reviewed_source_sha256": "1278432d22b3abc959a0e9e1c1f8e344d02cdf21e2c59a77b67cffc8037acffd",
+      "source_identity_check": "exact-reviewed-pixels-color-orientation",
+      "crop": "contain: entire original photograph",
+      "photo_frame": [
+        71.99999999999997,
+        350,
+        440.00000000000006,
+        660
+      ],
+      "typography": "Exact700/450 glyph outlines; not editable text layers",
+      "photo_relation": "Actual office chairs and laptop in shared work area; entrepreneurship context, not a presidential meeting."
+    },
+    {
+      "photo_id": "6550408",
+      "source_page": "https://www.pexels.com/photo/notebook-and-books-on-wooden-desk-6550408/",
+      "author": "Tima Miroshnichenko",
+      "license_url": "https://www.pexels.com/license/",
+      "source_sha256": "c3f1fde471380505f765a5e1832aa4d2b91ed990eddda2d6212d0abf80d10e32",
+      "reviewed_source_sha256": "c3f1fde471380505f765a5e1832aa4d2b91ed990eddda2d6212d0abf80d10e32",
+      "source_identity_check": "reviewed-byte-sha256",
+      "crop": "contain: entire original photograph",
+      "photo_frame": [
+        135.12652296157455,
+        74,
+        809.7469540768509,
+        540
+      ],
+      "typography": "Exact700/450 glyph outlines; not editable text layers",
+      "photo_relation": "Actual open books, notebook and laptop on desk; learning and education context."
+    },
+    {
+      "photo_id": "8970674",
+      "source_page": "https://www.pexels.com/photo/folder-with-budget-planning-on-a-table-by-a-laptop-and-a-pen-8970674/",
+      "author": "Leeloo The First",
+      "license_url": "https://www.pexels.com/license/",
+      "source_sha256": "0678329f1c6b7b8112593eb42937f6a118d6e6c2d6ec9b57e0b3c23874a8d966",
+      "reviewed_source_sha256": "0678329f1c6b7b8112593eb42937f6a118d6e6c2d6ec9b57e0b3c23874a8d966",
+      "source_identity_check": "reviewed-byte-sha256",
+      "crop": "contain: entire original photograph",
+      "photo_frame": [
+        520,
+        178.46499999999997,
+        496,
+        743.07
+      ],
+      "typography": "Exact700/450 glyph outlines; not editable text layers",
+      "photo_relation": "Actual business planning document, clipboard, pen and laptop; paper values are not government funding figures."
+    },
+    {
+      "photo_id": "8472371",
+      "source_page": "https://www.pexels.com/photo/laptop-placed-on-top-of-stack-of-books-8472371/",
+      "author": "Cup of Couple",
+      "license_url": "https://www.pexels.com/license/",
+      "source_sha256": "1bef285ab32ad3f4dc8918b26b3a9c6d66938af13a093f4e88a9b86a24920c8a",
+      "reviewed_source_sha256": "1bef285ab32ad3f4dc8918b26b3a9c6d66938af13a093f4e88a9b86a24920c8a",
+      "source_identity_check": "reviewed-byte-sha256",
+      "crop": "contain: entire original photograph",
+      "photo_frame": [
+        81.90412671946643,
+        450,
+        460.19174656106713,
+        690
+      ],
+      "typography": "Exact700/450 glyph outlines; not editable text layers",
+      "photo_relation": "Actual blank-screen laptop on books; information lookup context, not a government application page."
+    }
+  ],
+  "source_evidence": {
+    "basis_date": "2026-11-05",
+    "sources": [
+      {
+        "id": "S1",
+        "url": "https://www.korea.kr/news/policyNewsView.do?newsId=148975118",
+        "title": "이 대통령 \"창업 사회로의 전환 필수적…'국민 창업 시대' 나아가야\"",
+        "outlet": "정책브리핑",
+        "official": true,
+        "published": "2026-11-05",
+        "observed_at": "2026-11-05T22:24:53.312749+09:00",
+        "body_sha256": "6f41fea867c22496ce9bb3b7ee21103e581550e1793cc94d69656ae1d7864121"
+      },
+      {
+        "id": "S2",
+        "url": "https://www.yna.co.kr/view/AKR20261105114600001",
+        "title": "李대통령 \"창업사회로 전환해야…대한민국을 창업 인큐베이터로\"",
+        "outlet": "연합뉴스",
+        "official": false,
+        "published": "2026-11-05T14:32:57+09:00",
+        "observed_at": "2026-11-05T22:24:54.950986+09:00",
+        "body_sha256": "5575790d01b9dfe0e9ef08b6859b0b9488800606c75ae7cc09b02d00f96cee85"
+      },
+      {
+        "id": "S3",
+        "url": "https://news.sbs.co.kr/news/endPage.do?news_id=N1008832428&plink=RSSLINK&cooper=RSSREADER",
+        "title": "이 대통령 \"대한민국을 '창업 인큐베이터'로…성장 방식 대전환\"",
+        "outlet": "SBS",
+        "official": false,
+        "published": "2026-11-05T15:08:02+09:00",
+        "observed_at": "2026-11-05T22:24:55.331233+09:00",
+        "body_sha256": "07158baf3ab893ce4afcf1e30bbb0f731842f3979899b28f8ca9529081feb04f"
+      }
+    ],
+    "claims": [
+      {
+        "text": "11월5일 대통령은 국민창업시대로 나아가야 한다고 발언했다.",
+        "status": "발표",
+        "source_meaning": "발언 공개, 제도 시행 아님",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "start": 54,
+            "end": 71,
+            "quote_sha256": "49869853e92ba9582f6c37e06c255eb877dfccff511271d5efa77ff704ff70eb"
+          },
+          {
+            "source_id": "S2",
+            "start": 284,
+            "end": 310,
+            "quote_sha256": "4b57599746bdd39d6f49c1bd775e51a2eba24a86d7a9f41439640dfec1e3b5e4"
+          }
+        ]
+      },
+      {
+        "text": "대통령은 교육과정 개선, 재정지원 확대, 규제혁신에 국가 역량을 모을 것을 주문했다.",
+        "status": "추진",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "start": 273,
+            "end": 295,
+            "quote_sha256": "dd7d11f95c3c2f08cde138de6f1fe3661896b6e50fcc95544c2166f77bb361d2"
+          },
+          {
+            "source_id": "S3",
+            "start": 588,
+            "end": 611,
+            "quote_sha256": "8097c8c0e9111f674e9bc3f8621ac98cb09c66866f0a623167a9f2af8417ed5a"
+          }
+        ]
+      },
+      {
+        "text": "대통령은 스타트업 성장을 돕는 금융·기술·판로의 다층적 지원체계 필요성을 강조했다.",
+        "status": "추진",
+        "evidence": [
+          {
+            "source_id": "S1",
+            "start": 835,
+            "end": 859,
+            "quote_sha256": "d5095aa681660aa6ccf3cf271f23a0c3d5940fa15d9651618aa4747492c22398"
+          },
+          {
+            "source_id": "S2",
+            "start": 807,
+            "end": 832,
+            "quote_sha256": "839523ce3b54e79a6194e294d41115bdf94449ee92d4346994eda029410d22b8"
+          }
+        ]
+      }
+    ],
+    "fact_review": {
+      "verdict": "pass",
+      "notes": "All claims are strictly grounded in the supplied presidential remarks from November 5, 2026. The distinction between remarks/policy direction and enacted grant applications is preserved. Dates, attributions, and context photos are correctly handled.",
+      "all_text_supported": true,
+      "remarks_attributed": true,
+      "implementation_not_overstated": true,
+      "basis_date_correct": true,
+      "no_funding_amounts_invented": true,
+      "photo_context_clear": true
+    }
+  },
+  "fact_review_checkpoint": {
+    "run": "42035498237",
+    "immutable_source_revision": "2573cc1767dae1002f04f48a9c4c49ae4b9d412c",
+    "scope": "Same complete editorial wording,claims,caption,photography at immutable source snapshot; geometry-only corrections allowed. All3 original sources verified less than one hour ago. No new source re-verification claimed."
+  },
+  "automated_image_review": {
+    "verdict": "pass",
+    "quality_score": 9.2,
+    "comparison_notes": "The actual Canva export matches the required impeccable read mode policy. Photos are contextually accurate Pexels stock images with mandatory source attribution notices. Typography, spacing, and mobile rendering are clean and correctly structured without overlapping elements or broken Korean glyph shapes.",
+    "corrections": [],
+    "pages": [
+      {
+        "text_correct": true,
+        "no_overlap": true,
+        "readable_mobile": true,
+        "facts_safe": true,
+        "canva_quality": true,
+        "varied": true,
+        "photo_matches_topic": true,
+        "photo_intact": true,
+        "mobile_text_not_clipped": true,
+        "safe_areas": true,
+        "observations": "Workspace cover layout is clean with clear headline hierarchy and properly credited contextual stock photography.",
+        "mobile_observations": "The mobile view at 390px scales correctly, preserving readable typography and generous whitespace around the main title."
+      },
+      {
+        "text_correct": true,
+        "no_overlap": true,
+        "readable_mobile": true,
+        "facts_safe": true,
+        "canva_quality": true,
+        "varied": true,
+        "photo_matches_topic": true,
+        "photo_intact": true,
+        "mobile_text_not_clipped": true,
+        "safe_areas": true,
+        "observations": "Office scene layout maintains balanced asymmetry with distinct image placement and accurate captioning.",
+        "mobile_observations": "Mobile version renders the split structure cleanly with sufficient spacing between image and descriptive body copy."
+      },
+      {
+        "text_correct": true,
+        "no_overlap": true,
+        "readable_mobile": true,
+        "facts_safe": true,
+        "canva_quality": true,
+        "varied": true,
+        "photo_matches_topic": true,
+        "photo_intact": true,
+        "mobile_text_not_clipped": true,
+        "safe_areas": true,
+        "observations": "Open books and workspace composition effectively ground the educational policy directions theme without fake elements.",
+        "mobile_observations": "Text blocks remain well within margins, maintaining high legibility and proper line height on narrower screens."
+      },
+      {
+        "text_correct": true,
+        "no_overlap": true,
+        "readable_mobile": true,
+        "facts_safe": true,
+        "canva_quality": true,
+        "varied": true,
+        "photo_matches_topic": true,
+        "photo_intact": true,
+        "mobile_text_not_clipped": true,
+        "safe_areas": true,
+        "observations": "Financial paperwork photo correctly matches the support priorities context, adhering strictly to non-implying guidelines.",
+        "mobile_observations": "Mobile scaling retains the structured visual hierarchy and keeps all text elements fully visible."
+      },
+      {
+        "text_correct": true,
+        "no_overlap": true,
+        "readable_mobile": true,
+        "facts_safe": true,
+        "canva_quality": true,
+        "varied": true,
+        "photo_matches_topic": true,
+        "photo_intact": true,
+        "mobile_text_not_clipped": true,
+        "safe_areas": true,
+        "observations": "Closing reminder composition clearly distinguishes policy statements from application notices with balanced framing.",
+        "mobile_observations": "Final mobile slide displays crisp fonts and correct padding, completing a consistent reading experience."
+      }
+    ]
+  },
+  "typography_export_pixel_comparison": [
+    {
+      "page": 1,
+      "block": "title",
+      "mean_absolute_rgb_error": 0.4999
+    },
+    {
+      "page": 1,
+      "block": "body",
+      "mean_absolute_rgb_error": 0.653
+    },
+    {
+      "page": 1,
+      "block": "photo_note",
+      "mean_absolute_rgb_error": 0.2482
+    },
+    {
+      "page": 2,
+      "block": "title",
+      "mean_absolute_rgb_error": 0.7101
+    },
+    {
+      "page": 2,
+      "block": "body",
+      "mean_absolute_rgb_error": 0.5544
+    },
+    {
+      "page": 2,
+      "block": "photo_note",
+      "mean_absolute_rgb_error": 0.2502
+    },
+    {
+      "page": 3,
+      "block": "title",
+      "mean_absolute_rgb_error": 0.4538
+    },
+    {
+      "page": 3,
+      "block": "body",
+      "mean_absolute_rgb_error": 0.5926
+    },
+    {
+      "page": 3,
+      "block": "photo_note",
+      "mean_absolute_rgb_error": 0.2482
+    },
+    {
+      "page": 4,
+      "block": "title",
+      "mean_absolute_rgb_error": 0.643
+    },
+    {
+      "page": 4,
+      "block": "body",
+      "mean_absolute_rgb_error": 0.622
+    },
+    {
+      "page": 4,
+      "block": "photo_note",
+      "mean_absolute_rgb_error": 0.4724
+    },
+    {
+      "page": 5,
+      "block": "title",
+      "mean_absolute_rgb_error": 0.4819
+    },
+    {
+      "page": 5,
+      "block": "body",
+      "mean_absolute_rgb_error": 0.6363
+    },
+    {
+      "page": 5,
+      "block": "photo_note",
+      "mean_absolute_rgb_error": 0.4855
+    }
+  ],
+  "contrast_on_white": {
+    "headline": 15.79,
+    "body": 7.79
+  },
+  "publication_gate": "CODEX_PUBLISH_PAUSED=1 and ISSUE_AUTONOMOUS_ACTIVE=0 maintained. No Instagram writes or containers; any later publication requires fresh source/date and valid API restriction clearance."
+}

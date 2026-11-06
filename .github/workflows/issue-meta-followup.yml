@@ -1,0 +1,37 @@
+name: Issue cloud Meta follow-up
+run-name: Issue Meta follow-up ${{ inputs.mode || 'check' }}
+on:
+  schedule:
+    - cron: '30 0,3,6,9,12 * * *'
+  workflow_dispatch:
+    inputs:
+      mode: {type: choice, options: [check, export-check], default: check}
+permissions:
+  contents: write
+concurrency:
+  group: codex-reviewed-publishing
+  cancel-in-progress: false
+jobs:
+  followup:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      CANVA_GATEWAY_GH_TOKEN: ${{ secrets.CANVA_GATEWAY_GH_TOKEN }}
+      IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      PUBLISH_PAUSED: '1'
+      META_FOLLOWUP_MODE: ${{ inputs.mode || 'check' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install requests Pillow imageio-ffmpeg beautifulsoup4
+      - run: python -m unittest discover -s cloud -p 'test_meta_followup.py'
+      - run: python cloud/meta_followup.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue-meta-followup-report
+          path: cloud-reports/meta-followup.json
+          retention-days: 7
