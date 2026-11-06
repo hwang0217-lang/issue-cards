@@ -50,13 +50,14 @@
     "provider_evidence_sha256": null
   },
   "check-42183777741": {
-    "stage": "starting",
+    "stage": "gateway_dispatching",
     "mode": "check",
     "published": false,
     "account": "issue.cards",
     "design_id": "DAHaDQgjnYk",
     "at": "2026-11-06T16:53:07.226502+09:00",
     "support_status": "auth_required",
-    "support_evidence_sha256": null
+    "support_evidence_sha256": null,
+    "request_id": "issue-meta-42183777741"
   }
 }
