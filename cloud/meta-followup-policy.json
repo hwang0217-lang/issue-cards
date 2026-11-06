@@ -17,7 +17,7 @@
   "submitted_after": "2026-11-06T14:00:00+09:00",
   "gateway_workflow": "issue-meta-gateway.yml",
   "gateway_code_revision": "c5b1989b754c456fd1ce22f0d04e52cca140eea0",
-  "enabled": true,
+  "enabled": false,
   "plan_hash_format": "canonical-json-utf8-v1",
   "page_pixel_identity": [
     {
@@ -67,9 +67,10 @@
     }
   ],
   "support_browser": {
-    "enabled": true,
+    "enabled": false,
     "url": "https://issue-support-reader.apollo0217.workers.dev",
     "build_id": "550cfdbdca499dd01b4559fde5e5ee236fbcf23f932c3855be549d7e289ecd8a",
     "authentication": "Owner-approved keys configured; one-time issue.cards cloud login pending"
-  }
+  },
+  "user_stopped": "2026-11-06"
 }

@@ -1,3 +1,7 @@
+## 2026-11-06 사용자 요청: 사회이슈 업로드 중단
+
+최신사용자‘이 채널 업로드 중단해’는현재지원함연결대상@issue.cards에적용. 사회이슈정기/릴스/수동게시와제한해제후승인Canva1편자동게시권한도중단. issue-autonomous.yml/issue-meta-followup.yml/codex-reviewed.yml disabled_manually, CODEX_PUBLISH_PAUSED=1, ISSUE_AUTONOMOUS_ACTIVE=0. cloud/meta-followup-policy.json enabled=false/support_browser.enabled=false. 실행중/queued작업없음확인. Meta/지원함/Gmail후속확인예약중단,공용앱codex는Nordic감시만유지하도록변경. 명시재개요청전자동재활성화/대체게시/재시도금지. 기존게시물·디자인·인증세션은삭제하지않고보존한다. 토큰갱신은게시작업이아니므로유지. 이전후속위임/내일재검증계획보다이번중단지시가우선한다.
+
 # PC-off Meta reply follow-up
 
 The Issue workflow `.github/workflows/issue-meta-followup.yml` owns this one approved publication, independently of the PC and Codex app. It runs at09:30/12:30/15:30/18:30/21:30 Asia/Seoul (GitHub cron is best effort, not realtime).
