@@ -11,12 +11,13 @@
     "error": "Gateway failed/pending; reconcile its recorded run"
   },
   "check-42171738753": {
-    "stage": "gateway_dispatching",
+    "stage": "gateway_running",
     "mode": "export-check",
     "published": false,
     "account": "issue.cards",
     "design_id": "DAHaDQgjnYk",
     "at": "2026-11-06T15:00:40.256172+09:00",
-    "request_id": "issue-meta-42171738753"
+    "request_id": "issue-meta-42171738753",
+    "gateway_run_id": "42171767150"
   }
 }
