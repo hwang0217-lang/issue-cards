@@ -1,7 +1,7 @@
 import copy,json,unittest
 from datetime import datetime
 from cloud_reel import KST
-from meta_followup import load_policy,validate_receipt
+from meta_followup import load_policy,validate_receipt,draft_digest
 
 class FollowupSafety(unittest.TestCase):
     def setUp(self):
@@ -23,5 +23,9 @@ class FollowupSafety(unittest.TestCase):
         self.assertRaises(RuntimeError,self.valid)
     def test_approved_copy_and_event_date(self):
         self.assertEqual(self.d['basis_date'],'2026-11-05');self.assertEqual(len(self.p['page_sha256']),5)
+    def test_only_serialization_whitespace_is_canonicalized(self):
+        text=json.dumps(self.d,ensure_ascii=False,indent=2)
+        self.assertEqual(draft_digest(json.loads(text.replace('\n','\r\n'))),draft_digest(self.d))
+        changed=copy.deepcopy(self.d);changed['caption']+='x';self.assertNotEqual(draft_digest(changed),draft_digest(self.d))
 
 if __name__=='__main__':unittest.main()

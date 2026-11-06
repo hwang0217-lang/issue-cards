@@ -5,7 +5,7 @@
   "approval_id": "meta-followup-2026-11-06",
   "event_basis_date": "2026-11-05",
   "plan_path": "cloud/editorial-plans/2026-11-05.json",
-  "plan_sha256": "d58c50daa5ed145a63eeb5e49e9ccc0dc07d7693755236399850434393398a73",
+  "plan_sha256": "791bdc18c17f86b8ec0226fe5b3b924266d548edf35bb5ff3a8957e13438dd34",
   "page_sha256": [
     "e2c11767aa8c220b2b59e025d05371ec461cdfadbecc7173f1f50dc8b9921a66",
     "69cbb9d2a1611a132c465c5c1f348d08c5356b7e11ce51c3f10d7e0943f6294a",
@@ -17,5 +17,6 @@
   "submitted_after": "2026-11-06T14:00:00+09:00",
   "gateway_workflow": "issue-meta-gateway.yml",
   "gateway_code_revision": "10a7cced0901b9984b8837eca25cf5e88958ebc2",
-  "enabled": true
+  "enabled": true,
+  "plan_hash_format": "canonical-json-utf8-v1"
 }

@@ -10,6 +10,9 @@ from cloud_carousel import assets_digest,run_carousel
 REPO='hwang0217-lang/korea-firsttrip'
 LEDGER='meta-followup-state.json'
 
+def draft_digest(draft):
+    return hashlib.sha256(json.dumps(draft,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode('utf-8')).hexdigest()
+
 def load_policy(root=ROOT):
     policy=json.loads((Path(root)/'cloud/meta-followup-policy.json').read_text(encoding='utf-8'))
     if (policy.get('version')!=1 or policy.get('account')!='issue.cards' or policy.get('design_id')!='DAHaDQgjnYk'
@@ -17,8 +20,8 @@ def load_policy(root=ROOT):
         or policy.get('event_basis_date')!='2026-11-05'):
         raise RuntimeError('Fixed user-approved follow-up policy required')
     data=(Path(root)/policy['plan_path']).read_bytes()
-    if hashlib.sha256(data).hexdigest()!=policy['plan_sha256']:raise RuntimeError('Approved copy was changed')
     draft=json.loads(data)
+    if policy.get('plan_hash_format')!='canonical-json-utf8-v1' or draft_digest(draft)!=policy['plan_sha256']:raise RuntimeError('Approved copy was changed')
     if draft['basis_date']!=policy['event_basis_date']:raise RuntimeError('Original statement date changed')
     return policy,draft
 
