@@ -85,6 +85,7 @@
     "published": false,
     "account": "issue.cards",
     "design_id": "DAHaDQgjnYk",
-    "at": "2026-11-06T17:07:14.201641+09:00"
+    "at": "2026-11-06T17:07:14.201641+09:00",
+    "support_read_error": "RuntimeError"
   }
 }
