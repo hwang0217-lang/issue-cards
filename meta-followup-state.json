@@ -37,12 +37,13 @@
     "provider_evidence_sha256": null
   },
   "check-42172611473": {
-    "stage": "gateway_dispatching",
+    "stage": "gateway_running",
     "mode": "check",
     "published": false,
     "account": "issue.cards",
     "design_id": "DAHaDQgjnYk",
     "at": "2026-11-06T15:09:14.906377+09:00",
-    "request_id": "issue-meta-42172611473"
+    "request_id": "issue-meta-42172611473",
+    "gateway_run_id": "42172643576"
   }
 }
