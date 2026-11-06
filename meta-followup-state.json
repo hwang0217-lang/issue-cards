@@ -48,5 +48,13 @@
     "gmail_readonly_verified": true,
     "reply_status": "waiting_reply",
     "provider_evidence_sha256": null
+  },
+  "check-42183777741": {
+    "stage": "starting",
+    "mode": "check",
+    "published": false,
+    "account": "issue.cards",
+    "design_id": "DAHaDQgjnYk",
+    "at": "2026-11-06T16:53:07.226502+09:00"
   }
 }
