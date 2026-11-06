@@ -16,7 +16,7 @@
   "quality_review_path": "cloud/reviews/2026-11-05-real-photo-preview.json",
   "submitted_after": "2026-11-06T14:00:00+09:00",
   "gateway_workflow": "issue-meta-gateway.yml",
-  "gateway_code_revision": "b8c58b8c8db3fd4abc45b1c038a3a987f265a5d4",
+  "gateway_code_revision": "14ee6657ca869298bcb6d5195cd2c1c61931b543",
   "enabled": true,
   "plan_hash_format": "canonical-json-utf8-v1",
   "page_pixel_identity": [
