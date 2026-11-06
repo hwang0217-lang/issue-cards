@@ -3,7 +3,10 @@ from pathlib import Path
 from unittest.mock import patch,Mock
 from datetime import datetime
 from cloud_reel import KST
-from meta_followup import load_policy,validate_receipt,draft_digest,main
+from meta_followup import load_policy,validate_receipt,draft_digest,main,reconcile_publish_error
+
+TEMP_ROOT=Path(__file__).resolve().parents[1]/"cloud-evidence"/"test-temp"
+TEMP_ROOT.mkdir(parents=True,exist_ok=True)
 
 class FollowupSafety(unittest.TestCase):
     def setUp(self):
@@ -21,7 +24,11 @@ class FollowupSafety(unittest.TestCase):
         self.r.update(export_verified=True,page_sha256=['0'*64]*5,urls=['https://export.canva.com/a']*5)
         self.assertRaises(RuntimeError,self.valid)
     def test_untrusted_export(self):
-        self.r.update(export_verified=True,page_sha256=self.p['page_sha256'],urls=['https://attacker.test/a']*5)
+        self.r.update(export_verified=True,page_sha256=self.p['page_sha256'],original_approved_page_sha256=self.p['page_sha256'],exact_pixel_identity=self.p['page_pixel_identity'],urls=['https://attacker.test/a']*5)
+        self.assertRaises(RuntimeError,self.valid)
+    def test_even_one_changed_pixel_identity_rejected(self):
+        pixels=copy.deepcopy(self.p['page_pixel_identity']);pixels[0]['pixel_sha256']='0'*64
+        self.r.update(export_verified=True,page_sha256=self.p['page_sha256'],original_approved_page_sha256=self.p['page_sha256'],exact_pixel_identity=pixels,urls=['https://export.canva.com/a']*5)
         self.assertRaises(RuntimeError,self.valid)
     def test_approved_copy_and_event_date(self):
         self.assertEqual(self.d['basis_date'],'2026-11-05');self.assertEqual(len(self.p['page_sha256']),5)
@@ -32,7 +39,20 @@ class FollowupSafety(unittest.TestCase):
     def test_waiting_and_export_check_never_use_instagram(self):
         for mode,status in [('check','waiting_reply'),('check','needs_review'),('export-check','export_check_pass')]:
             state=Mock();state.read.return_value=({},None)
-            with tempfile.TemporaryDirectory() as d,patch.dict(os.environ,{'META_FOLLOWUP_MODE':mode,'GITHUB_RUN_ID':'123'}),patch('meta_followup.OUT',Path(d)),patch('meta_followup.PublicationState',return_value=state),patch('meta_followup.gateway',return_value=({'status':status,'decision':{'status':'waiting_reply'}},'123')),patch('meta_followup.graph') as graph,patch('meta_followup.run_carousel') as publish:
+            with tempfile.TemporaryDirectory(dir=TEMP_ROOT) as d,patch.dict(os.environ,{'META_FOLLOWUP_MODE':mode,'GITHUB_RUN_ID':'123'}),patch('meta_followup.OUT',Path(d)),patch('meta_followup.PublicationState',return_value=state),patch('meta_followup.gateway',return_value=({'status':status,'decision':{'status':'waiting_reply'}},'123')),patch('meta_followup.graph') as graph,patch('meta_followup.run_carousel') as publish:
                 main();graph.assert_not_called();publish.assert_not_called()
+    def test_failed_publish_reconciles_success_with_get_only(self):
+        with tempfile.TemporaryDirectory(dir=TEMP_ROOT) as d:
+            p=Path(d);(p/'connection.json').write_text(json.dumps({'publication_status':'publishing','container_id':'parent','gateway_run_id':'7'}))
+            live={'id':'new','timestamp':self.now.isoformat(),'caption':'approved','media_type':'CAROUSEL_ALBUM','permalink':'https://www.instagram.com/p/example/','children':{'data':[{'id':str(i)} for i in range(5)]}}
+            state=Mock()
+            with patch('meta_followup.OUT',p),patch('cloud_reel.OUT',p),patch('meta_followup.graph',side_effect=[{'status_code':'PUBLISHED'},{'data':[live]}]) as g:
+                r=reconcile_publish_error({'caption':'approved','canva_design_id':'DAHaDQgjnYk','approved_assets_sha256':'digest'},state,{'old'},self.now)
+                self.assertTrue(r['published']);self.assertTrue(all(c.args[0]=='GET' for c in g.call_args_list));self.assertEqual(state.put.call_count,2)
+    def test_unpublished_container_cannot_be_success(self):
+        with tempfile.TemporaryDirectory(dir=TEMP_ROOT) as d:
+            p=Path(d);(p/'connection.json').write_text(json.dumps({'publication_status':'publishing','container_id':'parent'}))
+            with patch('meta_followup.OUT',p),patch('meta_followup.graph',return_value={'status_code':'ERROR'}) as g:
+                self.assertIsNone(reconcile_publish_error({},Mock(),set(),self.now));self.assertEqual(g.call_count,1)
 
 if __name__=='__main__':unittest.main()

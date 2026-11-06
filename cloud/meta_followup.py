@@ -38,7 +38,8 @@ def validate_receipt(result,policy,revision,rid,mode,now):
             or not d.get('clearance_quote') or not d.get('body_sha256') or result.get('export_verified') is not True):
             raise RuntimeError('Explicit authenticated provider clearance required')
     if result.get('export_verified'):
-        if result.get('page_sha256')!=policy['page_sha256'] or len(result.get('urls',[]))!=5:
+        if (result.get('original_approved_page_sha256')!=policy['page_sha256'] or result.get('exact_pixel_identity')!=policy.get('page_pixel_identity')
+            or len(result.get('page_sha256',[]))!=5 or len(result.get('urls',[]))!=5):
             raise RuntimeError('Approved five native page hashes required')
         for u in result['urls']:require_export_url(u)
 
@@ -103,7 +104,7 @@ def publication_plan(policy,draft,result,state,row,persist):
             if url:
                 _,im,_=fetch_image(url);im.thumbnail((540,675));buf=io.BytesIO();im.convert('RGB').save(buf,'JPEG');references.append(buf.getvalue())
     images=[]
-    for url,expected in zip(result['urls'],policy['page_sha256']):
+    for url,expected in zip(result['urls'],result['page_sha256']):
         data,im,jpg=fetch_image(url)
         if im.size!=(1080,1350) or hashlib.sha256(data).hexdigest()!=expected:raise RuntimeError('Approved native final page mismatch')
         images.append(jpg)
@@ -111,7 +112,7 @@ def publication_plan(policy,draft,result,state,row,persist):
     visual,_=review_images(draft,images,references,'carousel');row['visual_review']=visual;persist()
     if visual.get('verdict')!='pass':raise RuntimeError('Current native/mobile final QA rejected')
     saved=json.loads((ROOT/policy['quality_review_path']).read_text(encoding='utf-8'))
-    digest=assets_digest(policy['page_sha256']);day=datetime.now(KST).date().isoformat()
+    digest=assets_digest(result['page_sha256']);day=datetime.now(KST).date().isoformat()
     evidence={'basis_date':day,'event_basis_date':draft['basis_date'],'fact_review':review,
       'sources':[{k:a[k] for k in ('id','url','outlet','official','published','observed_at','body_sha256')} for a in originals],
       'claims':[{**c,'evidence':[{k:v for k,v in e.items() if k!='quote'} for e in c['evidence']]} for c in hydrated['claims']]}
@@ -121,6 +122,31 @@ def publication_plan(policy,draft,result,state,row,persist):
     return {'account':'issue.cards','canva_design_id':policy['design_id'],'purpose':'production','approved':True,'date':day,
       'format':'carousel','source_evidence':evidence,'export_format':'jpg','page_count':5,'caption':draft['caption'],
       'approved_assets_sha256':digest,'review':qa}
+
+def reconcile_publish_error(plan,state,prior_ids,started):
+    """A failed publish response can conceal success. GET only; never resubmit."""
+    path=OUT/'connection.json'
+    if not path.exists():return None
+    report=json.loads(path.read_text(encoding='utf-8'))
+    if report.get('publication_status')!='publishing' or not report.get('container_id'):return None
+    container=graph('GET',report['container_id']+'?fields=status_code')
+    if container.get('status_code')!='PUBLISHED':return None
+    posts=graph('GET','me/media?fields=id,permalink,timestamp,caption,media_type,children{id}&limit=15').get('data',[])
+    normalize=lambda s:s.replace('\r\n','\n').rstrip('\n')
+    matches=[]
+    for p in posts:
+        if p.get('id') in prior_ids or not p.get('timestamp'):continue
+        at=datetime.fromisoformat(p['timestamp'].replace('Z','+00:00'))
+        if (started-timedelta(seconds=5)<=at<=datetime.now(KST)+timedelta(seconds=5)
+            and normalize(p.get('caption',''))==normalize(plan['caption'])
+            and p.get('media_type')=='CAROUSEL_ALBUM' and len(p.get('children',{}).get('data',[]))==5 and p.get('permalink')):matches.append(p)
+    if len(matches)!=1:return None
+    p=matches[0];report.update(published=True,publication_status='published_verified',media_id=p['id'],permalink=p['permalink'],reconciled_after_error=True)
+    from cloud_reel import save_report
+    save_report(report)
+    state.put('cloud-reel-delivery-state.json','publish-'+str(report['gateway_run_id']),report)
+    state.put('managed-state.json',datetime.now(KST).date().isoformat()+'-cloud',{'status':'published','at':p['timestamp'],'format':'carousel','account':'issue.cards','canva_design_id':plan['canva_design_id'],'sha256':plan['approved_assets_sha256'],'media_id':p['id'],'permalink':p['permalink'],'reconciled_after_error':True})
+    return report
 
 def main():
     policy,draft=load_policy();mode=os.environ.get('META_FOLLOWUP_MODE','check')
@@ -152,7 +178,11 @@ def main():
         state.put(LEDGER,'publication_attempt',permit,absent=True)
         row.update(stage='publication_reserved',provider_clearance_verified=True);persist()
         os.environ['PUBLISH_PAUSED']='0'
-        try:run_carousel('publish',plan,{**result,'registryRevision':os.environ['GITHUB_SHA'],'requestId':row['request_id']},run)
+        started=datetime.now(KST)
+        try:
+            try:run_carousel('publish',plan,{**result,'registryRevision':os.environ['GITHUB_SHA'],'requestId':row['request_id']},run)
+            except (RuntimeError,requests.RequestException):
+                if reconcile_publish_error(plan,state,{p['id'] for p in posts},started) is None:raise
         finally:os.environ['PUBLISH_PAUSED']='1'
         final=json.loads((OUT/'connection.json').read_text(encoding='utf-8'))
         if final.get('published') is not True or not final.get('permalink'):raise RuntimeError('Actual publication not verified')

@@ -16,7 +16,54 @@
   "quality_review_path": "cloud/reviews/2026-11-05-real-photo-preview.json",
   "submitted_after": "2026-11-06T14:00:00+09:00",
   "gateway_workflow": "issue-meta-gateway.yml",
-  "gateway_code_revision": "10a7cced0901b9984b8837eca25cf5e88958ebc2",
+  "gateway_code_revision": "b8c58b8c8db3fd4abc45b1c038a3a987f265a5d4",
   "enabled": true,
-  "plan_hash_format": "canonical-json-utf8-v1"
+  "plan_hash_format": "canonical-json-utf8-v1",
+  "page_pixel_identity": [
+    {
+      "size": [
+        1080,
+        1350
+      ],
+      "pixel_sha256": "af1ee1ac8cc407933e52af6c02171abedd5a5d01e2f9d9534e0f932c26f88e0f",
+      "icc_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "orientation": 1
+    },
+    {
+      "size": [
+        1080,
+        1350
+      ],
+      "pixel_sha256": "15b4dd0cf216d5a333e3a7c0b1ea9a04960dff1657cb0b9f5a49850ca3d2d748",
+      "icc_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "orientation": 1
+    },
+    {
+      "size": [
+        1080,
+        1350
+      ],
+      "pixel_sha256": "9aa04a6eea16e2d5a2cc10ff530e7d8e22cefdab82958fd5dd6d1cf8cd4ed8bd",
+      "icc_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "orientation": 1
+    },
+    {
+      "size": [
+        1080,
+        1350
+      ],
+      "pixel_sha256": "e386a297becb49e2e14232623e79495e1eefb79415f0c2028113a5dd7004f1f6",
+      "icc_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "orientation": 1
+    },
+    {
+      "size": [
+        1080,
+        1350
+      ],
+      "pixel_sha256": "f98896f27826338fbc6655168f94c096156f4d08ced0029ccace046e7a7ab4c1",
+      "icc_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "orientation": 1
+    }
+  ]
 }
