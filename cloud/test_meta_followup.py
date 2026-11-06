@@ -1,7 +1,9 @@
-import copy,json,unittest
+import copy,json,unittest,tempfile,os
+from pathlib import Path
+from unittest.mock import patch,Mock
 from datetime import datetime
 from cloud_reel import KST
-from meta_followup import load_policy,validate_receipt,draft_digest
+from meta_followup import load_policy,validate_receipt,draft_digest,main
 
 class FollowupSafety(unittest.TestCase):
     def setUp(self):
@@ -27,5 +29,10 @@ class FollowupSafety(unittest.TestCase):
         text=json.dumps(self.d,ensure_ascii=False,indent=2)
         self.assertEqual(draft_digest(json.loads(text.replace('\n','\r\n'))),draft_digest(self.d))
         changed=copy.deepcopy(self.d);changed['caption']+='x';self.assertNotEqual(draft_digest(changed),draft_digest(self.d))
+    def test_waiting_and_export_check_never_use_instagram(self):
+        for mode,status in [('check','waiting_reply'),('check','needs_review'),('export-check','export_check_pass')]:
+            state=Mock();state.read.return_value=({},None)
+            with tempfile.TemporaryDirectory() as d,patch.dict(os.environ,{'META_FOLLOWUP_MODE':mode,'GITHUB_RUN_ID':'123'}),patch('meta_followup.OUT',Path(d)),patch('meta_followup.PublicationState',return_value=state),patch('meta_followup.gateway',return_value=({'status':status,'decision':{'status':'waiting_reply'}},'123')),patch('meta_followup.graph') as graph,patch('meta_followup.run_carousel') as publish:
+                main();graph.assert_not_called();publish.assert_not_called()
 
 if __name__=='__main__':unittest.main()

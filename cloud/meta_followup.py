@@ -35,7 +35,7 @@ def validate_receipt(result,policy,revision,rid,mode,now):
     if mode=='check' and result.get('status')=='cleared_export_ready':
         d=result.get('decision',{})
         if (d.get('status')!='cleared' or d.get('authentication')!='google_dmarc_pass_dkim_pass'
-            or not d.get('clearance_quote') or not d.get('body_sha256')):
+            or not d.get('clearance_quote') or not d.get('body_sha256') or result.get('export_verified') is not True):
             raise RuntimeError('Explicit authenticated provider clearance required')
     if result.get('export_verified'):
         if result.get('page_sha256')!=policy['page_sha256'] or len(result.get('urls',[]))!=5:
