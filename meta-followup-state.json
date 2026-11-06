@@ -35,5 +35,13 @@
     "gmail_readonly_verified": true,
     "reply_status": "waiting_reply",
     "provider_evidence_sha256": null
+  },
+  "check-42172611473": {
+    "stage": "starting",
+    "mode": "check",
+    "published": false,
+    "account": "issue.cards",
+    "design_id": "DAHaDQgjnYk",
+    "at": "2026-11-06T15:09:14.906377+09:00"
   }
 }
