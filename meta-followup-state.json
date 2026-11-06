@@ -1,12 +1,13 @@
 {
   "check-42171107576": {
-    "stage": "gateway_running",
+    "stage": "blocked",
     "mode": "export-check",
     "published": false,
     "account": "issue.cards",
     "design_id": "DAHaDQgjnYk",
     "at": "2026-11-06T14:54:00.524499+09:00",
     "request_id": "issue-meta-42171107576",
-    "gateway_run_id": "42171131881"
+    "gateway_run_id": "42171131881",
+    "error": "Gateway failed/pending; reconcile its recorded run"
   }
 }
