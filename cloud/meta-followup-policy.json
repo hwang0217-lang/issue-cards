@@ -69,7 +69,7 @@
   "support_browser": {
     "enabled": true,
     "url": "https://issue-support-reader.apollo0217.workers.dev",
-    "build_id": "e117c78dc4513c85b74195ab6e6bfb0fd4ceb25355cb3eb1ce31dca0050c140b",
+    "build_id": "eee8c7c8dc41f8f01ce9071371cc11c78a196723463bdcf21fff57f8d7c0a9df",
     "authentication": "Owner-approved keys configured; one-time issue.cards cloud login pending"
   }
 }
