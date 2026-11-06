@@ -80,13 +80,14 @@
     "provider_evidence_sha256": null
   },
   "check-42185378489": {
-    "stage": "gateway_dispatching",
+    "stage": "gateway_running",
     "mode": "check",
     "published": false,
     "account": "issue.cards",
     "design_id": "DAHaDQgjnYk",
     "at": "2026-11-06T17:07:14.201641+09:00",
     "support_read_error": "RuntimeError",
-    "request_id": "issue-meta-42185378489"
+    "request_id": "issue-meta-42185378489",
+    "gateway_run_id": "42185421432"
   }
 }
