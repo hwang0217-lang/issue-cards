@@ -80,7 +80,7 @@
     "provider_evidence_sha256": null
   },
   "check-42185378489": {
-    "stage": "gateway_running",
+    "stage": "needs_review",
     "mode": "check",
     "published": false,
     "account": "issue.cards",
@@ -88,6 +88,9 @@
     "at": "2026-11-06T17:07:14.201641+09:00",
     "support_read_error": "RuntimeError",
     "request_id": "issue-meta-42185378489",
-    "gateway_run_id": "42185421432"
+    "gateway_run_id": "42185421432",
+    "gmail_readonly_verified": true,
+    "reply_status": "needs_review",
+    "provider_evidence_sha256": null
   }
 }
